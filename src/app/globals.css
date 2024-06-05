@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "./normalize.css";
+
+:root {
+  --black: #000;
+  --gold: #e6b31e;
+  --white: #fcfaf1;
+  --gray: #cacaca;
+}
+
+body {
+  background-color: var(--black);
+  color: var(--white);
+}
