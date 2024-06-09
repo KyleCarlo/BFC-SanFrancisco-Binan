@@ -5,7 +5,7 @@
 
 :root {
   --black: #000;
-  --gold: #e6b31e;
+  --gold: #fbc668;
   --white: #fcfaf1;
   --gray: #cacaca;
 }
@@ -32,4 +32,12 @@ body {
 
 .text-italic {
   font-style: italic;
+}
+
+.text-gold {
+  color: var(--gold);
+}
+
+.bg-gray {
+  background-color: var(--gray);
 }

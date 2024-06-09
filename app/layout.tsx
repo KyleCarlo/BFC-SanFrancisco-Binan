@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import gordita from "./fonts/gordita";
+import gordita from "./_fonts/gordita";
 import "./globals.css";
 
 export const metadata: Metadata = {
