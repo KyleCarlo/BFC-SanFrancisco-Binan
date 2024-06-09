@@ -8,9 +8,9 @@ export default function Login() {
     <main className="flex flex-col items-center justify-center h-dvh">
       <Image src="bfc-logo.svg" alt="bfc-logo" width={120} height={120} />
       <h1 className="text-bold text-3xl mt-4">
-        <span className="textc-gold">B</span>ut{" "}
-        <span className="textc-gold">F</span>irst{" "}
-        <span className="textc-gold">C</span>offee
+        <span className="text-gold">B</span>ut{" "}
+        <span className="text-gold">F</span>irst{" "}
+        <span className="text-gold">C</span>offee
       </h1>
       <p className="mb-4">San Francisco, Biñan City</p>
       <form method="post" className="flex flex-col">
