@@ -6,7 +6,7 @@ import { RiLockPasswordLine } from "react-icons/ri";
 export default function Login() {
   return (
     <main className="flex flex-col items-center justify-center h-dvh">
-      <Image src="bfc-logo.svg" alt="bfc-logo" width={120} height={120} />
+      <Image src="/bfc-logo.png" alt="bfc-logo" width={120} height={120} />
       <h1 className="text-bold text-3xl mt-4">
         <span className="text-gold">B</span>ut{" "}
         <span className="text-gold">F</span>irst{" "}

@@ -42,6 +42,6 @@ body {
   color: var(--black);
 }
 
-.bg-gray {
-  background-color: var(--gray);
+.border-gold {
+  border-color: var(--gold);
 }

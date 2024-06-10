@@ -1,7 +1,7 @@
 export default function GoogleButton() {
   return (
     <main>
-      <button>test</button>
+      <button>INSERT GOOGLE BUTTON HERE</button>
     </main>
   );
 }
