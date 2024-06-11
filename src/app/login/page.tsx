@@ -1,5 +1,5 @@
 import Image from "next/image";
-import GoogleButton from "../_components/googleButton";
+import GoogleButton from "@/src/components/googleButton";
 import { FaRegUser } from "react-icons/fa";
 import { RiLockPasswordLine } from "react-icons/ri";
 

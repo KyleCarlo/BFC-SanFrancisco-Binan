@@ -1,0 +1,9 @@
+services:
+  database:
+    container_name: psmysql
+    image: percona
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - 12345:3306
