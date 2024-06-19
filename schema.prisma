@@ -7,6 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Feature {
+  None
+  Popular
+  New
+}
+
 enum BeverageBase {
   Drip
   Espresso
@@ -26,9 +32,8 @@ model Beverage {
   serving     String   @db.VarChar(255)
   base        BeverageBase
   concentrate Boolean
-  hot_cold    BeverageHotCold?
-  createdAt   DateTime @default(now()) @db.Timestamp(6)
-  updatedAt   DateTime @default(now()) @db.Timestamp(6)
+  hot_cold    BeverageHotCold
+  feature     Feature
 }
 
 enum FoodCategory {
@@ -45,8 +50,7 @@ model Food {
   price       Int
   serving     String   @db.VarChar(255)
   category    FoodCategory
-  createdAt   DateTime @default(now()) @db.Timestamp(6)
-  updatedAt   DateTime @default(now()) @db.Timestamp(6)
+  feature     Feature
 }
 
 enum UserRole {
