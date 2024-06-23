@@ -28,12 +28,20 @@ model Beverage {
   id          Int      @id @default(autoincrement())
   name        String   @db.VarChar(255)
   image       String   @db.VarChar(255)
+  description String   @db.VarChar(255)
+  base        BeverageBase
+  feature     Feature
+  variations  BeverageVariation[]
+}
+
+model BeverageVariation{
+  id          Int      @id @default(autoincrement())
+  beverage    Beverage @relation(fields: [beverage_id], references: [id])
+  beverage_id Int
   price       Int
   serving     String   @db.VarChar(255)
-  base        BeverageBase
   concentrate Boolean
-  hot_cold    BeverageHotCold
-  feature     Feature
+  hot_cold    BeverageHotCold?
 }
 
 enum FoodCategory {
@@ -47,10 +55,18 @@ model Food {
   id          Int      @id @default(autoincrement())
   name        String   @db.VarChar(255)
   image       String   @db.VarChar(255)
-  price       Int
-  serving     String   @db.VarChar(255)
+  description String   @db.VarChar(255)
   category    FoodCategory
   feature     Feature
+  variations  FoodVariation[]
+}
+
+model FoodVariation {
+  id          Int      @id @default(autoincrement())
+  food        Food     @relation(fields: [food_id], references: [id])
+  food_id     Int
+  price       Int      
+  serving     String   @db.VarChar(255)
 }
 
 enum UserRole {
