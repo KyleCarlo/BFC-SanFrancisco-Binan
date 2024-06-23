@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <main className="flex flex-col items-center justify-center h-dvh gap-10">
       <a

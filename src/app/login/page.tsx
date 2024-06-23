@@ -3,7 +3,7 @@ import GoogleButton from "@components/googleButton";
 import { FaRegUser } from "react-icons/fa";
 import { RiLockPasswordLine } from "react-icons/ri";
 
-export default function Login() {
+export default function LoginPage() {
   return (
     <main className="flex flex-col items-center justify-center h-dvh">
       <Image src="/bfc-logo.png" alt="bfc-logo" width={120} height={120} />
