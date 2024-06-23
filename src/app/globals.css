@@ -3,45 +3,48 @@
 @tailwind utilities;
 @import "./normalize.css";
 
-:root {
-  --black: #000;
-  --gold: #fbc668;
-  --white: #fcfaf1;
-  --gray: #cacaca;
+@layer base {
+  :root {
+    --black: #000;
+    --gold: #fbc668;
+    --white: #fcfaf1;
+    --gray: #cacaca;
+  }
 }
 
-body {
-  background-color: var(--black);
-  color: var(--white);
-  font-family: var(--gordita);
-  font-weight: normal;
-  font-style: normal;
-}
+@layer base {
+  body {
+    background-color: var(--black);
+    color: var(--white);
+    font-family: var(--gordita);
+    font-weight: normal;
+    font-style: normal;
+  }
+  .text-light {
+    font-weight: 200;
+  }
 
-.text-light {
-  font-weight: 200;
-}
+  .text-bold {
+    font-weight: 600;
+  }
 
-.text-bold {
-  font-weight: 600;
-}
+  .text-bolder {
+    font-weight: 800;
+  }
 
-.text-bolder {
-  font-weight: 800;
-}
+  .text-italic {
+    font-style: italic;
+  }
 
-.text-italic {
-  font-style: italic;
-}
+  .text-gold {
+    color: var(--gold);
+  }
 
-.text-gold {
-  color: var(--gold);
-}
+  .text-black {
+    color: var(--black);
+  }
 
-.text-black {
-  color: var(--black);
-}
-
-.border-gold {
-  border-color: var(--gold);
+  .border-gold {
+    border-color: var(--gold);
+  }
 }
