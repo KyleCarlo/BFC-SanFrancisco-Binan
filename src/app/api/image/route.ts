@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import minioClient from "@/src/lib/minio";
 
 export async function POST(req: NextRequest) {
-  // minioClient.fPutObject
   const data = await req.formData();
   const image = data.get("image") as File;
   const buffer = Buffer.from(await image.arrayBuffer());
