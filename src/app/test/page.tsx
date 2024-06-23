@@ -1,5 +1,5 @@
 "use client";
-import Uploader from "@/src/components/uploader";
+import Uploader from "@components/uploader";
 export default function test() {
   return (
     <>
