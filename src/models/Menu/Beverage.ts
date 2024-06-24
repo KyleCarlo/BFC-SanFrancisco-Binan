@@ -20,4 +20,5 @@ export interface BeverageVariation {
   price: number;
   concentrate: Boolean;
   hot_cold?: BeverageHotCold;
+  available: Boolean;
 }

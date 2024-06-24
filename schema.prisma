@@ -42,6 +42,7 @@ model BeverageVariation{
   serving     String   @db.VarChar(255)
   concentrate Boolean
   hot_cold    BeverageHotCold?
+  available   Boolean
 }
 
 enum FoodCategory {
@@ -67,6 +68,7 @@ model FoodVariation {
   food_id     Int
   price       Int      
   serving     String   @db.VarChar(255)
+  available   Boolean
 }
 
 enum UserRole {

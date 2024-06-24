@@ -18,4 +18,5 @@ export interface FoodVariation {
   food_id: number;
   serving: string;
   price: number;
+  available: boolean;
 }
