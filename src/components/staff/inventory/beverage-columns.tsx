@@ -2,6 +2,8 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Beverage, BeverageVariation } from "@models/Menu/Beverage";
+import { Switch } from "@components/ui/switch";
+import { useState } from "react";
 
 const beverageColumns: ColumnDef<Beverage>[] = [
   {
@@ -21,11 +23,14 @@ const beverageColumns: ColumnDef<Beverage>[] = [
     header: "Serving",
     cell: ({ row }) => {
       const variations: BeverageVariation[] = row.getValue("variations");
-      console.log(variations);
       return (
         <div>
           {variations.map((variation, index) => {
-            return <div key={index}>{variation.serving}</div>;
+            return (
+              <div key={index} className="flex h-8 items-center">
+                {variation.serving}
+              </div>
+            );
           })}
         </div>
       );
@@ -40,7 +45,11 @@ const beverageColumns: ColumnDef<Beverage>[] = [
       return (
         <div>
           {variations.map((variation, index) => {
-            return <div key={index}>₱{variation.price}</div>;
+            return (
+              <div key={index} className="flex h-8 items-center">
+                ₱{variation.price}
+              </div>
+            );
           })}
         </div>
       );
@@ -55,9 +64,42 @@ const beverageColumns: ColumnDef<Beverage>[] = [
         <div>
           {variations.map((variation, index) => {
             if (variation.concentrate) {
-              return <div key={index}>Concentrate</div>;
+              return (
+                <div key={index} className="flex h-8 items-center">
+                  Concentrate
+                </div>
+              );
             }
-            return <div key={index}>{variation.hot_cold}</div>;
+            return (
+              <div key={index} className="flex h-8 items-center">
+                {variation.hot_cold}
+              </div>
+            );
+          })}
+        </div>
+      );
+    },
+  },
+  {
+    id: "actions",
+    header: "Available",
+    cell: function Cell({ row }) {
+      const variations: BeverageVariation[] = row.getValue("variations");
+      const [svariations, setSVariation] = useState(variations);
+
+      return (
+        <div>
+          {svariations.map((variation, index) => {
+            return (
+              <div key={index} className="flex h-8 items-center justify-center">
+                <Switch
+                  checked={variation.available}
+                  onCheckedChange={() => {
+                    variation.available = !variation.available;
+                  }}
+                />
+              </div>
+            );
           })}
         </div>
       );
@@ -67,9 +109,11 @@ const beverageColumns: ColumnDef<Beverage>[] = [
     id: "actions",
     cell: () => {
       return (
-        <button className="border-2 border-gold rounded-xl text-gold px-4 py-2">
-          Edit
-        </button>
+        <div>
+          <button className="border-2 border-gold rounded-xl text-gold px-4 py-2">
+            Edit
+          </button>
+        </div>
       );
     },
   },
