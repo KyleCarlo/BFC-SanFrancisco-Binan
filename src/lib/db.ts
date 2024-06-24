@@ -1,7 +1,13 @@
-import { PrismaClient } from "@prisma/client";
+import { createPool } from "mysql2";
+import { Kysely, MysqlDialect } from "kysely";
+import { DB } from "kysely-codegen";
 
-const prisma = new PrismaClient({
-  datasourceUrl: process.env.DATABASE_URL,
+const dialect = new MysqlDialect({
+  pool: createPool(process.env.DATABASE_URL || ""),
 });
 
-export default prisma;
+const db = new Kysely<DB>({
+  dialect,
+});
+
+export default db;
