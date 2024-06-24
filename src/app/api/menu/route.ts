@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@lib/db";
-import { ItemType } from "@/src/models/Menu";
+import { ItemType } from "@models/Menu";
 
 function capitalize(word: string) {
   return (word.charAt(0).toUpperCase() + word.slice(1)) as "Food" | "Beverage";
@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
   const items = await db
     .selectFrom(`${capitalize(itemType)}`)
     .selectAll()
+    .orderBy("name", "asc")
     .execute();
 
   const itemVariations = await db
