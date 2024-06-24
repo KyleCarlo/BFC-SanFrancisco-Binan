@@ -17,7 +17,7 @@ async function getMenuItems(itemType: ItemType) {
 export default async function InventoryPage() {
   const items = await getMenuItems("beverage");
   return (
-    <main>
+    <main className="flex justify-center items-center">
       <InventoryTable columns={beverageColumns} data={items} />
     </main>
   );
