@@ -27,7 +27,10 @@ const beverageColumns: ColumnDef<Beverage>[] = [
         <div>
           {variations.map((variation, index) => {
             return (
-              <div key={index} className="flex h-8 items-center">
+              <div
+                key={index}
+                className="whitespace-nowrap flex h-8 items-center"
+              >
                 {variation.serving}
               </div>
             );
@@ -46,7 +49,10 @@ const beverageColumns: ColumnDef<Beverage>[] = [
         <div>
           {variations.map((variation, index) => {
             return (
-              <div key={index} className="flex h-8 items-center">
+              <div
+                key={index}
+                className="whitespace-nowrap flex h-8 items-center"
+              >
                 ₱{variation.price}
               </div>
             );
@@ -65,13 +71,19 @@ const beverageColumns: ColumnDef<Beverage>[] = [
           {variations.map((variation, index) => {
             if (variation.concentrate) {
               return (
-                <div key={index} className="flex h-8 items-center">
+                <div
+                  key={index}
+                  className="whitespace-nowrap flex h-8 items-center"
+                >
                   Concentrate
                 </div>
               );
             }
             return (
-              <div key={index} className="flex h-8 items-center">
+              <div
+                key={index}
+                className="whitespace-nowrap flex h-8 items-center"
+              >
                 {variation.hot_cold}
               </div>
             );
@@ -95,7 +107,16 @@ const beverageColumns: ColumnDef<Beverage>[] = [
                 <Switch
                   checked={variation.available}
                   onCheckedChange={() => {
-                    variation.available = !variation.available;
+                    const newVariations = svariations.map((v, i) => {
+                      if (i === index) {
+                        return {
+                          ...v,
+                          available: !v.available,
+                        };
+                      }
+                      return v;
+                    });
+                    setSVariation(newVariations);
                   }}
                 />
               </div>

@@ -1,5 +1,6 @@
 import InventoryTable from "@components/staff/inventory/data-table";
 import beverageColumns from "@components/staff/inventory/beverage-columns";
+import foodColumns from "@components/staff/inventory/food-columns";
 import { ItemType } from "@models/Menu";
 
 async function getMenuItems(itemType: ItemType) {
@@ -15,10 +16,10 @@ async function getMenuItems(itemType: ItemType) {
 }
 
 export default async function InventoryPage() {
-  const items = await getMenuItems("beverage");
+  const items = await getMenuItems("food");
   return (
     <main className="flex justify-center items-center">
-      <InventoryTable columns={beverageColumns} data={items} />
+      <InventoryTable columns={foodColumns} data={items} />
     </main>
   );
 }
