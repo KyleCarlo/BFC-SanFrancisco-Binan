@@ -1,9 +1,11 @@
 "use client";
 
 import { Switch } from "@components/ui/switch";
+
 import { FoodVariation } from "@models/Menu/Food";
 import { BeverageVariation } from "@models/Menu/Beverage";
 import { ItemType } from "@models/Menu";
+
 import { useState } from "react";
 import toggleAvailability from "@hooks/setItemAvailability";
 

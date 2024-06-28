@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import gordita from "@/src/fonts/gordita";
 import "./globals.css";
+import { Toaster } from "@components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "But First Coffee",
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={gordita.variable}>{children}</body>
+      <Toaster richColors position="top-right" />
     </html>
   );
 }

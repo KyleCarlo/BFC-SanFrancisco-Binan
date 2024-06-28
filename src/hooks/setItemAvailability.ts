@@ -2,6 +2,7 @@ import { ItemType } from "@models/Menu";
 import { FoodVariation } from "@models/Menu/Food";
 import { BeverageVariation } from "@models/Menu/Beverage";
 import { SetStateAction } from "react";
+import { toast } from "sonner";
 
 const toggleAvailability = async (
   available: boolean,
@@ -29,9 +30,9 @@ const toggleAvailability = async (
     }
 
     setSVariation({ ...svariations, available });
-    // implement a toast notification here
+    toast.success("Item Availability updated.");
   } catch (error) {
-    alert(error);
+    toast.error("Failed to Update Availability.");
   }
 };
 
