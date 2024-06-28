@@ -9,15 +9,27 @@ const getMenuItems = async (
   setItems: React.Dispatch<SetStateAction<[] | Food[] | Beverage[]>>
 ) => {
   setLoading(true);
-  const response = await fetch(
-    `http://localhost:3000/api/menu?itemType=${itemType}`,
-    {
-      method: "GET",
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/menu?itemType=${itemType}`,
+      {
+        method: "GET",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch data");
     }
-  );
-  const { items } = await response.json();
-  setItems(items);
-  setLoading(false);
+
+    const { items } = await response.json();
+    setItems(items);
+    setLoading(false);
+  } catch (error) {
+    setItems([]);
+    setLoading(false);
+    alert(error);
+    // implement a toast notification here
+  }
 };
 
 export default getMenuItems;
