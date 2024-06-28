@@ -5,12 +5,10 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@components/ui/select";
-import { ItemType } from "@models/Menu";
-import itemList from "@lib/itemList";
+import { ItemType, ItemTypeModel } from "@models/Menu";
 
 export default function SelectItemType({
   current_selected,
@@ -31,7 +29,7 @@ export default function SelectItemType({
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          {itemList.map((item) => (
+          {Object.keys(ItemTypeModel.Values).map((item) => (
             <SelectItem key={item} value={item}>
               {item[0].toUpperCase() + item.slice(1)}
             </SelectItem>
