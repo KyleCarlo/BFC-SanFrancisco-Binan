@@ -1,24 +1,31 @@
-import { Feature } from "./index";
+import { FeatureModel } from "./index";
+import { z } from "zod";
 
-export type BeverageBase = "drip" | "espresso" | "tea";
+export const BeverageBaseModel = z.enum(["drip", "espresso", "tea"]);
+export const BeverageHotColdModel = z.enum(["hot", "cold"]);
 
-export type BeverageHotCold = "hot" | "cold";
+export type BeverageBase = z.infer<typeof BeverageBaseModel>;
+export type BeverageHotCold = z.infer<typeof BeverageHotColdModel>;
 
-export interface Beverage {
-  id: number;
-  name: string;
-  description: string;
-  base: BeverageBase;
-  feature: Feature;
-  variations: BeverageVariation[];
-}
+export const BeverageVariationModel = z.object({
+  id: z.number(),
+  beverage_id: z.number(),
+  serving: z.string(),
+  price: z.number(),
+  concentrate: z.boolean(),
+  hot_cold: BeverageHotColdModel.optional(),
+  available: z.boolean(),
+});
 
-export interface BeverageVariation {
-  id: number;
-  beverage_id: number;
-  serving: string;
-  price: number;
-  concentrate: boolean;
-  hot_cold?: BeverageHotCold;
-  available: boolean;
-}
+export const BeverageModel = z.object({
+  id: z.number(),
+  name: z.string(),
+  image: z.string(),
+  description: z.string(),
+  base: BeverageBaseModel,
+  feature: FeatureModel,
+  variations: BeverageVariationModel.array(),
+});
+
+export type BeverageVariation = z.infer<typeof BeverageVariationModel>;
+export type Beverage = z.infer<typeof BeverageModel>;
