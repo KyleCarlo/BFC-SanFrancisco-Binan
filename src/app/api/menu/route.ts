@@ -1,15 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@lib/db";
-import { ItemType } from "@models/Menu";
-
-function capitalize(word: string) {
-  return (word.charAt(0).toUpperCase() + word.slice(1)) as "Food" | "Beverage";
-}
+import { ItemType, ItemTypeModel } from "@models/Menu";
+import { capitalize } from "@lib/utils";
 
 // GET MENU LISTS
 export async function GET(req: NextRequest) {
   const itemType = req.nextUrl.searchParams.get("itemType") as ItemType;
-  const properItemTypes: ItemType[] = ["food", "beverage"];
+  const properItemTypes = Object.keys(ItemTypeModel.Values);
 
   if (!properItemTypes.includes(itemType)) {
     return NextResponse.json({ message: "Invalid item type" }, { status: 400 });
