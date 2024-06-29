@@ -26,7 +26,7 @@ const beverageColumns: ColumnDef<Beverage>[] = [
             return (
               <div
                 key={index}
-                className="whitespace-nowrap flex h-8 items-center"
+                className="whitespace-nowrap flex h-8 items-center justify-center"
               >
                 {variation.serving}
               </div>
@@ -48,7 +48,7 @@ const beverageColumns: ColumnDef<Beverage>[] = [
             return (
               <div
                 key={index}
-                className="whitespace-nowrap flex h-8 items-center"
+                className="whitespace-nowrap flex h-8 items-center justify-center"
               >
                 ₱{variation.price}
               </div>
@@ -70,7 +70,7 @@ const beverageColumns: ColumnDef<Beverage>[] = [
               return (
                 <div
                   key={index}
-                  className="whitespace-nowrap flex h-8 items-center"
+                  className="whitespace-nowrap flex h-8 items-center justify-center"
                 >
                   Concentrate
                 </div>
@@ -79,7 +79,7 @@ const beverageColumns: ColumnDef<Beverage>[] = [
             return (
               <div
                 key={index}
-                className="whitespace-nowrap flex h-8 items-center"
+                className="whitespace-nowrap flex h-8 items-center justify-center"
               >
                 {variation.hot_cold}
               </div>
