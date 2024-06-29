@@ -3,7 +3,7 @@
 import { FoodTable, BeverageTable } from "@components/staff/inventory/table";
 import SelectItemType from "@components/staff/inventory/select-table";
 import { Input } from "@components/ui/input";
-import { Button } from "@components/ui/button";
+import AddItemDialog from "@components/staff/inventory/add-item/dialog";
 
 import { ItemType } from "@models/Menu";
 import { useState, useEffect } from "react";
@@ -24,17 +24,19 @@ export default function InventoryPage() {
   return (
     <main className="flex flex-col justify-center items-center">
       <div className="flex items-center gap-4 p-4">
-        <Button variant="outline" size="lg" className="text-gold">
-          Add Item
-        </Button>
+        <AddItemDialog />
         <Input placeholder="Search for Item Name" />
         <SelectItemType current_selected={itemType} setItemType={setItemType} />
       </div>
-      {/* {loading && <p>Loading...</p>} */}
-      {!loading && itemType === "food" && <FoodTable items={items as Food[]} />}
-      {!loading && itemType === "beverage" && (
-        <BeverageTable items={items as Beverage[]} />
-      )}
+      <div className="w-full px-10">
+        {loading && <p>Loading...</p>}
+        {!loading && itemType === "food" && (
+          <FoodTable items={items as Food[]} />
+        )}
+        {!loading && itemType === "beverage" && (
+          <BeverageTable items={items as Beverage[]} />
+        )}
+      </div>
     </main>
   );
 }
