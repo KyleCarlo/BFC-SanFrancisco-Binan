@@ -6,5 +6,5 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function capitalize(word: string) {
-  return (word.charAt(0).toUpperCase() + word.slice(1)) as "Food" | "Beverage";
+  return word.charAt(0).toUpperCase() + word.slice(1);
 }
