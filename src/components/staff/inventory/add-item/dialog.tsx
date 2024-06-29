@@ -1,5 +1,3 @@
-import { CopyIcon } from "@radix-ui/react-icons";
-
 import { Button } from "@components/ui/button";
 import {
   Dialog,
@@ -8,7 +6,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@components/ui/dialog";
-import AddItemForm from "./add-form";
+import AddItemForm from "./form";
 
 export default function AddItemDialog() {
   return (
@@ -18,7 +16,7 @@ export default function AddItemDialog() {
           Add Item
         </Button>
       </DialogTrigger>
-      <DialogContent className="dark sm:max-w-md">
+      <DialogContent className="dark md:max-w-md">
         <DialogHeader>
           <DialogTitle>Add Item to Menu</DialogTitle>
         </DialogHeader>
