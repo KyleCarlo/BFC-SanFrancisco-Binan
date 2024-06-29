@@ -12,25 +12,38 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ message: "Invalid item type" }, { status: 400 });
   }
 
-  const items = await db
-    .selectFrom(`${capitalize(itemType)}`)
-    .selectAll()
-    .orderBy("name", "asc")
-    .execute();
+  try {
+    const items = await db
+      .selectFrom(`${capitalize(itemType)}` as "Food" | "Beverage")
+      .selectAll()
+      .orderBy("name", "asc")
+      .execute();
 
-  const itemVariations = await db
-    .selectFrom(`${capitalize(itemType)}Variation`)
-    .selectAll()
-    .orderBy("price", "asc")
-    .execute();
+    const itemVariations = await db
+      .selectFrom(
+        `${capitalize(itemType)}Variation` as
+          | "FoodVariation"
+          | "BeverageVariation"
+      )
+      .selectAll()
+      .orderBy("price", "asc")
+      .execute();
 
-  items.forEach((item) => {
-    Object.assign(item, {
-      variations: itemVariations.filter((v) => v[`${itemType}_id`] === item.id),
+    items.forEach((item) => {
+      Object.assign(item, {
+        variations: itemVariations.filter(
+          (v) => v[`${itemType}_id`] === item.id
+        ),
+      });
     });
-  });
 
-  return NextResponse.json({ items }, { status: 200 });
+    return NextResponse.json({ items }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Error Fetching Menu Items." },
+      { status: 500 }
+    );
+  }
 }
 
 // SET AVAILABILITY
@@ -49,7 +62,11 @@ export async function PATCH(req: NextRequest) {
 
   try {
     await db
-      .updateTable(`${capitalize(itemType)}Variation`)
+      .updateTable(
+        `${capitalize(itemType)}Variation` as
+          | "FoodVariation"
+          | "BeverageVariation"
+      )
       .where("id", "=", variation_id)
       .where(`${itemType}_id`, "=", id)
       .set("available", available)
