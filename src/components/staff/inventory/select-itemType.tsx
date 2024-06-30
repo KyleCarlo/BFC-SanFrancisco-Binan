@@ -1,4 +1,4 @@
-import * as React from "react";
+"use client";
 
 import {
   Select,
@@ -9,19 +9,16 @@ import {
   SelectValue,
 } from "@components/ui/select";
 import { ItemType, ItemTypeModel } from "@models/Menu";
+import { useItemTypeContext } from "@hooks/itemTypeContext";
 
-export default function SelectItemType({
-  current_selected,
-  setItemType,
-}: {
-  current_selected: ItemType;
-  setItemType: React.Dispatch<React.SetStateAction<ItemType>>;
-}) {
+export default function SelectItemType() {
+  const { itemType, setItemType } = useItemTypeContext();
   return (
     <Select
-      defaultValue={current_selected}
+      defaultValue={itemType}
       onValueChange={(selected: ItemType) => {
         setItemType(selected);
+        console.log(itemType);
       }}
     >
       <SelectTrigger className="w-[180px]">
