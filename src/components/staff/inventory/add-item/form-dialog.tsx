@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@components/ui/button";
 import {
   Dialog,
@@ -9,11 +11,14 @@ import {
 import AddItemForm from "./form";
 import { useItemTypeContext } from "@hooks/itemTypeContext";
 import { capitalize } from "@lib/utils";
+import { useState } from "react";
 
 export default function AddItemDialog() {
   const { itemType } = useItemTypeContext();
+  const [open, setOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size="lg" className="text-gold">
           Add Item
@@ -23,7 +28,7 @@ export default function AddItemDialog() {
         <DialogHeader>
           <DialogTitle>{`Add ${capitalize(itemType)} to Menu`}</DialogTitle>
         </DialogHeader>
-        <AddItemForm />
+        <AddItemForm setOpen={setOpen} />
       </DialogContent>
     </Dialog>
   );

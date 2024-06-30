@@ -22,6 +22,8 @@ import { toast } from "sonner";
 import { useItemTypeContext } from "@hooks/itemTypeContext";
 import { FoodModel } from "@models/Menu/Food";
 
+import { Dispatch, SetStateAction } from "react";
+
 const beverageSchema = BeverageModel.pick({
   name: true,
   description: true,
@@ -36,7 +38,11 @@ const foodSchema = FoodModel.pick({
   feature: true,
 });
 
-export default function AddItemForm() {
+export default function AddItemForm({
+  setOpen,
+}: {
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}) {
   const { itemType } = useItemTypeContext();
   const formSchema = itemType === "beverage" ? beverageSchema : foodSchema;
 
@@ -56,18 +62,29 @@ export default function AddItemForm() {
       bucket: itemType,
     });
     try {
-      const uppy_res = await uppy.upload();
-      if (uppy_res.successful.length > 0) {
-        // const res = await fetch("http://localhost:3000/api/menu", {
-        //   method: "PUT",
-        //   body: JSON.stringify({ ...values, image: uploadedFile.name }),
-        // });
-        console.log("OK OK");
+      const res = await fetch(
+        `http://localhost:3000/api/menu?itemType=${itemType}`,
+        {
+          method: "PUT",
+          body: JSON.stringify({ ...values, image: uploadedFile.name }),
+        }
+      );
+
+      if (!res.ok) {
+        toast.error(res.statusText);
       } else {
-        toast.error("Image upload failed.");
+        const uppy_res = await uppy.upload();
+        if (uppy_res.successful.length == 0) {
+          toast.error(
+            "Image upload failed. Try to refresh the page or image duplicated."
+          );
+        } else {
+          toast.success("Image uploaded successfully.");
+          setOpen(false);
+        }
       }
-    } catch (error) {
-      toast.error("Server Error.");
+    } catch {
+      toast.error("Unknown error occured.");
     }
   }
 
