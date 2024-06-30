@@ -16,9 +16,9 @@ export default function NameField(form: any) {
         <FormItem>
           <FormLabel>Item Name</FormLabel>
           <FormControl>
-            <Input {...field} className="w-full" />
+            <Input {...field} className="w-full relative bottom-1.5" />
           </FormControl>
-          <FormMessage />
+          <FormMessage className="relative bottom-2.5" />
         </FormItem>
       )}
     />

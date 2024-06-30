@@ -1,5 +1,3 @@
-"use client";
-
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -11,35 +9,67 @@ import { BeverageModel } from "@models/Menu/Beverage";
 import NameField from "./name-field";
 import DescriptionField from "./desc-field";
 import BeverageBaseField from "./beverageBase-field";
+import FoodCategoryField from "./foodCategory-field";
 import FeatureField from "./feature-field";
 
 import Uploader from "@components/uploader";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Uppy } from "@uppy/core";
 import XHRUpload from "@uppy/xhr-upload";
 import ImageEditor from "@uppy/image-editor";
+import { toast } from "sonner";
 
-const formSchema = BeverageModel.pick({
+import { useItemTypeContext } from "@hooks/itemTypeContext";
+import { FoodModel } from "@models/Menu/Food";
+
+const beverageSchema = BeverageModel.pick({
   name: true,
-  image: true,
   description: true,
   base: true,
   feature: true,
 });
 
+const foodSchema = FoodModel.pick({
+  name: true,
+  description: true,
+  category: true,
+  feature: true,
+});
+
 export default function AddItemForm() {
+  const { itemType } = useItemTypeContext();
+  const formSchema = itemType === "beverage" ? beverageSchema : foodSchema;
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    const res = uppy.upload();
-    console.log(res);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const uploadedFile = uppy.getFiles()[0];
+    if (!uploadedFile) {
+      return toast.error("Please upload an image.");
+    }
+    uppy.setMeta({
+      name: `${values.name}.${uploadedFile.extension}`,
+      bucket: itemType,
+    });
+    try {
+      const uppy_res = await uppy.upload();
+      if (uppy_res.successful.length > 0) {
+        // const res = await fetch("http://localhost:3000/api/menu", {
+        //   method: "PUT",
+        //   body: JSON.stringify({ ...values, image: uploadedFile.name }),
+        // });
+        console.log("OK OK");
+      } else {
+        toast.error("Image upload failed.");
+      }
+    } catch (error) {
+      toast.error("Server Error.");
+    }
   }
-
-  const [imageName, setImageName] = useState("");
 
   const [uppy] = useState(() =>
     new Uppy({
@@ -47,18 +77,12 @@ export default function AddItemForm() {
       restrictions: { maxNumberOfFiles: 1, allowedFileTypes: ["image/*"] },
     })
       .use(XHRUpload, {
-        endpoint: "https://localhost:3000/image",
+        endpoint: "http://localhost:3000/api/image",
         method: "POST",
         fieldName: "image",
         formData: true,
       })
       .use(ImageEditor, {
-        // cropperOptions: {
-        //   croppedCanvasOptions: {
-        //     width: 200,
-        //     height: 200,
-        //   },
-        // },
         actions: {
           revert: true,
           rotate: true,
@@ -73,19 +97,9 @@ export default function AddItemForm() {
       })
   );
 
-  useEffect(() => {
-    uppy.on("files-added", (file) => {
-      console.log(file);
-    });
-  }, [uppy]);
-
   return (
     <Form {...form}>
-      <form
-        id="beverage"
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-2"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
         <Tabs defaultValue="details" className="w-[400px]">
           <TabsList>
             <TabsTrigger value="details">Details</TabsTrigger>
@@ -95,7 +109,8 @@ export default function AddItemForm() {
             <NameField {...form} />
             <DescriptionField {...form} />
             <div className="flex gap-2 my-2">
-              <BeverageBaseField {...form} />
+              {itemType === "food" && <FoodCategoryField {...form} />}
+              {itemType === "beverage" && <BeverageBaseField {...form} />}
               <FeatureField {...form} />
             </div>
           </TabsContent>

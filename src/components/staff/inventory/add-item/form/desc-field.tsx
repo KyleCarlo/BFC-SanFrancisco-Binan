@@ -18,11 +18,11 @@ export default function Description(form: any) {
           <FormControl>
             <Textarea
               placeholder="Create a description for the item."
-              className="resize-none"
+              className="resize-none relative bottom-1.5"
               {...field}
             />
           </FormControl>
-          <FormMessage />
+          <FormMessage className="relative bottom-2.5" />
         </FormItem>
       )}
     />

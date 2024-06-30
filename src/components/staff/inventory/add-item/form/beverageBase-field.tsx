@@ -37,7 +37,7 @@ export default function BeverageBaseField(form: any) {
               })}
             </SelectContent>
           </Select>
-          <FormMessage />
+          <FormMessage className="relative bottom-1.5" />
         </FormItem>
       )}
     />
