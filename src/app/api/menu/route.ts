@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@lib/db";
-import { ItemType, ItemTypeModel } from "@models/Menu";
+import { ItemType } from "@models/Menu";
 import { capitalize } from "@lib/utils";
+import { validateItemType } from "@lib/utils";
 
 // GET MENU LISTS
 export async function GET(req: NextRequest) {
   const itemType = req.nextUrl.searchParams.get("itemType") as ItemType;
-  const properItemTypes = Object.keys(ItemTypeModel.Values);
+  const isValid = validateItemType(itemType);
 
-  if (!properItemTypes.includes(itemType)) {
+  if (!isValid) {
     return NextResponse.json({ message: "Invalid item type" }, { status: 400 });
   }
 
@@ -76,4 +77,17 @@ export async function PATCH(req: NextRequest) {
   } catch (error) {
     return NextResponse.json({ message: "Error Updating." }, { status: 500 });
   }
+}
+
+// ADD ITEM
+export async function PUT(req: NextRequest) {
+  const itemType = req.nextUrl.searchParams.get("itemType") as ItemType;
+  const isValid = validateItemType(itemType);
+
+  if (!isValid) {
+    return NextResponse.json({ message: "Invalid item type" }, { status: 400 });
+  }
+
+  const body = await req.json();
+  console.log(body);
 }
