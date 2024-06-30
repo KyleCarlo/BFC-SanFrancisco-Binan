@@ -25,14 +25,16 @@ const toggleAvailability = async (
       }),
     });
 
+    const { message } = await response.json();
+
     if (!response.ok) {
-      throw new Error("Failed to update availability");
+      throw new Error(message);
     }
 
     setSVariation({ ...svariations, available });
-    toast.success("Item Availability updated.");
+    toast.success(message);
   } catch (error) {
-    toast.error("Failed to Update Availability.");
+    toast.error(error as string);
   }
 };
 
