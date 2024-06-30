@@ -73,9 +73,15 @@ export async function PATCH(req: NextRequest) {
       .set("available", available)
       .execute();
 
-    return NextResponse.json({ message: "Item updated." }, { status: 200 });
+    return NextResponse.json(
+      { message: "Item Availability updated." },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json({ message: "Error Updating." }, { status: 500 });
+    return NextResponse.json(
+      { message: "Failed to Update Availability" },
+      { status: 500 }
+    );
   }
 }
 
@@ -85,9 +91,40 @@ export async function PUT(req: NextRequest) {
   const isValid = validateItemType(itemType);
 
   if (!isValid) {
-    return NextResponse.json({ message: "Invalid item type" }, { status: 400 });
+    return NextResponse.json({ message: "Invalid Item Type" }, { status: 400 });
   }
 
   const body = await req.json();
-  console.log(body);
+
+  try {
+    const existingNames = (
+      await db
+        .selectFrom(`${capitalize(itemType)}` as "Food" | "Beverage")
+        .select("name")
+        .execute()
+    ).map((item) => item.name);
+
+    if (existingNames.includes(body.name)) {
+      return NextResponse.json(
+        { message: "Item Name Already Exists. Please Rename." },
+        { status: 400 }
+      );
+    }
+
+    await db
+      .insertInto(`${capitalize(itemType)}` as "Food" | "Beverage")
+      .values(body)
+      .execute();
+
+    return NextResponse.json({
+      message: `${body.name} Successfully Added to ${capitalize(
+        itemType
+      )} Menu.`,
+    });
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Failed to Add Item." },
+      { status: 500 }
+    );
+  }
 }
