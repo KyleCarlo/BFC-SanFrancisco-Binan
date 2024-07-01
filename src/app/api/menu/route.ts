@@ -41,6 +41,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ items }, { status: 200 });
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { message: "Error Fetching Menu Items." },
       { status: 500 }
@@ -79,6 +80,7 @@ export async function PATCH(req: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { message: "Failed to Update Availability" },
       { status: 500 }
@@ -163,6 +165,45 @@ export async function PUT(req: NextRequest) {
     console.error(error);
     return NextResponse.json(
       { message: "Failed to Add Item." },
+      { status: 500 }
+    );
+  }
+}
+
+// DELETE ITEMS
+export async function DELETE(req: NextRequest) {
+  const itemType = req.nextUrl.searchParams.get("itemType") as ItemType;
+  const isValid = validateItemType(itemType);
+
+  if (!isValid) {
+    return NextResponse.json({ message: "Invalid Item Type" }, { status: 400 });
+  }
+
+  const { ids, variation_ids } = await req.json();
+
+  try {
+    const res_1 = await db
+      .deleteFrom(
+        `${capitalize(itemType)}Variation` as
+          | "FoodVariation"
+          | "BeverageVariation"
+      )
+      .where("id", "in", variation_ids)
+      .execute();
+
+    const res_2 = await db
+      .deleteFrom(`${capitalize(itemType)}` as "Food" | "Beverage")
+      .where("id", "in", ids)
+      .execute();
+    console.log(res_1, res_2);
+    return NextResponse.json(
+      { message: "Item(s) Successfully Deleted." },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { message: "Failed to Delete Item." },
       { status: 500 }
     );
   }

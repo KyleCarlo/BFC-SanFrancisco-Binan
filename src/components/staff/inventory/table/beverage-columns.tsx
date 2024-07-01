@@ -1,8 +1,50 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Beverage, BeverageVariation } from "@models/Menu/Beverage";
+import { Checkbox } from "@components/ui/checkbox";
+import { MdDelete } from "react-icons/md";
 import Availibility from "./availability-switch";
+import onDelete from "@hooks/deleteMenuItems";
+import { toast } from "sonner";
 
 const beverageColumns: ColumnDef<Beverage>[] = [
+  {
+    id: "actions",
+    header: ({ table }) => {
+      return (
+        <div className="flex justify-center">
+          <MdDelete
+            className="text-gold hover:cursor-pointer"
+            size={20}
+            onClick={() => {
+              const variation_ids: number[] = [];
+              const ids = table.getSelectedRowModel().rows.map((row) => {
+                row.original.variations.map((variation) => {
+                  variation_ids.push(variation.id);
+                });
+                return row.original.id;
+              });
+              if (ids.length > 0) {
+                onDelete(ids, variation_ids, "beverage");
+              } else {
+                toast.warning("Please select a row to delete.");
+              }
+            }}
+          />
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <Checkbox
+          className="relative top-0.5 right-1"
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => {
+            row.toggleSelected(!!value);
+          }}
+        />
+      );
+    },
+  },
   {
     accessorKey: "name",
     header: "Name",
