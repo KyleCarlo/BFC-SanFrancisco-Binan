@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import db from "@lib/db";
 import { ItemType } from "@models/Menu";
 import { capitalize } from "@lib/utils";
-import { validateItemType } from "@lib/utils";
+import { validateItemType, validateVariation } from "@lib/utils";
+import { BeverageVariationModel } from "@/src/models/Menu/Beverage";
+import { z } from "zod";
 
 // GET MENU LISTS
 export async function GET(req: NextRequest) {
@@ -95,6 +97,15 @@ export async function PUT(req: NextRequest) {
   }
 
   const body = await req.json();
+  const variations = body.variations;
+  delete body.variations;
+
+  if (itemType === "beverage") {
+    const { isValid, message } = validateVariation(variations, itemType);
+    if (!isValid) {
+      return NextResponse.json({ message }, { status: 400 });
+    }
+  }
 
   try {
     const existingNames = (
@@ -111,9 +122,37 @@ export async function PUT(req: NextRequest) {
       );
     }
 
-    await db
+    const inserted_item = await db
       .insertInto(`${capitalize(itemType)}` as "Food" | "Beverage")
       .values(body)
+      .execute();
+
+    BeverageVariationModel.pick({
+      serving: true,
+      price: true,
+      concentrate: true,
+      hot_cold: true,
+    });
+
+    type InputVariation = {
+      serving: string;
+      price: number;
+      concentrate?: boolean;
+      hot_cold?: string;
+    };
+
+    await db
+      .insertInto(
+        `${capitalize(itemType)}Variation` as
+          | "FoodVariation"
+          | "BeverageVariation"
+      )
+      .values(
+        variations.map((variation: InputVariation) => ({
+          ...variation,
+          [`${itemType}_id`]: inserted_item[0].insertId,
+        }))
+      )
       .execute();
 
     return NextResponse.json({
@@ -122,6 +161,7 @@ export async function PUT(req: NextRequest) {
       )} Menu.`,
     });
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { message: "Failed to Add Item." },
       { status: 500 }

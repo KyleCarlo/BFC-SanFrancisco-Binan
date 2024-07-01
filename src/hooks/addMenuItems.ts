@@ -43,42 +43,41 @@ export async function onSubmit(
   itemType: ItemType,
   setOpen: Dispatch<SetStateAction<boolean>>
 ) {
-  // const uploadedFile = uppy.getFiles()[0];
-  // if (!uploadedFile) {
-  //   return toast.error("Please upload an image.");
-  // }
-  // uppy.setMeta({
-  //   name: `${values.name}.${uploadedFile.extension}`,
-  //   bucket: itemType,
-  // });
+  const uploadedFile = uppy.getFiles()[0];
+  if (!uploadedFile) {
+    return toast.error("Please upload an image.");
+  }
+  uppy.setMeta({
+    name: `${values.name}.${uploadedFile.extension}`,
+    bucket: itemType,
+  });
   try {
-    //   const res = await fetch(
-    //     `http://localhost:3000/api/menu?itemType=${itemType}`,
-    //     {
-    //       method: "PUT",
-    //       body: JSON.stringify({
-    //         ...values,
-    //         image: `${values.name}.${uploadedFile.extension}`,
-    //       }),
-    //     }
-    //   );
+    const res = await fetch(
+      `http://localhost:3000/api/menu?itemType=${itemType}`,
+      {
+        method: "PUT",
+        body: JSON.stringify({
+          ...values,
+          image: `${values.name}.${uploadedFile.extension}`,
+        }),
+      }
+    );
 
-    //   const res_message = (await res.json()).message;
+    const res_message = (await res.json()).message;
 
-    //   if (!res.ok) {
-    //     toast.error(res_message);
-    //   } else {
-    //     const uppy_res = await uppy.upload();
-    //     if (uppy_res.successful.length == 0) {
-    //       toast.error(
-    //         "Image upload failed. Try to refresh the page or image duplicated."
-    //       );
-    //     } else {
-    //       toast.success(res_message);
-    //       setOpen(false);
-    //     }
-    //   }
-    console.log(values);
+    if (!res.ok) {
+      toast.error(res_message);
+    } else {
+      const uppy_res = await uppy.upload();
+      if (uppy_res.successful.length == 0) {
+        toast.error(
+          "Image upload failed. Try to refresh the page or image duplicated."
+        );
+      } else {
+        toast.success(res_message);
+        setOpen(false);
+      }
+    }
   } catch {
     toast.error("Unknown error occured.");
   }

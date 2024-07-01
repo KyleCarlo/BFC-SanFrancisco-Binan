@@ -18,7 +18,8 @@ export const BeverageVariationModel = z.object({
     })
     .int()
     .positive()
-    .min(1, { message: "Price cannot be 0" }),
+    .min(1, { message: "Price cannot be 0" })
+    .or(z.literal("")),
   concentrate: z.coerce.boolean({
     required_error: "Concentrate is required",
     invalid_type_error: "Concentrate must be a boolean",
