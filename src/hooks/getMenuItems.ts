@@ -2,6 +2,7 @@ import { SetStateAction } from "react";
 import { ItemType } from "@models/Menu";
 import { Food } from "@models/Menu/Food";
 import { Beverage } from "@models/Menu/Beverage";
+import { toast } from "sonner";
 
 const getMenuItems = async (
   itemType: ItemType,
@@ -10,25 +11,27 @@ const getMenuItems = async (
 ) => {
   setLoading(true);
   try {
-    const response = await fetch(
+    const res = await fetch(
       `http://localhost:3000/api/menu?itemType=${itemType}`,
       {
         method: "GET",
       }
     );
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch data");
-    }
+    const { items, message } = await res.json();
 
-    const { items } = await response.json();
-    setItems(items);
-    setLoading(false);
-  } catch (error) {
+    if (!res.ok) {
+      toast.error(message);
+      setItems([]);
+      setLoading(false);
+    } else {
+      setItems(items);
+      setLoading(false);
+    }
+  } catch {
     setItems([]);
     setLoading(false);
-    alert(error);
-    // implement a toast notification here
+    toast.error("Unknown error occurred.");
   }
 };
 
