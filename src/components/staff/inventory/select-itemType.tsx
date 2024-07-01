@@ -18,7 +18,6 @@ export default function SelectItemType() {
       defaultValue={itemType}
       onValueChange={(selected: ItemType) => {
         setItemType(selected);
-        console.log(itemType);
       }}
     >
       <SelectTrigger className="w-[180px]">
