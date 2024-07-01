@@ -14,16 +14,12 @@ export default function Variations({
   index: number;
 }) {
   const { itemType } = useItemTypeContext();
-  const cols = itemType === "beverage" ? "4" : "2";
+  const cols = itemType === "beverage" ? "grid-cols-4" : "grid-cols-2";
 
   return (
-    <div className={"grid grid-cols-" + cols + " gap-x-2 p-1"} key={field.id}>
-      <div>
-        <ServingField form={form} index={index} />
-      </div>
-      <div>
-        <PriceField form={form} index={index} />
-      </div>
+    <div className={`grid ${cols} gap-x-2 p-1`} key={field.id}>
+      <ServingField form={form} index={index} />
+      <PriceField form={form} index={index} />
       {itemType === "beverage" && (
         <>
           <BeverageTempField form={form} index={index} />
