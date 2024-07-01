@@ -4,7 +4,6 @@ import { ItemType } from "@models/Menu";
 import { capitalize } from "@lib/utils";
 import { validateItemType, validateVariation } from "@lib/utils";
 import { BeverageVariationModel } from "@/src/models/Menu/Beverage";
-import { z } from "zod";
 
 // GET MENU LISTS
 export async function GET(req: NextRequest) {
