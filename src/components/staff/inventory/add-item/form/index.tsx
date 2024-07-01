@@ -11,10 +11,6 @@ import DescriptionField from "./desc-field";
 import BeverageBaseField from "./beverage/base-field";
 import FoodCategoryField from "./foodCategory-field";
 import FeatureField from "./feature-field";
-import BeverageTempField from "./beverage/temp-field";
-import BeverageConcentrateField from "./beverage/concentrate-field";
-import PriceField from "./price-field";
-import ServingField from "./serving-field";
 
 import Uploader from "@components/uploader";
 import { useState } from "react";
@@ -84,21 +80,6 @@ export default function AddItemForm({
             <ScrollArea className="h-[200px]">
               {fieldArray.fields.map((field, index) => {
                 return (
-                  // <div className="grid grid-cols-2 gap-x-2 p-1" key={field.id}>
-                  //   {/* FIX THIS */}
-                  //   <div>
-                  //     <ServingField form={form} index={index} />
-                  //   </div>
-                  //   <div>
-                  //     <PriceField form={form} index={index} />
-                  //   </div>
-                  //   {itemType === "beverage" && (
-                  //     <>
-                  //       <BeverageTempField form={form} index={index} />
-                  //       <BeverageConcentrateField form={form} index={index} />
-                  //     </>
-                  //   )}
-                  // </div>
                   <Variations
                     form={form}
                     field={field}
