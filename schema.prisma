@@ -68,7 +68,7 @@ model FoodVariation {
   food_id     Int
   price       Int      
   serving     String   @db.VarChar(255)
-  available   Boolean
+  available   Boolean  @default(true)
 }
 
 enum UserRole {
