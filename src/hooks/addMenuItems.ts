@@ -9,7 +9,7 @@ import { FoodModel, FoodVariationModel } from "@models/Menu/Food";
 import { Uppy } from "@uppy/core";
 import { Dispatch, SetStateAction } from "react";
 import { ItemType } from "@models/Menu";
-import { validateBeverageVariation } from "../lib/utils";
+import { validateVariation } from "../lib/utils";
 
 export const beverageFormSchema = BeverageModel.pick({
   name: true,
@@ -49,13 +49,12 @@ export async function addItem(
   itemType: ItemType,
   setOpen: Dispatch<SetStateAction<boolean>>
 ) {
-  if (itemType === "beverage") {
-    const { isValid, message } = validateBeverageVariation(
-      values.variations as BeverageVariation[]
-    );
-    if (!isValid) {
-      return toast.error(message);
-    }
+  const { isValid, message } = validateVariation(
+    values.variations as BeverageVariation[],
+    itemType
+  );
+  if (!isValid) {
+    return toast.error(message);
   }
 
   const uploadedFile = uppy.getFiles()[0];
