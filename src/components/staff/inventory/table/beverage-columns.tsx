@@ -5,6 +5,7 @@ import { MdDelete } from "react-icons/md";
 import Availibility from "./availability-switch";
 import onDelete from "@hooks/deleteMenuItems";
 import { toast } from "sonner";
+import EditItemDialog from "./editItem-dialog";
 
 const beverageColumns: ColumnDef<Beverage>[] = [
   {
@@ -135,7 +136,7 @@ const beverageColumns: ColumnDef<Beverage>[] = [
     id: "actions",
     accessorKey: "variations_4",
     header: "Available",
-    cell: function Cell({ row }) {
+    cell: ({ row }) => {
       const variations: BeverageVariation[] = row.getValue("variations");
 
       return (
@@ -153,14 +154,8 @@ const beverageColumns: ColumnDef<Beverage>[] = [
   },
   {
     id: "actions",
-    cell: () => {
-      return (
-        <div>
-          <button className="border-2 border-gold rounded-xl text-gold px-4 py-2">
-            Edit
-          </button>
-        </div>
-      );
+    cell: ({ row }) => {
+      return <EditItemDialog row={row} />;
     },
   },
 ];

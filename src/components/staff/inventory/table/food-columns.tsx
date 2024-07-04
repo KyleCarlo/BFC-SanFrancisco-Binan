@@ -5,6 +5,7 @@ import { Checkbox } from "@components/ui/checkbox";
 import { MdDelete } from "react-icons/md";
 import onDelete from "@hooks/deleteMenuItems";
 import { toast } from "sonner";
+import EditItemDialog from "./editItem-dialog";
 
 const foodColumns: ColumnDef<Food>[] = [
   {
@@ -104,9 +105,8 @@ const foodColumns: ColumnDef<Food>[] = [
     id: "actions",
     accessorKey: "variations_3",
     header: "Available",
-    cell: function Cell({ row }) {
+    cell: ({ row }) => {
       const variations: FoodVariation[] = row.getValue("variations");
-
       return (
         <div>
           {variations.map((variation, index) => {
@@ -122,14 +122,8 @@ const foodColumns: ColumnDef<Food>[] = [
   },
   {
     id: "actions",
-    cell: () => {
-      return (
-        <div>
-          <button className="border-2 border-gold rounded-xl text-gold px-4 py-2">
-            Edit
-          </button>
-        </div>
-      );
+    cell: ({ row }) => {
+      return <EditItemDialog row={row} />;
     },
   },
 ];
