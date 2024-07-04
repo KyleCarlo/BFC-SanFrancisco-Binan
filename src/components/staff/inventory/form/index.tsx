@@ -108,13 +108,14 @@ export default function ItemForm({
               })}
               <ScrollBar />
             </ScrollArea>
-            <div className="flex">
+            <div className="flex gap-2">
               {fieldArray.fields.length > 1 && (
                 <Button
                   variant="outline"
                   size="sm"
                   className="w-full py-2 my-2 flex-1"
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault();
                     fieldArray.remove(fieldArray.fields.length - 1);
                   }}
                 >
@@ -125,7 +126,8 @@ export default function ItemForm({
                 variant="outline"
                 size="sm"
                 className="w-full py-2 my-2 flex-1"
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
                   if (fieldArray.fields.length < 5)
                     fieldArray.append({
                       serving: "",
