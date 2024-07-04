@@ -1,10 +1,15 @@
 import { z } from "zod";
 import { toast } from "sonner";
-import { BeverageModel, BeverageVariationModel } from "@models/Menu/Beverage";
+import {
+  BeverageModel,
+  BeverageVariation,
+  BeverageVariationModel,
+} from "@models/Menu/Beverage";
 import { FoodModel, FoodVariationModel } from "@models/Menu/Food";
 import { Uppy } from "@uppy/core";
 import { Dispatch, SetStateAction } from "react";
 import { ItemType } from "@models/Menu";
+import { validateBeverageVariation } from "../lib/utils";
 
 export const beverageFormSchema = BeverageModel.pick({
   name: true,
@@ -19,6 +24,7 @@ export const beverageFormSchema = BeverageModel.pick({
         price: true,
         concentrate: true,
         hot_cold: true,
+        available: true,
       })
     ),
   })
@@ -32,17 +38,26 @@ export const foodFormSchema = FoodModel.pick({
 }).merge(
   z.object({
     variations: z.array(
-      FoodVariationModel.pick({ serving: true, price: true })
+      FoodVariationModel.pick({ serving: true, price: true, available: true })
     ),
   })
 );
 
-export async function onSubmit(
+export async function addItem(
   values: z.infer<typeof beverageFormSchema> | z.infer<typeof foodFormSchema>,
   uppy: Uppy<Record<string, unknown>, Record<string, unknown>>,
   itemType: ItemType,
   setOpen: Dispatch<SetStateAction<boolean>>
 ) {
+  if (itemType === "beverage") {
+    const { isValid, message } = validateBeverageVariation(
+      values.variations as BeverageVariation[]
+    );
+    if (!isValid) {
+      return toast.error(message);
+    }
+  }
+
   const uploadedFile = uppy.getFiles()[0];
   if (!uploadedFile) {
     return toast.error("Please upload an image.");
@@ -52,10 +67,10 @@ export async function onSubmit(
     bucket: itemType,
   });
   try {
-    const res = await fetch(
+    const response = await fetch(
       `http://localhost:3000/api/menu?itemType=${itemType}`,
       {
-        method: "PUT",
+        method: "POST",
         body: JSON.stringify({
           ...values,
           image: `${values.name}.${uploadedFile.extension}`,
@@ -63,22 +78,22 @@ export async function onSubmit(
       }
     );
 
-    const res_message = (await res.json()).message;
+    const { message } = await response.json();
 
-    if (!res.ok) {
-      toast.error(res_message);
-    } else {
-      const uppy_res = await uppy.upload();
-      if (uppy_res.successful.length == 0) {
-        toast.error(
-          "Image upload failed. Try to refresh the page or image duplicated."
-        );
-      } else {
-        toast.success(res_message);
-        setOpen(false);
-      }
+    if (!response.ok) {
+      return toast.error(message);
     }
+
+    const uppy_res = await uppy.upload();
+    if (uppy_res.successful.length == 0) {
+      return toast.error(
+        "Image upload failed. Try to refresh the page or image duplicated."
+      );
+    }
+
+    toast.success(message);
+    setOpen(false);
   } catch {
-    toast.error("Unknown error occured.");
+    toast.error("Unknown error occurred.");
   }
 }

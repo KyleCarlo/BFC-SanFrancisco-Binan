@@ -11,23 +11,23 @@ const getMenuItems = async (
 ) => {
   setLoading(true);
   try {
-    const res = await fetch(
+    const response = await fetch(
       `http://localhost:3000/api/menu?itemType=${itemType}`,
       {
         method: "GET",
       }
     );
 
-    const { items, message } = await res.json();
+    const { items, message } = await response.json();
 
-    if (!res.ok) {
-      toast.error(message);
+    if (!response.ok) {
       setItems([]);
       setLoading(false);
-    } else {
-      setItems(items);
-      setLoading(false);
+      return toast.error(message);
     }
+
+    setItems(items);
+    setLoading(false);
   } catch {
     setItems([]);
     setLoading(false);

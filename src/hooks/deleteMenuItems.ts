@@ -7,7 +7,7 @@ export default async function onDelete(
   itemType: ItemType
 ) {
   try {
-    const res = await fetch(
+    const response = await fetch(
       `http://localhost:3000/api/menu?itemType=${itemType}`,
       {
         method: "DELETE",
@@ -15,13 +15,13 @@ export default async function onDelete(
       }
     );
 
-    const res_message = (await res.json()).message;
+    const { message } = await response.json();
 
-    if (!res.ok) {
-      toast.error(res_message);
-    } else {
-      toast.success(res_message);
+    if (!response.ok) {
+      return toast.error(message);
     }
+
+    toast.success(message);
   } catch {
     toast.error("Unknown error occurred.");
   }

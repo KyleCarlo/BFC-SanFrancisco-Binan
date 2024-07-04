@@ -28,13 +28,13 @@ const toggleAvailability = async (
     const { message } = await response.json();
 
     if (!response.ok) {
-      throw new Error(message);
+      return toast.error(message);
     }
 
     setSVariation({ ...svariations, available });
     toast.success(message);
-  } catch (error) {
-    toast.error(error as string);
+  } catch {
+    toast.error("Unknown error occurred.");
   }
 };
 
