@@ -10,7 +10,7 @@ export type BeverageHotCold = z.infer<typeof BeverageHotColdModel>;
 export const BeverageVariationModel = z.object({
   id: z.number(),
   beverage_id: z.number(),
-  serving: z.string().min(1).max(20),
+  serving: z.string().min(1).max(20).or(z.literal("")),
   price: z.coerce
     .number({
       required_error: "Price is required",
@@ -20,10 +20,10 @@ export const BeverageVariationModel = z.object({
     .positive()
     .min(1, { message: "Price cannot be 0" })
     .or(z.literal("")),
-  concentrate: z.coerce.boolean({
-    required_error: "Concentrate is required",
-    invalid_type_error: "Concentrate must be a boolean",
-  }),
+  concentrate: z.preprocess((input) => {
+    if (input === "true") return true;
+    return false;
+  }, z.boolean()),
   hot_cold: z.preprocess((input) => {
     if (input === "none") return undefined;
     return input;

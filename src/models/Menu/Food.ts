@@ -17,7 +17,7 @@ export const FoodVariationModel = z.object({
     .positive()
     .min(1, { message: "Price cannot be 0" })
     .or(z.literal("")),
-  serving: z.string().min(1).max(20),
+  serving: z.string().min(1).max(20).or(z.literal("")),
   available: z.boolean(),
 });
 
