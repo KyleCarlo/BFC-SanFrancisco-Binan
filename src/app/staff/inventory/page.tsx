@@ -3,7 +3,7 @@
 import { FoodTable, BeverageTable } from "@components/staff/inventory/table";
 import SelectItemType from "@components/staff/inventory/select-itemType";
 import { Input } from "@components/ui/input";
-import AddItemDialog from "@components/staff/inventory/add-item/form-dialog";
+import AddItemDialog from "@components/staff/inventory/addItem-dialog";
 
 import { ItemType } from "@models/Menu";
 import { useState, useEffect } from "react";
@@ -25,22 +25,22 @@ export default function InventoryPage() {
 
   return (
     <main className="flex flex-col justify-center items-center">
-      <div className="flex items-center gap-4 p-4">
-        <ItemTypeContext.Provider value={{ itemType, setItemType }}>
+      <ItemTypeContext.Provider value={{ itemType, setItemType }}>
+        <div className="flex items-center gap-4 p-4">
           <AddItemDialog />
           <Input placeholder="Search for Item Name" />
           <SelectItemType />
-        </ItemTypeContext.Provider>
-      </div>
-      <div className="w-full px-10">
-        {loading && <p>Loading...</p>}
-        {!loading && itemType === "food" && (
-          <FoodTable items={items as Food[]} />
-        )}
-        {!loading && itemType === "beverage" && (
-          <BeverageTable items={items as Beverage[]} />
-        )}
-      </div>
+        </div>
+        <div className="w-full px-10">
+          {loading && <p>Loading...</p>}
+          {!loading && itemType === "food" && (
+            <FoodTable items={items as Food[]} />
+          )}
+          {!loading && itemType === "beverage" && (
+            <BeverageTable items={items as Beverage[]} />
+          )}
+        </div>
+      </ItemTypeContext.Provider>
     </main>
   );
 }
