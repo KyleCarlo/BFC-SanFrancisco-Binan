@@ -27,7 +27,7 @@ enum BeverageHotCold {
 model Beverage {
   id          Int      @id @default(autoincrement())
   name        String   @db.VarChar(255) @unique
-  image       String   @db.VarChar(255)
+  image       String   @db.VarChar(400)
   description String   @db.VarChar(255)
   base        BeverageBase
   feature     Feature
@@ -55,7 +55,7 @@ enum FoodCategory {
 model Food {
   id          Int      @id @default(autoincrement())
   name        String   @db.VarChar(255) @unique
-  image       String   @db.VarChar(255)
+  image       String   @db.VarChar(400)
   description String   @db.VarChar(255)
   category    FoodCategory
   feature     Feature
