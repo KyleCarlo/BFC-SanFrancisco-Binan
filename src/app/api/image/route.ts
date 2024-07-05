@@ -5,15 +5,27 @@ export async function POST(req: NextRequest) {
   const data = await req.formData();
   const image = data.get("image") as File;
   const bucket = data.get("bucket") as string;
+
   try {
     const buffer = Buffer.from(await image.arrayBuffer());
-    const exists = await minioClient.bucketExists(bucket);
-    if (!exists) {
+    const bucketExists = await minioClient.bucketExists(bucket);
+
+    if (!bucketExists) {
       await minioClient.makeBucket(bucket, "us-east-1");
       console.log("Bucket " + bucket + ' created in "us-east-1".');
     }
-    minioClient.putObject(bucket, image.name, buffer);
-    return NextResponse.json({ success: true }, { status: 200 });
+
+    await minioClient.putObject(bucket, image.name, buffer);
+    const imageURL = await minioClient.presignedGetObject(
+      bucket,
+      image.name,
+      24 * 60 * 60
+    );
+
+    return NextResponse.json(
+      { imageURL, message: "Successful Image Upload." },
+      { status: 200 }
+    );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
@@ -33,12 +45,28 @@ export async function GET(req: NextRequest) {
       filename,
       24 * 60 * 60
     );
-    console.log(presignedUrl);
+
     return NextResponse.json({ presignedUrl }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Error fetching images" },
+      { message: "Error fetching image URLs" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  const bucket = req.nextUrl.searchParams.get("bucket") as string;
+  const filename = req.nextUrl.searchParams.get("filename") as string;
+
+  try {
+    await minioClient.removeObject(bucket, filename);
+    return NextResponse.json({ message: "Image deleted." }, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { message: "Error deleting image" },
       { status: 500 }
     );
   }

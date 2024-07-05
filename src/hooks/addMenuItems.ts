@@ -10,6 +10,7 @@ import { Uppy } from "@uppy/core";
 import { Dispatch, SetStateAction } from "react";
 import { ItemType } from "@models/Menu";
 import { validateVariation } from "../lib/utils";
+import handleUppyUpload from "@lib/uppy-uploadHandler";
 
 export const beverageFormSchema = BeverageModel.pick({
   name: true,
@@ -61,18 +62,52 @@ export async function addItem(
   if (!uploadedFile) {
     return toast.error("Please upload an image.");
   }
-  uppy.setMeta({
-    name: `${values.name}.${uploadedFile.extension}`,
-    bucket: itemType,
-  });
+
+  const filename = `${values.name}.${uploadedFile.extension}`;
+
   try {
+    const unique_name = await fetch(
+      `http://localhost:3000/api/menu/check_name?name=${values.name}&itemType=${itemType}`
+    );
+
+    if (!unique_name.ok) {
+      return toast.error("Item name already exists.");
+    }
+
+    uppy.setMeta({
+      name: filename,
+      bucket: itemType,
+    });
+
+    const uppy_result = await uppy.upload();
+
+    const {
+      proceed,
+      message: { content, type },
+      imageURL,
+    } = await handleUppyUpload(uppy_result, filename, itemType);
+    switch (type) {
+      case "error":
+        toast.error(content);
+        break;
+      case "warning":
+        toast.warning(content);
+        break;
+      case "success":
+        toast.success(content);
+        break;
+    }
+    if (!proceed) {
+      return;
+    }
+
     const response = await fetch(
       `http://localhost:3000/api/menu?itemType=${itemType}`,
       {
         method: "POST",
         body: JSON.stringify({
           ...values,
-          image: `${values.name}.${uploadedFile.extension}`,
+          image: imageURL,
         }),
       }
     );
@@ -80,14 +115,13 @@ export async function addItem(
     const { message } = await response.json();
 
     if (!response.ok) {
-      return toast.error(message);
-    }
-
-    const uppy_res = await uppy.upload();
-    if (uppy_res.successful.length == 0) {
-      return toast.error(
-        "Image upload failed. Try to refresh the page or image duplicated."
+      await fetch(
+        `http://localhost:3000/api/image?bucket=${itemType}&filename=${filename}`,
+        {
+          method: "DELETE",
+        }
       );
+      return toast.error(message);
     }
 
     toast.success(message);
