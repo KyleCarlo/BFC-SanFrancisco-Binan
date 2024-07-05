@@ -3,7 +3,6 @@ import db from "@lib/db";
 import { ItemType } from "@models/Menu";
 import { capitalize } from "@lib/utils";
 import { validateItemType } from "@lib/utils";
-import { BeverageVariationModel } from "@/src/models/Menu/Beverage";
 
 // GET MENU LISTS
 export async function GET(req: NextRequest) {
@@ -63,31 +62,10 @@ export async function POST(req: NextRequest) {
   delete body.variations;
 
   try {
-    const existingNames = (
-      await db
-        .selectFrom(`${capitalize(itemType)}` as "Food" | "Beverage")
-        .select("name")
-        .execute()
-    ).map((item) => item.name);
-
-    if (existingNames.includes(body.name)) {
-      return NextResponse.json(
-        { message: "Item Name Already Exists. Please Rename." },
-        { status: 400 }
-      );
-    }
-
     const inserted_item = await db
       .insertInto(`${capitalize(itemType)}` as "Food" | "Beverage")
       .values(body)
       .execute();
-
-    BeverageVariationModel.pick({
-      serving: true,
-      price: true,
-      concentrate: true,
-      hot_cold: true,
-    });
 
     type InputVariation = {
       serving: string;
@@ -110,11 +88,14 @@ export async function POST(req: NextRequest) {
       )
       .execute();
 
-    return NextResponse.json({
-      message: `${body.name} Successfully Added to ${capitalize(
-        itemType
-      )} Menu.`,
-    });
+    return NextResponse.json(
+      {
+        message: `${body.name} Successfully Added to ${capitalize(
+          itemType
+        )} Menu.`,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
