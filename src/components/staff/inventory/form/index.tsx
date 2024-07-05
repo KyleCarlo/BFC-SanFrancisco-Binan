@@ -30,6 +30,7 @@ import Variations from "./variations";
 import { Beverage } from "@models/Menu/Beverage";
 import { Food } from "@models/Menu/Food";
 import { parseDefaultValues } from "@lib/utils";
+import Image from "next/image";
 
 export default function ItemForm({
   setOpen,
@@ -92,7 +93,14 @@ export default function ItemForm({
           </TabsContent>
           <TabsContent value="image">
             {formType === "create" && <Uploader uppy={uppy} />}
-            {formType === "update" && <p>IMAGE UPLOADED</p>}
+            {formType === "update" && (
+              <Image
+                src={inputValues?.image as string}
+                width={250}
+                height={200}
+                alt={`Image of ${inputValues?.name}`}
+              />
+            )}
           </TabsContent>
           <TabsContent value="variations">
             <ScrollArea className="h-[200px]">
