@@ -20,6 +20,7 @@ export default function Uploader({
       height={250}
       className="flex items-center"
       hideUploadButton={true}
+      hideRetryButton={true}
     />
   );
 }
