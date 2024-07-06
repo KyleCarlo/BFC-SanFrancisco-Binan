@@ -8,7 +8,7 @@ export const staffUppy = () =>
     restrictions: { maxNumberOfFiles: 1, allowedFileTypes: ["image/*"] },
   })
     .use(XHRUpload, {
-      endpoint: "http://localhost:3000/api/image",
+      endpoint: "/api/image",
       method: "POST",
       fieldName: "image",
       formData: true,
