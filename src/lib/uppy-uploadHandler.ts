@@ -5,10 +5,9 @@ export default async function handleUppyUpload(
   filename: string,
   bucket: string
 ) {
-  console.log(result);
   if (result.successful.length === 0) {
     const response = await fetch(
-      `https://localhost:3000/api/image?bucket=${bucket}&filename=${filename}`,
+      `/api/image?bucket=${bucket}&filename=${filename}`,
       {
         method: "GET",
       }

@@ -101,26 +101,20 @@ export async function addItem(
       return;
     }
 
-    const response = await fetch(
-      `${process.env.APP_URL}/api/menu?itemType=${itemType}`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          ...values,
-          image: imageURL,
-        }),
-      }
-    );
+    const response = await fetch(`/api/menu?itemType=${itemType}`, {
+      method: "POST",
+      body: JSON.stringify({
+        ...values,
+        image: imageURL,
+      }),
+    });
 
     const { message } = await response.json();
 
     if (!response.ok) {
-      await fetch(
-        `http://localhost:3000/api/image?bucket=${itemType}&filename=${filename}`,
-        {
-          method: "DELETE",
-        }
-      );
+      await fetch(`/api/image?bucket=${itemType}&filename=${filename}`, {
+        method: "DELETE",
+      });
       return toast.error(message);
     }
 
