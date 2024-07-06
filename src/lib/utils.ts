@@ -1,10 +1,13 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { ItemType, ItemTypeModel } from "@models/Menu";
-import { Food } from "@models/Menu/Food";
+import { Food, FoodVariation } from "@models/Menu/Food";
 import { Beverage } from "@models/Menu/Beverage";
 import { BeverageVariation } from "@models/Menu/Beverage";
 import { DefaultValues } from "react-hook-form";
+import { beverageFormSchemaModel, foodFormSchemaModel } from "@models/Form";
+import { FoodModel } from "@models/Menu/Food";
+import { BeverageModel } from "@models/Menu/Beverage";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -69,6 +72,9 @@ export function parseDefaultValues(defaultValues: Food | Beverage) {
     const concentrate = (variation as BeverageVariation).concentrate;
 
     return {
+      id: variation.id,
+      food_id: (variation as FoodVariation).food_id,
+      beverage_id: (variation as BeverageVariation).beverage_id,
       hot_cold: hot_cold ? hot_cold.toLowerCase() : "none",
       concentrate: concentrate ? "true" : "false",
       serving: variation.serving,
@@ -78,6 +84,8 @@ export function parseDefaultValues(defaultValues: Food | Beverage) {
   });
 
   return {
+    id: defaultValues.id,
+    image: defaultValues.image,
     name: defaultValues.name,
     description: defaultValues.description,
     feature: defaultValues.feature.toLowerCase() as Beverage["feature"],
@@ -85,4 +93,20 @@ export function parseDefaultValues(defaultValues: Food | Beverage) {
     category,
     variations: parsed_variations,
   } as DefaultValues<Food | Beverage>;
+}
+
+export function inferFormSchema(
+  itemType: ItemType,
+  formType: "create" | "update"
+) {
+  if (formType === "create") {
+    if (itemType === "beverage") {
+      return beverageFormSchemaModel;
+    }
+    return foodFormSchemaModel;
+  }
+  if (itemType === "beverage") {
+    return BeverageModel;
+  }
+  return FoodModel;
 }

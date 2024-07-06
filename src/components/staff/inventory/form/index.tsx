@@ -1,4 +1,3 @@
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@components/ui/button";
@@ -19,18 +18,16 @@ import { staffUppy } from "@lib/uppy-config";
 import { useItemTypeContext } from "@hooks/itemTypeContext";
 
 import { Dispatch, SetStateAction } from "react";
-import {
-  foodFormSchema,
-  beverageFormSchema,
-  addItem,
-} from "@hooks/addMenuItems";
+import { addItem } from "@hooks/addMenuItems";
+import { editItem } from "@hooks/editMenuItems";
 import { useFieldArray } from "react-hook-form";
 import { toast } from "sonner";
 import Variations from "./variations";
 import { Beverage } from "@models/Menu/Beverage";
 import { Food } from "@models/Menu/Food";
-import { parseDefaultValues } from "@lib/utils";
+import { parseDefaultValues, inferFormSchema } from "@lib/utils";
 import Image from "next/image";
+import { Form as FormSchema } from "@models/Form";
 
 export default function ItemForm({
   setOpen,
@@ -42,10 +39,9 @@ export default function ItemForm({
   formType: "create" | "update";
 }) {
   const { itemType } = useItemTypeContext();
-  const formSchema =
-    itemType === "beverage" ? beverageFormSchema : foodFormSchema;
+  const formSchema = inferFormSchema(itemType, formType);
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: !inputValues
       ? {
@@ -61,17 +57,16 @@ export default function ItemForm({
 
   const [uppy] = useState(staffUppy);
 
+  console.log(form.getValues());
+
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit((values) => {
-          console.table(values);
-          console.table(values.variations);
           if (formType === "create") {
             addItem(values, uppy, itemType, setOpen);
           } else if (formType === "update") {
-            // updateItem(values, uppy, itemType, setOpen);
-            console.log("update");
+            editItem(values as Food | Beverage, uppy, itemType, setOpen);
           }
         })}
         className="space-y-2"
