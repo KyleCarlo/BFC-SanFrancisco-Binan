@@ -1,51 +1,14 @@
-import { z } from "zod";
 import { toast } from "sonner";
-import {
-  BeverageModel,
-  BeverageVariation,
-  BeverageVariationModel,
-} from "@models/Menu/Beverage";
-import { FoodModel, FoodVariationModel } from "@models/Menu/Food";
+import { BeverageVariation } from "@models/Menu/Beverage";
 import { Uppy } from "@uppy/core";
 import { Dispatch, SetStateAction } from "react";
 import { ItemType } from "@models/Menu";
-import { validateVariation } from "../lib/utils";
+import { validateVariation } from "@lib/utils";
 import handleUppyUpload from "@lib/uppy-uploadHandler";
-
-export const beverageFormSchema = BeverageModel.pick({
-  name: true,
-  description: true,
-  base: true,
-  feature: true,
-}).merge(
-  z.object({
-    variations: z.array(
-      BeverageVariationModel.pick({
-        serving: true,
-        price: true,
-        concentrate: true,
-        hot_cold: true,
-        available: true,
-      })
-    ),
-  })
-);
-
-export const foodFormSchema = FoodModel.pick({
-  name: true,
-  description: true,
-  category: true,
-  feature: true,
-}).merge(
-  z.object({
-    variations: z.array(
-      FoodVariationModel.pick({ serving: true, price: true, available: true })
-    ),
-  })
-);
+import { BeverageForm, FoodForm } from "@/src/models/Form";
 
 export async function addItem(
-  values: z.infer<typeof beverageFormSchema> | z.infer<typeof foodFormSchema>,
+  values: BeverageForm | FoodForm,
   uppy: Uppy<Record<string, unknown>, Record<string, unknown>>,
   itemType: ItemType,
   setOpen: Dispatch<SetStateAction<boolean>>

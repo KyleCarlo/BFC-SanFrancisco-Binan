@@ -24,7 +24,7 @@ export const FoodVariationModel = z.object({
 export const FoodModel = z.object({
   id: z.number(),
   name: z.string().min(1).max(30),
-  image: z.string().min(1).max(30),
+  image: z.string().min(1).max(400),
   description: z.string().min(1).max(255),
   category: FoodCategoryModel,
   feature: FeatureModel,

@@ -34,7 +34,7 @@ export const BeverageVariationModel = z.object({
 export const BeverageModel = z.object({
   id: z.number(),
   name: z.string().min(1).max(30),
-  image: z.string().min(1).max(30),
+  image: z.string().min(1).max(400),
   description: z.string().min(1).max(255),
   base: BeverageBaseModel,
   feature: FeatureModel,
