@@ -67,7 +67,7 @@ export async function addItem(
 
   try {
     const unique_name = await fetch(
-      `http://localhost:3000/api/menu/check_name?name=${values.name}&itemType=${itemType}`
+      `/api/menu/check_name?name=${values.name}&itemType=${itemType}`
     );
 
     if (!unique_name.ok) {
@@ -102,7 +102,7 @@ export async function addItem(
     }
 
     const response = await fetch(
-      `http://localhost:3000/api/menu?itemType=${itemType}`,
+      `${process.env.APP_URL}/api/menu?itemType=${itemType}`,
       {
         method: "POST",
         body: JSON.stringify({

@@ -11,12 +11,9 @@ const getMenuItems = async (
 ) => {
   setLoading(true);
   try {
-    const response = await fetch(
-      `http://localhost:3000/api/menu?itemType=${itemType}`,
-      {
-        method: "GET",
-      }
-    );
+    const response = await fetch(`/api/menu?itemType=${itemType}`, {
+      method: "GET",
+    });
 
     const { items, message } = await response.json();
 

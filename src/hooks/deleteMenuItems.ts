@@ -7,13 +7,10 @@ export default async function onDelete(
   itemType: ItemType
 ) {
   try {
-    const response = await fetch(
-      `http://localhost:3000/api/menu?itemType=${itemType}`,
-      {
-        method: "DELETE",
-        body: JSON.stringify({ ids, variation_ids }),
-      }
-    );
+    const response = await fetch(`/api/menu?itemType=${itemType}`, {
+      method: "DELETE",
+      body: JSON.stringify({ ids, variation_ids }),
+    });
 
     const { message } = await response.json();
 
