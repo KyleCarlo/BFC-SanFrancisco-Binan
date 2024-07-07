@@ -15,7 +15,7 @@ import { Uploader, UploadEditor } from "@components/uploader";
 import { useState } from "react";
 import { staffUppy } from "@lib/uppy-config";
 
-import { useItemTypeContext } from "@hooks/itemTypeContext";
+import { useItemTypeContext } from "@context/itemType";
 
 import { Dispatch, SetStateAction } from "react";
 import { addItem } from "@hooks/addMenuItems";

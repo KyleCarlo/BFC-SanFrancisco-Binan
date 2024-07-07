@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@components/ui/dialog";
 import ItemForm from "@components/staff/inventory/form";
-import { useItemTypeContext } from "@hooks/itemTypeContext";
+import { useItemTypeContext } from "@context/itemType";
 import { capitalize } from "@lib/utils";
 import { useState } from "react";
 

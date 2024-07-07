@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@components/ui/select";
 import { ItemType, ItemTypeModel } from "@models/Menu";
-import { useItemTypeContext } from "@hooks/itemTypeContext";
+import { useItemTypeContext } from "@context/itemType";
 
 export default function SelectItemType() {
   const { itemType, setItemType } = useItemTypeContext();

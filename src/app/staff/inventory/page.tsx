@@ -12,7 +12,7 @@ import { Beverage } from "@models/Menu/Beverage";
 
 import getMenuItems from "@hooks/getMenuItems";
 
-import { ItemTypeContext } from "@hooks/itemTypeContext";
+import { ItemTypeContext } from "@context/itemType";
 
 export default function InventoryPage() {
   const [itemType, setItemType] = useState<ItemType>("beverage");
