@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 import { Food } from "@models/Menu/Food";
 import { Beverage } from "@models/Menu/Beverage";
 
-import getMenuItems from "@hooks/getMenuItems";
+import { getMenuItems } from "@hooks/getMenuItems";
 
 import { ItemTypeContext } from "@context/itemType";
 

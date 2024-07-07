@@ -4,11 +4,11 @@ import { Food } from "@models/Menu/Food";
 import { Beverage } from "@models/Menu/Beverage";
 import { toast } from "sonner";
 
-const getMenuItems = async (
+export async function getMenuItems(
   itemType: ItemType,
   setLoading: React.Dispatch<SetStateAction<boolean>>,
   setItems: React.Dispatch<SetStateAction<[] | Food[] | Beverage[]>>
-) => {
+) {
   setLoading(true);
   try {
     const response = await fetch(`/api/menu?itemType=${itemType}`, {
@@ -30,6 +30,4 @@ const getMenuItems = async (
     setLoading(false);
     toast.error("Unknown error occurred.");
   }
-};
-
-export default getMenuItems;
+}

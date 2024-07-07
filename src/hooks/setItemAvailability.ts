@@ -4,7 +4,7 @@ import { BeverageVariation } from "@models/Menu/Beverage";
 import { SetStateAction } from "react";
 import { toast } from "sonner";
 
-const toggleAvailability = async (
+export async function toggleAvailability(
   available: boolean,
   id: Number,
   variation_id: Number,
@@ -13,7 +13,7 @@ const toggleAvailability = async (
   setSVariation: React.Dispatch<
     SetStateAction<FoodVariation | BeverageVariation>
   >
-) => {
+) {
   try {
     const response = await fetch(`/api/menu`, {
       method: "PATCH",
@@ -36,6 +36,4 @@ const toggleAvailability = async (
   } catch {
     toast.error("Unknown error occurred.");
   }
-};
-
-export default toggleAvailability;
+}

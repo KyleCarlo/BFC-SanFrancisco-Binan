@@ -7,7 +7,7 @@ import { BeverageVariation } from "@models/Menu/Beverage";
 import { ItemType } from "@models/Menu";
 
 import { useState } from "react";
-import toggleAvailability from "@hooks/setItemAvailability";
+import { toggleAvailability } from "@hooks/setItemAvailability";
 
 export default function Availibility({
   variation,
