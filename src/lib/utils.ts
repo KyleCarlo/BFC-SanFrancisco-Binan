@@ -24,7 +24,7 @@ export function validateItemType(itemType: string) {
 }
 
 export function validateVariation(
-  variations: BeverageVariation[],
+  variations: BeverageVariation[] | FoodVariation[],
   itemType: ItemType
 ) {
   let response = {
@@ -32,13 +32,18 @@ export function validateVariation(
     message: "",
   };
   variations.forEach((variation) => {
-    console.log(variation.concentrate, variation.hot_cold);
     if (itemType === "beverage") {
-      if (variation.concentrate && variation.hot_cold !== undefined) {
+      if (
+        (variation as BeverageVariation).concentrate &&
+        (variation as BeverageVariation).hot_cold !== undefined
+      ) {
         response.isValid = false;
         response.message = "Set Temperature to None if Concentrate.";
         return;
-      } else if (!variation.concentrate && variation.hot_cold === undefined) {
+      } else if (
+        !(variation as BeverageVariation).concentrate &&
+        (variation as BeverageVariation).hot_cold === undefined
+      ) {
         response.isValid = false;
         response.message = "Set Temperature if Not Concentrate.";
         return;
