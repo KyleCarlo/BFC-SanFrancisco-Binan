@@ -108,7 +108,51 @@ export async function POST(req: NextRequest) {
 // EDIT ITEM
 export async function PUT(req: NextRequest) {
   const itemType = req.nextUrl.searchParams.get("itemType") as ItemType;
-  return NextResponse.json({ message: "PATCH" });
+  const isValid = validateItemType(itemType);
+
+  if (!isValid) {
+    return NextResponse.json({ message: "Invalid Item Type" }, { status: 400 });
+  }
+
+  const body = await req.json();
+  const variations = body.variations;
+  delete body.variations;
+
+  try {
+    await db
+      .updateTable(`${capitalize(itemType)}` as "Food" | "Beverage")
+      .set(body)
+      .where("id", "=", body.id)
+      .execute();
+
+    await db
+      .deleteFrom(
+        `${capitalize(itemType)}Variation` as
+          | "FoodVariation"
+          | "BeverageVariation"
+      )
+      .where(`${itemType}_id`, "=", body.id)
+      .execute();
+
+    await db
+      .insertInto(
+        `${capitalize(itemType)}Variation` as
+          | "FoodVariation"
+          | "BeverageVariation"
+      )
+      .values(variations)
+      .execute();
+    return NextResponse.json(
+      { message: `Item Details Successfully Updated.` },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { message: "Failed to Update Item Details." },
+      { status: 500 }
+    );
+  }
 }
 
 // SET AVAILABILITY

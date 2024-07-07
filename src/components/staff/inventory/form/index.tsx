@@ -131,13 +131,20 @@ export default function ItemForm({
                 className="w-full py-2 my-2 flex-1"
                 onClick={(e) => {
                   e.preventDefault();
-                  if (fieldArray.fields.length < 5)
+                  if (fieldArray.fields.length < 5) {
                     fieldArray.append({
                       serving: "",
                       price: "",
                       available: true,
+                      ...(itemType === "food" &&
+                        formType === "update" && { food_id: inputValues?.id }),
+                      ...(itemType === "beverage" &&
+                        formType === "update" && {
+                          beverage_id: inputValues?.id,
+                        }),
+                      ...(formType === "update" && { id: -1 }),
                     });
-                  else toast.warning("Max variations reached");
+                  } else toast.warning("Max variations reached");
                 }}
               >
                 Add Variation
