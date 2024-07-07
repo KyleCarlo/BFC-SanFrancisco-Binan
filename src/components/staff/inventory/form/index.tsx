@@ -54,7 +54,7 @@ export default function ItemForm({
     control: form.control,
   });
 
-  const [uppy] = useState(staffUppy);
+  const [uppy] = useState(staffUppy(formType));
 
   return (
     <Form {...form}>

@@ -5,6 +5,7 @@ import { Food } from "@models/Menu/Food";
 import { Beverage } from "@models/Menu/Beverage";
 import { toast } from "sonner";
 import { validateVariation } from "@lib/utils";
+import handleUppyUpload from "@lib/uppy-uploadHandler";
 
 export async function editItem(
   values: Food | Beverage,
@@ -26,7 +27,41 @@ export async function editItem(
     };
   });
 
+  const uploadedFile = uppy.getFiles()[0];
+
   try {
+    if (uploadedFile) {
+      const filename = `${values.name}.${uploadedFile.extension}`;
+      const oldFilename = values.image.split("/").pop()?.split("?")[0];
+
+      uppy.setMeta({
+        name: filename,
+        bucket: itemType,
+        oldName: oldFilename,
+      });
+      const uppy_result = await uppy.upload();
+      const {
+        proceed,
+        message: { content, type },
+        imageURL,
+      } = await handleUppyUpload(uppy_result, filename, itemType);
+      switch (type) {
+        case "error":
+          toast.error(content);
+          break;
+        case "warning":
+          toast.warning(content);
+          break;
+        case "success":
+          toast.success(content);
+          break;
+      }
+      if (!proceed) {
+        return;
+      }
+      values.image = imageURL;
+    }
+
     const response = await fetch(`/api/menu?itemType=${itemType}`, {
       method: "PUT",
       body: JSON.stringify({ ...values, variations: parsed_variations }),
@@ -38,6 +73,9 @@ export async function editItem(
       toast.error(message);
       return setOpen(false);
     }
+
+    toast.success(message);
+    setOpen(false);
   } catch {
     toast.error("Unknown error occurred.");
   }
