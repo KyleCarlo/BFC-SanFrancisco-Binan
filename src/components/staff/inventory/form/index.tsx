@@ -11,7 +11,7 @@ import BeverageBaseField from "./beverage/base-field";
 import FoodCategoryField from "./foodCategory-field";
 import FeatureField from "./feature-field";
 
-import Uploader from "@components/uploader";
+import { Uploader, UploadEditor } from "@components/uploader";
 import { useState } from "react";
 import { staffUppy } from "@lib/uppy-config";
 
@@ -26,7 +26,6 @@ import Variations from "./variations";
 import { Beverage } from "@models/Menu/Beverage";
 import { Food } from "@models/Menu/Food";
 import { parseDefaultValues, inferFormSchema } from "@lib/utils";
-import Image from "next/image";
 import { Form as FormSchema } from "@models/Form";
 
 export default function ItemForm({
@@ -56,8 +55,6 @@ export default function ItemForm({
   });
 
   const [uppy] = useState(staffUppy);
-
-  console.log(form.getValues());
 
   return (
     <Form {...form}>
@@ -89,11 +86,10 @@ export default function ItemForm({
           <TabsContent value="image">
             {formType === "create" && <Uploader uppy={uppy} />}
             {formType === "update" && (
-              <Image
-                src={inputValues?.image as string}
-                width={250}
-                height={200}
-                alt={`Image of ${inputValues?.name}`}
+              <UploadEditor
+                uppy={uppy}
+                imageURL={form.getValues("image")}
+                imageName={form.getValues("name")}
               />
             )}
           </TabsContent>
