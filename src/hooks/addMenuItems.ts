@@ -1,5 +1,6 @@
 import { toast } from "sonner";
 import { BeverageVariation } from "@models/Menu/Beverage";
+import { FoodVariation } from "@models/Menu/Food";
 import { Uppy } from "@uppy/core";
 import { Dispatch, SetStateAction } from "react";
 import { ItemType } from "@models/Menu";
@@ -14,7 +15,7 @@ export async function addItem(
   setOpen: Dispatch<SetStateAction<boolean>>
 ) {
   const { isValid, message } = validateVariation(
-    values.variations as BeverageVariation[],
+    values.variations as BeverageVariation[] | FoodVariation[],
     itemType
   );
   if (!isValid) {
