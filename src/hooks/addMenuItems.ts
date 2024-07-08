@@ -6,7 +6,7 @@ import { Dispatch, SetStateAction } from "react";
 import { ItemType } from "@models/Menu";
 import { validateVariation } from "@lib/utils";
 import handleUppyUpload from "@lib/uppy-uploadHandler";
-import { BeverageForm, FoodForm } from "@/src/models/Form";
+import { BeverageForm, FoodForm } from "@models/InventoryForm";
 
 export async function addItem(
   values: BeverageForm | FoodForm,

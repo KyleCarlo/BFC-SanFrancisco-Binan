@@ -5,12 +5,14 @@ import { Food } from "@models/Menu/Food";
 export default function ItemCard({ item }: { item: Beverage | Food }) {
   return (
     <div className="w-[150px] m-2 rounded-md">
-      <Image
-        width={150}
-        height={150}
-        src={item.image}
-        alt={`Image of ${item.name}`}
-      />
+      <div className="w-full relative pt-[100%]">
+        <Image
+          fill={true}
+          src={item.image}
+          alt={`Image of ${item.name}`}
+          className="w-full h-full top-0 left-0 object-cover rounded-md"
+        />
+      </div>
       <div>
         <h1 className="text-gold text-bold text-italic px-2 pt-1 pb-2 text-center">
           {item.name}

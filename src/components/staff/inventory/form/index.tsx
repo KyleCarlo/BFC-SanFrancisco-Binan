@@ -26,7 +26,7 @@ import Variations from "./variations";
 import { Beverage } from "@models/Menu/Beverage";
 import { Food } from "@models/Menu/Food";
 import { parseDefaultValues, inferFormSchema } from "@lib/utils";
-import { Form as FormSchema } from "@models/Form";
+import { Form as FormSchema } from "@models/InventoryForm";
 
 export default function ItemForm({
   setOpen,

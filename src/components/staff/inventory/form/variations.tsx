@@ -3,9 +3,9 @@ import PriceField from "./price-field";
 import BeverageTempField from "./beverage/temp-field";
 import BeverageConcentrateField from "./beverage/concentrate-field";
 import { useItemTypeContext } from "@context/itemType";
-import { UseFormReturn, FieldArrayWithId, Field } from "react-hook-form";
-import { Beverage } from "@/src/models/Menu/Beverage";
-import { Food } from "@/src/models/Menu/Food";
+import { UseFormReturn, FieldArrayWithId } from "react-hook-form";
+import { Beverage } from "@models/Menu/Beverage";
+import { Food } from "@models/Menu/Food";
 
 export default function Variations({
   form,

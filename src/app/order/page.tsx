@@ -1,9 +1,11 @@
 import { serverGetMenuItems } from "@hooks/getMenuItems";
 import { Beverage } from "@models/Menu/Beverage";
 import { Food } from "@models/Menu/Food";
-import AddToCartSheet from "@components/customer/addToCart-sheet";
+import AddToCartSheet from "@components/customer/addToCart/sheet";
+import { CartProvider } from "@context/cart";
 
 import ItemCard from "@components/customer/item-card";
+import { ItemTypeProvider } from "@context/itemType";
 
 export default async function OrderPage() {
   const {
@@ -25,16 +27,20 @@ export default async function OrderPage() {
   }
   return (
     <main className="flex items-center justify-center">
-      {beverage.map((item: Beverage) => {
-        return (
-          <AddToCartSheet key={item.id}>
-            <ItemCard item={item} key={item.id} />
-          </AddToCartSheet>
-        );
-      })}
-      {/* {food.map((item: Food) => {
+      <CartProvider>
+        {beverage.map((item: Beverage) => {
+          return (
+            <ItemTypeProvider defaultItemType="beverage" key={item.id}>
+              <AddToCartSheet item={item} key={item.id}>
+                <ItemCard item={item} key={item.id} />
+              </AddToCartSheet>
+            </ItemTypeProvider>
+          );
+        })}
+        {/* {food.map((item: Food) => {
         return <ItemCard item={item} key={item.id} />;
       })} */}
+      </CartProvider>
     </main>
   );
 }

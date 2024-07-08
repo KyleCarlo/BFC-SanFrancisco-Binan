@@ -5,7 +5,10 @@ import { Food, FoodVariation } from "@models/Menu/Food";
 import { Beverage } from "@models/Menu/Beverage";
 import { BeverageVariation } from "@models/Menu/Beverage";
 import { DefaultValues } from "react-hook-form";
-import { beverageFormSchemaModel, foodFormSchemaModel } from "@models/Form";
+import {
+  BeverageFormSchemaModel,
+  FoodFormSchemaModel,
+} from "@/src/models/InventoryForm";
 import { FoodModel } from "@models/Menu/Food";
 import { BeverageModel } from "@models/Menu/Beverage";
 
@@ -106,9 +109,9 @@ export function inferFormSchema(
 ) {
   if (formType === "create") {
     if (itemType === "beverage") {
-      return beverageFormSchemaModel;
+      return BeverageFormSchemaModel;
     }
-    return foodFormSchemaModel;
+    return FoodFormSchemaModel;
   }
   if (itemType === "beverage") {
     return BeverageModel;

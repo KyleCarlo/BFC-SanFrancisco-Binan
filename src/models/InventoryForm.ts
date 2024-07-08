@@ -2,7 +2,7 @@ import { z } from "zod";
 import { BeverageVariationModel, BeverageModel } from "@models/Menu/Beverage";
 import { FoodVariationModel, FoodModel } from "@models/Menu/Food";
 
-export const beverageFormSchemaModel = BeverageModel.pick({
+export const BeverageFormSchemaModel = BeverageModel.pick({
   name: true,
   description: true,
   base: true,
@@ -21,7 +21,7 @@ export const beverageFormSchemaModel = BeverageModel.pick({
   })
 );
 
-export const foodFormSchemaModel = FoodModel.pick({
+export const FoodFormSchemaModel = FoodModel.pick({
   name: true,
   description: true,
   category: true,
@@ -34,11 +34,11 @@ export const foodFormSchemaModel = FoodModel.pick({
   })
 );
 
-export type FoodForm = z.infer<typeof foodFormSchemaModel>;
-export type BeverageForm = z.infer<typeof beverageFormSchemaModel>;
+export type FoodForm = z.infer<typeof FoodFormSchemaModel>;
+export type BeverageForm = z.infer<typeof BeverageFormSchemaModel>;
 export type Form = z.infer<
-  | typeof foodFormSchemaModel
-  | typeof beverageFormSchemaModel
+  | typeof FoodFormSchemaModel
+  | typeof BeverageFormSchemaModel
   | typeof FoodModel
   | typeof BeverageModel
 >;
