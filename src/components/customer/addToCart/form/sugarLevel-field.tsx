@@ -46,7 +46,7 @@ export default function SugarLevelField({
   const level = { "25%": 1, "50%": 2, "75%": 3, "100%": 4 };
   useEffect(() => {
     form.setValue("sugar_level", sugarLevel);
-  }, [sugarLevel]);
+  }, [sugarLevel, form]);
 
   return (
     <div className="flex gap-2">

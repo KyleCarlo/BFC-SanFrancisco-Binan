@@ -38,12 +38,15 @@ export default function AddToCartForm({
       <form
         onSubmit={form.handleSubmit((values) => {
           setCart([...cart, values]);
-          console.log(cart);
         })}
       >
-        <VariationsField form={form} variations={variations} />
-        <SugarLevelField form={form} />
-        <Button type="submit">Submit</Button>
+        <hr className="my-5" />
+        <div className="flex flex-col gap-7">
+          <VariationsField form={form} variations={variations} />
+          <SugarLevelField form={form} />
+        </div>
+        <hr className="my-5" />
+        <Button type="submit">Make Another</Button>
       </form>
     </Form>
   );

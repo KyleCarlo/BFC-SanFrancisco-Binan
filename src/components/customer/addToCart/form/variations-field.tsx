@@ -33,17 +33,33 @@ export default function VariationsField({
               {variations.map((variation) => {
                 return (
                   <FormItem
-                    className="flex items-center space-x-3 space-y-0 px-4"
+                    className="flex items-center space-x-3 space-y-0 px-1"
                     key={variation.id}
                   >
                     <FormControl>
                       <RadioGroupItem value={variation.id.toString()} />
                     </FormControl>
-                    <FormLabel className="font-normal flex justify-between w-full">
-                      <span className="text-sm font-semibold">
+                    <FormLabel className="font-normal flex justify-between items-baseline w-full">
+                      <span className="flex-1 text-sm font-semibold">
                         {variation.serving}
                       </span>
-                      <span className="text-sm font-normal w-12 text-nowrap">
+                      <span className="flex-1">
+                        {(variation as BeverageVariation).concentrate
+                          ? "Concentrate"
+                          : (variation as BeverageVariation).hot_cold}
+
+                        {!(variation as BeverageVariation).concentrate &&
+                        (
+                          variation as BeverageVariation
+                        ).hot_cold?.toLowerCase() === "hot"
+                          ? " 🔥"
+                          : (
+                              variation as BeverageVariation
+                            ).hot_cold?.toLowerCase() === "cold"
+                          ? " ❄️"
+                          : ""}
+                      </span>
+                      <span className="text-sm font-normal pl-2 w-14 text-nowrap">
                         ₱ {variation.price}
                       </span>
                     </FormLabel>
