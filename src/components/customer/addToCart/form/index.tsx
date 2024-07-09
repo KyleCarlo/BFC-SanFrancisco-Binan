@@ -11,6 +11,7 @@ import VariationsField from "./variations-field";
 import SugarLevelField from "./sugarLevel-field";
 import { Button } from "@components/ui/button";
 import { useCartContext } from "@context/cart";
+import QuantityField from "./quantity-field";
 
 export default function AddToCartForm({
   variations,
@@ -46,7 +47,12 @@ export default function AddToCartForm({
           <SugarLevelField form={form} />
         </div>
         <hr className="my-5" />
-        <Button type="submit">Make Another</Button>
+        <QuantityField />
+        <div className="flex justify-center py-6">
+          <Button variant="secondary" type="submit" className="w-full">
+            Add to Cart
+          </Button>
+        </div>
       </form>
     </Form>
   );

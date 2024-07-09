@@ -33,7 +33,7 @@ export default function VariationsField({
               {variations.map((variation) => {
                 return (
                   <FormItem
-                    className="flex items-center space-x-3 space-y-0 px-1"
+                    className="flex items-center space-x-3 space-y-0 px-1 py-2"
                     key={variation.id}
                   >
                     <FormControl>
@@ -43,7 +43,7 @@ export default function VariationsField({
                       <span className="flex-1 text-sm font-semibold">
                         {variation.serving}
                       </span>
-                      <span className="flex-1">
+                      <span className="w-24">
                         {(variation as BeverageVariation).concentrate
                           ? "Concentrate"
                           : (variation as BeverageVariation).hot_cold}
@@ -59,8 +59,8 @@ export default function VariationsField({
                           ? " ❄️"
                           : ""}
                       </span>
-                      <span className="text-sm font-normal pl-2 w-14 text-nowrap">
-                        ₱ {variation.price}
+                      <span className="text-sm font-normal flex-1 text-nowrap flex justify-end">
+                        <div className="w-12">₱ {variation.price}</div>
                       </span>
                     </FormLabel>
                   </FormItem>
