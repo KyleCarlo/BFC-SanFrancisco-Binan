@@ -12,13 +12,17 @@ import SugarLevelField from "./sugarLevel-field";
 import { Button } from "@components/ui/button";
 import { useCartContext } from "@context/cart";
 import QuantityField from "./quantity-field";
+import { Dispatch, SetStateAction } from "react";
+import { getComputedPrice } from "@lib/utils";
 
 export default function AddToCartForm({
   variations,
   itemID,
+  setOpen,
 }: {
   variations: BeverageVariation[] | FoodVariation[];
   itemID: number;
+  setOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   const { itemType } = useItemTypeContext();
   const { cart, setCart } = useCartContext();
@@ -29,16 +33,22 @@ export default function AddToCartForm({
       itemType: itemType,
       id: itemID,
       variation_id: variations[0].id,
-      quantity: 0,
+      quantity: 1,
       sugar_level: itemType === "beverage" ? "50%" : undefined,
     },
   });
+
+  const computedPrice = getComputedPrice(form, variations);
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit((values) => {
-          setCart([...cart, values]);
+          if (values.quantity == 0) {
+            setOpen(false);
+          } else {
+            setCart([...cart, values]);
+          }
         })}
       >
         <hr className="my-5" />
@@ -47,10 +57,20 @@ export default function AddToCartForm({
           <SugarLevelField form={form} />
         </div>
         <hr className="my-5" />
-        <QuantityField />
+        <QuantityField form={form} />
         <div className="flex justify-center py-6">
           <Button variant="secondary" type="submit" className="w-full">
-            Add to Cart
+            {computedPrice != 0 ? (
+              <>
+                <span>Add to Cart</span>
+                <span className="px-2">-</span>
+                <span className="text-gold">{computedPrice}</span>
+              </>
+            ) : (
+              <>
+                <span>Cancel</span>
+              </>
+            )}
           </Button>
         </div>
       </form>

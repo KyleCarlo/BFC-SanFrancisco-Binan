@@ -11,6 +11,8 @@ import {
 } from "@/src/models/InventoryForm";
 import { FoodModel } from "@models/Menu/Food";
 import { BeverageModel } from "@models/Menu/Beverage";
+import { UseFormReturn } from "react-hook-form";
+import { CartItem } from "@models/Cart";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -117,4 +119,15 @@ export function inferFormSchema(
     return BeverageModel;
   }
   return FoodModel;
+}
+
+export function getComputedPrice(
+  form: UseFormReturn<CartItem | any | undefined>,
+  variations: BeverageVariation[] | FoodVariation[]
+) {
+  const curr_var = variations.find(
+    (variation) => Number(form.watch("variation_id")) === variation.id
+  );
+  if (curr_var) return (curr_var.price as number) * form.watch("quantity");
+  return 0;
 }

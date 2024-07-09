@@ -39,8 +39,8 @@ export default function VariationsField({
                     <FormControl>
                       <RadioGroupItem value={variation.id.toString()} />
                     </FormControl>
-                    <FormLabel className="font-normal flex justify-between items-baseline w-full">
-                      <span className="flex-1 text-sm font-semibold">
+                    <FormLabel className="font-normal flex justify-between items-center w-full">
+                      <span className="flex-1 text-sm font-semibold pr-2">
                         {variation.serving}
                       </span>
                       <span className="w-24">

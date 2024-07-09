@@ -1,5 +1,5 @@
 import { SugarLevel } from "@models/Cart";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 
 import { UseFormReturn } from "react-hook-form";
 import { CartItem } from "@models/Cart";
