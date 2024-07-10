@@ -1,5 +1,3 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
 import { ItemType, ItemTypeModel } from "@models/Menu";
 import { Food, FoodVariation } from "@models/Menu/Food";
 import { Beverage } from "@models/Menu/Beverage";
@@ -11,14 +9,6 @@ import {
 } from "@/src/models/InventoryForm";
 import { FoodModel } from "@models/Menu/Food";
 import { BeverageModel } from "@models/Menu/Beverage";
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
-export function capitalize(word: string) {
-  return word.charAt(0).toUpperCase() + word.slice(1);
-}
 
 export function validateItemType(itemType: string) {
   const properItemTypes = Object.keys(ItemTypeModel.Values);

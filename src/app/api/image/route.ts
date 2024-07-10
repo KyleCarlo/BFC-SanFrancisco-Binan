@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import minioClient from "@/src/lib/minio";
+import minioClient from "@lib/minio";
 
 export async function GET(req: NextRequest) {
   const bucket = req.nextUrl.searchParams.get("bucket") as string;

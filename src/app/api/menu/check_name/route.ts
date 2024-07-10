@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@lib/db";
-import { capitalize, validateItemType } from "@lib/staff-utils";
+import { validateItemType } from "@lib/staff-utils";
+import { capitalize } from "@lib/utils";
 import { ItemType } from "@models/Menu";
 
 export async function GET(req: NextRequest) {

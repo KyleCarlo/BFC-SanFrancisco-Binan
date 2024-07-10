@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@lib/db";
 import { ItemType } from "@models/Menu";
-import { capitalize } from "@lib/staff-utils";
+import { capitalize } from "@lib/utils";
 import { validateItemType } from "@lib/staff-utils";
 
 // GET MENU LISTS
