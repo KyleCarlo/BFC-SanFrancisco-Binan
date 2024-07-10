@@ -11,8 +11,6 @@ import {
 } from "@/src/models/InventoryForm";
 import { FoodModel } from "@models/Menu/Food";
 import { BeverageModel } from "@models/Menu/Beverage";
-import { UseFormReturn } from "react-hook-form";
-import { CartItem } from "@models/Cart";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -119,46 +117,4 @@ export function inferFormSchema(
     return BeverageModel;
   }
   return FoodModel;
-}
-
-export function getComputedPrice(
-  form: UseFormReturn<CartItem | any | undefined>,
-  variations: BeverageVariation[] | FoodVariation[]
-) {
-  const curr_var = variations.find(
-    (variation) => Number(form.watch("variation_id")) === variation.id
-  );
-  if (curr_var) return (curr_var.price as number) * form.watch("quantity");
-  return 0;
-}
-
-export function getCartItemQuantity(item: Beverage | Food, cart: CartItem[]) {
-  let quantity = 0;
-  cart.map((cartItem) => {
-    if (cartItem.id === item.id) {
-      quantity += cartItem.quantity;
-    }
-  });
-
-  return quantity;
-}
-
-export function handleAddToCart(
-  values: CartItem,
-  cart: CartItem[],
-  setCart: React.Dispatch<React.SetStateAction<CartItem[]>>
-) {
-  let cartItemExists = false;
-  cart.forEach((item) => {
-    if (
-      item.id === values.id &&
-      item.variation_id === values.variation_id &&
-      item.sugar_level === values.sugar_level
-    ) {
-      item.quantity += values.quantity;
-      cartItemExists = true;
-    }
-  });
-  if (cartItemExists) return setCart([...cart]);
-  setCart([...cart, values]);
 }
