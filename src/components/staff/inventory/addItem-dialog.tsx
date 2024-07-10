@@ -10,7 +10,7 @@ import {
 } from "@components/ui/dialog";
 import ItemForm from "@components/staff/inventory/form";
 import { useItemTypeContext } from "@context/itemType";
-import { capitalize } from "@lib/utils";
+import { capitalize } from "@lib/staff-utils";
 import { useState } from "react";
 
 export default function AddItemDialog() {

@@ -10,7 +10,7 @@ import {
   useFormContext,
 } from "react-hook-form";
 
-import { cn } from "@/src/lib/utils";
+import { cn } from "@lib/staff-utils";
 import { Label } from "@components/ui/label";
 import { toast } from "sonner";
 

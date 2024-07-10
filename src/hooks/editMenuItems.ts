@@ -4,7 +4,7 @@ import { ItemType } from "@models/Menu";
 import { Food } from "@models/Menu/Food";
 import { Beverage } from "@models/Menu/Beverage";
 import { toast } from "sonner";
-import { validateVariation } from "@lib/utils";
+import { validateVariation } from "@lib/staff-utils";
 import handleUppyUpload from "@lib/uppy-uploadHandler";
 
 export async function editItem(

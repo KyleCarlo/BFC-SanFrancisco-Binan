@@ -4,7 +4,7 @@ import { FoodVariation } from "@models/Menu/Food";
 import { Uppy } from "@uppy/core";
 import { Dispatch, SetStateAction } from "react";
 import { ItemType } from "@models/Menu";
-import { validateVariation } from "@lib/utils";
+import { validateVariation } from "@lib/staff-utils";
 import handleUppyUpload from "@lib/uppy-uploadHandler";
 import { BeverageForm, FoodForm } from "@models/InventoryForm";
 

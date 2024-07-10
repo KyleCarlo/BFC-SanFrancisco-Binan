@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@components/ui/select";
-import { capitalize } from "@lib/utils";
+import { capitalize } from "@lib/staff-utils";
 import { BeverageBaseModel } from "@models/Menu/Beverage";
 import { UseFormReturn } from "react-hook-form";
 import { Beverage } from "@models/Menu/Beverage";

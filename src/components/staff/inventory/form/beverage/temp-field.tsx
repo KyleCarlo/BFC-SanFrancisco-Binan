@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@components/ui/select";
 
-import { capitalize } from "@lib/utils";
+import { capitalize } from "@lib/staff-utils";
 
 import { BeverageHotColdModel } from "@models/Menu/Beverage";
 import { UseFormReturn } from "react-hook-form";

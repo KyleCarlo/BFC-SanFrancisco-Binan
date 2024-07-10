@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@components/ui/select";
 import { FeatureModel } from "@models/Menu";
-import { capitalize } from "@lib/utils";
+import { capitalize } from "@lib/staff-utils";
 
 export default function FeatureField(form: any) {
   return (
