@@ -1,8 +1,9 @@
 import { serverGetMenuItems } from "@hooks/getMenuItems";
 import { Beverage } from "@models/Menu/Beverage";
 import { Food } from "@models/Menu/Food";
-import AddToCartSheet from "@components/customer/addToCart/form-dialog";
+import CartDialog from "@components/customer/addToCart/form-dialog";
 import { CartProvider } from "@context/cart";
+import { CartDrawerProvider } from "@context/cartDrawer";
 
 import ItemCard from "@components/customer/item-card";
 import { ItemTypeProvider } from "@context/itemType";
@@ -31,9 +32,11 @@ export default async function OrderPage() {
         {beverage.map((item: Beverage) => {
           return (
             <ItemTypeProvider defaultItemType="beverage" key={item.id}>
-              <AddToCartSheet item={item} key={item.id}>
-                <ItemCard item={item} key={item.id} />
-              </AddToCartSheet>
+              <CartDrawerProvider>
+                <CartDialog item={item}>
+                  <ItemCard item={item} />
+                </CartDialog>
+              </CartDrawerProvider>
             </ItemTypeProvider>
           );
         })}
