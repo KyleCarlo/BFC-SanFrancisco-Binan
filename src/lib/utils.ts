@@ -131,3 +131,34 @@ export function getComputedPrice(
   if (curr_var) return (curr_var.price as number) * form.watch("quantity");
   return 0;
 }
+
+export function getCartItemQuantity(item: Beverage | Food, cart: CartItem[]) {
+  let quantity = 0;
+  cart.map((cartItem) => {
+    if (cartItem.id === item.id) {
+      quantity += cartItem.quantity;
+    }
+  });
+
+  return quantity;
+}
+
+export function handleAddToCart(
+  values: CartItem,
+  cart: CartItem[],
+  setCart: React.Dispatch<React.SetStateAction<CartItem[]>>
+) {
+  let cartItemExists = false;
+  cart.forEach((item) => {
+    if (
+      item.id === values.id &&
+      item.variation_id === values.variation_id &&
+      item.sugar_level === values.sugar_level
+    ) {
+      item.quantity += values.quantity;
+      cartItemExists = true;
+    }
+  });
+  if (cartItemExists) return setCart([...cart]);
+  setCart([...cart, values]);
+}

@@ -1,7 +1,7 @@
 import { serverGetMenuItems } from "@hooks/getMenuItems";
 import { Beverage } from "@models/Menu/Beverage";
 import { Food } from "@models/Menu/Food";
-import AddToCartSheet from "@components/customer/addToCart/sheet";
+import AddToCartSheet from "@components/customer/addToCart/form-dialog";
 import { CartProvider } from "@context/cart";
 
 import ItemCard from "@components/customer/item-card";
