@@ -16,10 +16,14 @@ export function getComputedPrice(
   return 0;
 }
 
-export function getCartItemQuantity(item: Beverage | Food, cart: Cart) {
+export function getCartItemQuantity(
+  item: Beverage | Food,
+  cart: Cart,
+  itemType: ItemType
+) {
   let quantity = 0;
   cart.map((cartItem) => {
-    if (cartItem.id === item.id) {
+    if (cartItem.id === item.id && cartItem.itemType === itemType) {
       quantity += cartItem.quantity;
     }
   });
@@ -27,20 +31,20 @@ export function getCartItemQuantity(item: Beverage | Food, cart: Cart) {
   return quantity;
 }
 
-export function getPreviousCartIndex(cart: Cart, prev_values: CartItem) {
-  let prev_index = -1;
+export function getCartItemIndex(cart: Cart, cartItem: CartItem) {
+  let _index = -1;
   cart.forEach((item, index) => {
     if (
-      item.itemType === prev_values.itemType &&
-      item.id === prev_values.id &&
-      item.variation_id === prev_values.variation_id &&
-      item.sugar_level === prev_values.sugar_level
+      item.itemType === cartItem.itemType &&
+      item.id === cartItem.id &&
+      item.variation_id === cartItem.variation_id &&
+      item.sugar_level === cartItem.sugar_level
     ) {
-      prev_index = index;
+      _index = index;
       return;
     }
   });
-  return prev_index;
+  return _index;
 }
 
 export function updateCart(
@@ -76,7 +80,7 @@ export function handleAddToCart(
   formType: "create" | "update"
 ) {
   let previousCartIndex =
-    formType == "update" ? getPreviousCartIndex(cart, prev_values) : -1;
+    formType == "update" ? getCartItemIndex(cart, prev_values) : -1;
   let cartIndexUpdated = updateCart(cart, values, formType, previousCartIndex);
 
   if (cartIndexUpdated == -1) cart.push(values);
@@ -93,7 +97,7 @@ export function handleDeleteCartItem(
   setCart: React.Dispatch<React.SetStateAction<Cart>>,
   values: CartItem
 ) {
-  const index = getPreviousCartIndex(cart, values);
+  const index = getCartItemIndex(cart, values);
   cart.splice(index, 1);
   setCart([...cart]);
 }

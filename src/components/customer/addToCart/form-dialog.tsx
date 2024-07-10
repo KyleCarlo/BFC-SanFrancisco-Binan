@@ -16,6 +16,7 @@ import { Beverage } from "@models/Menu/Beverage";
 import { Food } from "@models/Menu/Food";
 import { useCartContext } from "@context/cart";
 import { useCartDrawerContext } from "@context/cartDrawer";
+import { useItemTypeContext } from "@context/itemType";
 import AddToCartSheet from "./form-sheet";
 import VariantSelect from "./variant-select";
 import { ScrollArea, ScrollBar } from "@components/ui/scroll-area";
@@ -28,8 +29,11 @@ export default function CartDialog({
   item: Beverage | Food;
 }>) {
   const { cart } = useCartContext();
+  const { itemType } = useItemTypeContext();
   const { open, setOpen } = useCartDrawerContext();
-  const itemsInCart = cart.filter((cartItem) => cartItem.id === item.id);
+  const itemsInCart = cart.filter(
+    (cartItem) => cartItem.id === item.id && cartItem.itemType === itemType
+  );
 
   if (itemsInCart.length === 0)
     return (

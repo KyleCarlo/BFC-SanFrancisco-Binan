@@ -68,7 +68,7 @@ export default function AddToCartForm({
             );
           } else if (values.quantity === 0 && formType === "update") {
             handleDeleteCartItem(cart, setCart, values);
-            setDrawer(false);
+            if (cart.length === 0) setDrawer(false);
           }
           setOpen(false);
         })}
@@ -79,7 +79,9 @@ export default function AddToCartForm({
             <hr className="my-5" />
             <div className="flex flex-col gap-7">
               <VariationsField form={form} variations={variations} />
-              <SugarLevelField form={form} />
+              {itemType === "beverage" && (
+                <SugarLevelField form={form} variations={variations} />
+              )}
             </div>
             <hr className="my-5" />
             <QuantityField form={form} />

@@ -4,11 +4,13 @@ import Image from "next/image";
 import { Beverage } from "@models/Menu/Beverage";
 import { Food } from "@models/Menu/Food";
 import { useCartContext } from "@context/cart";
+import { useItemTypeContext } from "@context/itemType";
 import { getCartItemQuantity } from "@lib/customer-utils";
 
 export default function ItemCard({ item }: { item: Beverage | Food }) {
   const { cart } = useCartContext();
-  const quantity = getCartItemQuantity(item, cart);
+  const { itemType } = useItemTypeContext();
+  const quantity = getCartItemQuantity(item, cart, itemType);
 
   return (
     <div className="w-[150px] m-2 rounded-md">

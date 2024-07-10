@@ -1,8 +1,12 @@
+"use client";
+
 import { SugarLevel } from "@models/Cart";
 import { useState, useEffect } from "react";
 
 import { UseFormReturn } from "react-hook-form";
 import { CartItem } from "@models/Cart";
+import { BeverageVariation } from "@models/Menu/Beverage";
+import { FoodVariation } from "@models/Menu/Food";
 
 const styles = {
   wrapper: {
@@ -37,25 +41,40 @@ const styles = {
 
 export default function SugarLevelField({
   form,
+  variations,
 }: {
   form: UseFormReturn<CartItem | any | undefined>;
+  variations: BeverageVariation[] | FoodVariation[];
 }) {
   const [sugarLevel, setSugarLevel] = useState<SugarLevel>(
-    form.getValues("sugar_level")
+    form.getValues("sugar_level") ?? "50%"
   );
+  const selected_variation = variations.find(
+    (variation) => variation.id === Number(form.watch("variation_id"))
+  );
+  const allowed =
+    (selected_variation as BeverageVariation).concentrate == false;
   const level = { "25%": 1, "50%": 2, "75%": 3, "100%": 4 };
+
   useEffect(() => {
     form.setValue("sugar_level", sugarLevel);
-  }, [sugarLevel, form]);
+    if (!allowed) form.setValue("sugar_level", undefined);
+  }, [sugarLevel, form, allowed]);
 
   return (
-    <div className="flex gap-2">
+    <div
+      className={`flex gap-2 ${
+        allowed == false ? "opacity-50 cursor-not-allowed" : ""
+      }`}
+    >
       <h1 className="text-bold text-xs text-nowrap pt-1">SUGAR LEVEL</h1>
       <div style={styles.wrapper} className="mb-5">
         <div style={styles.thumb_wrapper} className="z-40">
           <div
             style={styles.thumb}
-            onClick={() => setSugarLevel("25%")}
+            onClick={() => {
+              if (allowed) setSugarLevel("25%");
+            }}
             className="bg-white"
           ></div>
           <div style={styles.thumb_gap}></div>
@@ -64,7 +83,9 @@ export default function SugarLevelField({
         <div style={styles.thumb_wrapper} className="z-30">
           <div
             style={styles.thumb}
-            onClick={() => setSugarLevel("50%")}
+            onClick={() => {
+              if (allowed) setSugarLevel("50%");
+            }}
             className={`${level[sugarLevel] < 2 ? "bg-gray-800" : "bg-white"}`}
           ></div>
           <div style={styles.thumb_gap}></div>
@@ -74,7 +95,9 @@ export default function SugarLevelField({
           <div
             style={styles.thumb}
             className={`${level[sugarLevel] < 3 ? "bg-gray-800" : "bg-white"}`}
-            onClick={() => setSugarLevel("75%")}
+            onClick={() => {
+              if (allowed) setSugarLevel("75%");
+            }}
           ></div>
           <div style={styles.thumb_gap}></div>
           <p className="relative bottom-3 text-xs text-center">75%</p>
@@ -83,7 +106,9 @@ export default function SugarLevelField({
           <div
             style={styles.thumb}
             className={`${level[sugarLevel] < 4 ? "bg-gray-800" : "bg-white"}`}
-            onClick={() => setSugarLevel("100%")}
+            onClick={() => {
+              if (allowed) setSugarLevel("100%");
+            }}
           ></div>
           <div style={styles.thumb_gap} className="invisible"></div>
           <p className="relative bottom-3 text-xs text-center">100%</p>

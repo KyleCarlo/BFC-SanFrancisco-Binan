@@ -40,9 +40,17 @@ export default async function OrderPage() {
             </ItemTypeProvider>
           );
         })}
-        {/* {food.map((item: Food) => {
-        return <ItemCard item={item} key={item.id} />;
-      })} */}
+        {food.map((item: Food) => {
+          return (
+            <ItemTypeProvider defaultItemType="food" key={item.id}>
+              <CartDrawerProvider>
+                <CartDialog item={item}>
+                  <ItemCard item={item} />
+                </CartDialog>
+              </CartDrawerProvider>
+            </ItemTypeProvider>
+          );
+        })}
       </CartProvider>
     </main>
   );
