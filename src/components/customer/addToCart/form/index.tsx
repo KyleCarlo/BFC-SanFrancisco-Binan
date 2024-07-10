@@ -8,37 +8,48 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@components/ui/form";
 import { ScrollArea, ScrollBar } from "@components/ui/scroll-area";
 import { useItemTypeContext } from "@context/itemType";
+import { useCartDrawerContext } from "@context/cartDrawer";
 import VariationsField from "./variations-field";
 import SugarLevelField from "./sugarLevel-field";
 import { Button } from "@components/ui/button";
 import { useCartContext } from "@context/cart";
 import QuantityField from "./quantity-field";
 import { Dispatch, SetStateAction } from "react";
-import { getComputedPrice, handleAddToCart } from "@lib/utils";
+import {
+  getComputedPrice,
+  handleAddToCart,
+  handleDeleteCartItem,
+  parseDefaultCartItem,
+} from "@lib/customer-utils";
 
 export default function AddToCartForm({
   children,
   variations,
   itemID,
   setOpen,
+  defaultValues,
+  formType,
 }: {
   children: React.ReactNode;
   variations: BeverageVariation[] | FoodVariation[];
   itemID: number;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  defaultValues?: CartItem;
+  formType: "create" | "update";
 }) {
   const { itemType } = useItemTypeContext();
   const { cart, setCart } = useCartContext();
+  const { setOpen: setDrawer } = useCartDrawerContext();
 
   const form = useForm<CartItem>({
     resolver: zodResolver(CartItemModel),
-    defaultValues: {
-      itemType: itemType,
-      id: itemID,
-      variation_id: variations[0].id,
-      quantity: 1,
-      sugar_level: itemType === "beverage" ? "50%" : undefined,
-    },
+    defaultValues: parseDefaultCartItem(
+      formType,
+      itemType,
+      itemID,
+      variations,
+      defaultValues
+    ),
   });
 
   const computedPrice = getComputedPrice(form, variations);
@@ -48,10 +59,18 @@ export default function AddToCartForm({
       <form
         onSubmit={form.handleSubmit((values) => {
           if (values.quantity > 0) {
-            handleAddToCart(values, cart, setCart);
+            handleAddToCart(
+              defaultValues as CartItem,
+              values,
+              cart,
+              setCart,
+              formType
+            );
+          } else if (values.quantity === 0 && formType === "update") {
+            handleDeleteCartItem(cart, setCart, values);
+            setDrawer(false);
           }
           setOpen(false);
-          console.log(cart);
         })}
       >
         <ScrollArea className="h-[82dvh] px-4">
@@ -71,13 +90,13 @@ export default function AddToCartForm({
           <Button variant="secondary" type="submit" className="w-full">
             {computedPrice != 0 ? (
               <>
-                <span>Add to Cart</span>
+                <span>{formType === "create" ? "Add to" : "Update"} Cart</span>
                 <span className="px-2">-</span>
                 <span className="text-gold">{computedPrice}</span>
               </>
             ) : (
               <>
-                <span>Cancel</span>
+                <span>{formType === "create" ? "Cancel" : "Delete Item"}</span>
               </>
             )}
           </Button>

@@ -1,52 +1,75 @@
 "use client";
 
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@components/ui/sheet";
-import AddToCartForm from "./form";
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@components/ui/drawer";
+
+import { Button } from "@components/ui/button";
+
 import { Beverage } from "@models/Menu/Beverage";
 import { Food } from "@models/Menu/Food";
-import Image from "next/image";
-import { useState } from "react";
+import { useCartContext } from "@context/cart";
+import { useCartDrawerContext } from "@context/cartDrawer";
+import AddToCartSheet from "./form-sheet";
+import VariantSelect from "./variant-select";
+import { ScrollArea, ScrollBar } from "@components/ui/scroll-area";
 
-export default function AddToCartSheet({
+export default function CartDialog({
   children,
   item,
 }: Readonly<{
   children: React.ReactNode;
   item: Beverage | Food;
 }>) {
-  const [open, setOpen] = useState(false);
+  const { cart } = useCartContext();
+  const { open, setOpen } = useCartDrawerContext();
+  const itemsInCart = cart.filter((cartItem) => cartItem.id === item.id);
+
+  if (itemsInCart.length === 0)
+    return (
+      <AddToCartSheet item={item} formType={"create"}>
+        {children}
+      </AddToCartSheet>
+    );
+
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger>{children}</SheetTrigger>
-      <SheetContent className="w-full">
-        <AddToCartForm
-          variations={item.variations}
-          itemID={item.id}
-          setOpen={setOpen}
-        >
-          <SheetHeader>
-            <div className="w-1/3 relative pt-[33%] left-1/3">
-              <Image
-                fill={true}
-                src={item.image}
-                alt={`Image of ${item.name}`}
-                className="w-full h-full top-1/3 left-1/3 object-cover rounded-md"
-              />
-            </div>
-            <SheetTitle className="text-gold">{item.name}</SheetTitle>
-            <SheetDescription className="text-justify">
-              {item.description}
-            </SheetDescription>
-          </SheetHeader>
-        </AddToCartForm>
-      </SheetContent>
-    </Sheet>
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger>{children}</DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle className="text-gold">{item.name}</DrawerTitle>
+          <DrawerDescription>Select Item to Edit</DrawerDescription>
+        </DrawerHeader>
+        <ScrollArea>
+          <hr />
+          <div className="max-h-[50dvh] px-4">
+            {itemsInCart.map((cartItem) => {
+              return (
+                <>
+                  <VariantSelect
+                    item={item}
+                    cartItem={cartItem}
+                    key={cartItem.id}
+                  />
+                  <hr />
+                </>
+              );
+            })}
+          </div>
+          <ScrollBar />
+        </ScrollArea>
+        <DrawerFooter>
+          <AddToCartSheet item={item} formType="create">
+            <Button>Make Another</Button>
+          </AddToCartSheet>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
   );
 }
