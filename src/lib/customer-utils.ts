@@ -4,7 +4,6 @@ import { FoodVariation, Food } from "@models/Menu/Food";
 import { CartItem, Cart } from "@models/Cart";
 import { ItemType } from "@models/Menu";
 import { DefaultValues } from "react-hook-form";
-import { get } from "http";
 
 export function getComputedPrice(
   form: UseFormReturn<CartItem | any | undefined>,
