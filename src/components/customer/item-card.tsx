@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Beverage } from "@models/Menu/Beverage";
 import { Food } from "@models/Menu/Food";
 import { useCartContext } from "@context/cart";
-import { getCartItemQuantity } from "@lib/utils";
+import { getCartItemQuantity } from "@lib/customer-utils";
 
 export default function ItemCard({ item }: { item: Beverage | Food }) {
   const { cart } = useCartContext();
