@@ -175,7 +175,7 @@ export function getOrderList(food: Food[], beverage: Beverage[], cart: Cart) {
           serving: foodVariation.serving,
         });
         quantity += item.quantity;
-        total_cost += item.quantity * (foodItem.variations[0].price as number);
+        total_cost += item.quantity * (foodVariation.price as number);
       } else {
         throw Error("Please try to reload the page and reorder again.");
       }
