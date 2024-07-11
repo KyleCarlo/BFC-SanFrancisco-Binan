@@ -33,7 +33,15 @@ export default function VariantSelect({
             <h1>
               {`${variation?.serving} ${
                 (variation as BeverageVariation).hot_cold ?? ""
-              }`}
+              } ${
+                (variation as BeverageVariation).hot_cold?.toLowerCase() ===
+                "hot"
+                  ? "🔥"
+                  : (variation as BeverageVariation).hot_cold?.toLowerCase() ===
+                    "cold"
+                  ? "❄️"
+                  : ""
+              } `}
             </h1>
             {itemType === "beverage" &&
               ((variation as BeverageVariation).concentrate == true ? (
