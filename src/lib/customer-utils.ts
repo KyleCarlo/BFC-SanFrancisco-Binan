@@ -3,6 +3,7 @@ import { BeverageVariation, Beverage } from "@models/Menu/Beverage";
 import { FoodVariation, Food } from "@models/Menu/Food";
 import { CartItem, Cart } from "@models/Cart";
 import { ItemType } from "@models/Menu";
+import { OrderTicketList } from "@models/OrderTicket";
 import { DefaultValues } from "react-hook-form";
 
 export function getComputedPrice(
@@ -45,6 +46,19 @@ export function getCartItemIndex(cart: Cart, cartItem: CartItem) {
     }
   });
   return _index;
+}
+
+export function inferTemperatureEmoji(
+  hot_cold: BeverageVariation["hot_cold"],
+  concentrate?: boolean
+) {
+  return `${
+    !concentrate && hot_cold?.toLowerCase() === "hot"
+      ? " 🔥"
+      : hot_cold?.toLowerCase() === "cold"
+      ? " ❄️"
+      : ""
+  }`;
 }
 
 export function updateCart(
@@ -120,31 +134,46 @@ export function parseDefaultCartItem(
   return defaultCart;
 }
 
-export function getCartTotal(food: Food[], beverage: Beverage[], cart: Cart) {
+export function getOrderList(food: Food[], beverage: Beverage[], cart: Cart) {
   let total_cost = 0;
   let quantity = 0;
+  let orderList: OrderTicketList = [];
 
   cart.forEach((item) => {
     if (item.itemType === "beverage") {
-      const beverageItem = beverage.find(
-        (bev) =>
-          bev.id === item.id &&
-          bev.variations.find((v) => v.id === item.variation_id)
+      const beverageItem = beverage.find((bev) => bev.id === item.id);
+      const beverageVariation = beverageItem?.variations.find(
+        (v) => v.id === item.variation_id
       );
-      if (beverageItem) {
+
+      if (beverageItem && beverageVariation) {
+        orderList.push({
+          ...item,
+          name: beverageItem.name,
+          image: beverageItem.image,
+          price: beverageVariation.price as number,
+          serving: beverageVariation.serving,
+          hot_cold: beverageVariation.hot_cold,
+          concentrate: beverageVariation.concentrate,
+        });
         quantity += item.quantity;
-        total_cost +=
-          item.quantity * (beverageItem.variations[0].price as number);
+        total_cost += item.quantity * (beverageVariation.price as number);
       } else {
         throw Error("Please try to reload the page and reorder again.");
       }
     } else {
-      const foodItem = food.find(
-        (fd) =>
-          fd.id === item.id &&
-          fd.variations.find((v) => v.id === item.variation_id)
+      const foodItem = food.find((fd) => fd.id === item.id);
+      const foodVariation = foodItem?.variations.find(
+        (v) => v.id === item.variation_id
       );
-      if (foodItem) {
+      if (foodItem && foodVariation) {
+        orderList.push({
+          ...item,
+          name: foodItem.name,
+          image: foodItem.image,
+          price: foodVariation.price as number,
+          serving: foodVariation.serving,
+        });
         quantity += item.quantity;
         total_cost += item.quantity * (foodItem.variations[0].price as number);
       } else {
@@ -153,5 +182,5 @@ export function getCartTotal(food: Food[], beverage: Beverage[], cart: Cart) {
     }
   });
 
-  return { total_cost, quantity };
+  return { total_cost, quantity, orderList };
 }

@@ -5,6 +5,7 @@ import { Beverage, BeverageVariation } from "@models/Menu/Beverage";
 import { Food } from "@models/Menu/Food";
 import { useItemTypeContext } from "@context/itemType";
 import AddToCartSheet from "./form-sheet";
+import { inferTemperatureEmoji } from "@lib/customer-utils";
 
 export default function VariantSelect({
   item,
@@ -33,15 +34,10 @@ export default function VariantSelect({
             <h1>
               {`${variation?.serving} ${
                 (variation as BeverageVariation).hot_cold ?? ""
-              } ${
-                (variation as BeverageVariation).hot_cold?.toLowerCase() ===
-                "hot"
-                  ? "🔥"
-                  : (variation as BeverageVariation).hot_cold?.toLowerCase() ===
-                    "cold"
-                  ? "❄️"
-                  : ""
-              } `}
+              } ${inferTemperatureEmoji(
+                (variation as BeverageVariation).hot_cold,
+                (variation as BeverageVariation).concentrate
+              )}`}
             </h1>
             {itemType === "beverage" &&
               ((variation as BeverageVariation).concentrate == true ? (

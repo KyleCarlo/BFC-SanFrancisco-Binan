@@ -12,6 +12,7 @@ import { UseFormReturn } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "@components/ui/radio-group";
 import { BeverageVariation } from "@models/Menu/Beverage";
 import { FoodVariation } from "@models/Menu/Food";
+import { inferTemperatureEmoji } from "@lib/customer-utils";
 
 export default function VariationsField({
   form,
@@ -50,16 +51,10 @@ export default function VariationsField({
                           ? "Concentrate"
                           : (variation as BeverageVariation).hot_cold}
 
-                        {!(variation as BeverageVariation).concentrate &&
-                        (
-                          variation as BeverageVariation
-                        ).hot_cold?.toLowerCase() === "hot"
-                          ? " 🔥"
-                          : (
-                              variation as BeverageVariation
-                            ).hot_cold?.toLowerCase() === "cold"
-                          ? " ❄️"
-                          : ""}
+                        {inferTemperatureEmoji(
+                          (variation as BeverageVariation).hot_cold,
+                          (variation as BeverageVariation).concentrate
+                        )}
                       </span>
                       <span className="text-sm font-normal flex-1 text-nowrap flex justify-end">
                         <div className="w-12">₱ {variation.price}</div>
