@@ -1,3 +1,5 @@
+import { CartProvider } from "@context/cart";
+
 export default function OrderLayout({
   children,
 }: Readonly<{
@@ -5,7 +7,9 @@ export default function OrderLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <CartProvider>{children}</CartProvider>
+      </body>
     </html>
   );
 }

@@ -119,3 +119,39 @@ export function parseDefaultCartItem(
     } as DefaultValues<CartItem>;
   return defaultCart;
 }
+
+export function getCartTotal(food: Food[], beverage: Beverage[], cart: Cart) {
+  let total_cost = 0;
+  let quantity = 0;
+
+  cart.forEach((item) => {
+    if (item.itemType === "beverage") {
+      const beverageItem = beverage.find(
+        (bev) =>
+          bev.id === item.id &&
+          bev.variations.find((v) => v.id === item.variation_id)
+      );
+      if (beverageItem) {
+        quantity += item.quantity;
+        total_cost +=
+          item.quantity * (beverageItem.variations[0].price as number);
+      } else {
+        throw Error("Please try to reload the page and reorder again.");
+      }
+    } else {
+      const foodItem = food.find(
+        (fd) =>
+          fd.id === item.id &&
+          fd.variations.find((v) => v.id === item.variation_id)
+      );
+      if (foodItem) {
+        quantity += item.quantity;
+        total_cost += item.quantity * (foodItem.variations[0].price as number);
+      } else {
+        throw Error("Please try to reload the page and reorder again.");
+      }
+    }
+  });
+
+  return { total_cost, quantity };
+}
