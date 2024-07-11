@@ -2,7 +2,7 @@ import { serverGetMenuItems } from "@hooks/getMenuItems";
 import { Beverage } from "@models/Menu/Beverage";
 import { Food } from "@models/Menu/Food";
 import CartDialog from "@components/customer/addToCart/form-dialog";
-import TotalCart from "@components/customer/addToCart/total-cart";
+import CartView from "@components/customer/cart-sheet";
 import { CartDrawerProvider } from "@context/cartDrawer";
 
 import ItemCard from "@components/customer/item-card";
@@ -28,29 +28,31 @@ export default async function OrderPage() {
   }
   return (
     <main className="flex items-center justify-center flex-wrap">
-      {beverage.map((item: Beverage) => {
-        return (
-          <ItemTypeProvider defaultItemType="beverage" key={item.id}>
-            <CartDrawerProvider>
-              <CartDialog item={item}>
-                <ItemCard item={item} />
-              </CartDialog>
-            </CartDrawerProvider>
-          </ItemTypeProvider>
-        );
-      })}
-      {food.map((item: Food) => {
-        return (
-          <ItemTypeProvider defaultItemType="food" key={item.id}>
-            <CartDrawerProvider>
-              <CartDialog item={item}>
-                <ItemCard item={item} />
-              </CartDialog>
-            </CartDrawerProvider>
-          </ItemTypeProvider>
-        );
-      })}
-      <TotalCart food={food} beverage={beverage} />
+      <div>
+        {beverage.map((item: Beverage) => {
+          return (
+            <ItemTypeProvider defaultItemType="beverage" key={item.id}>
+              <CartDrawerProvider>
+                <CartDialog item={item}>
+                  <ItemCard item={item} />
+                </CartDialog>
+              </CartDrawerProvider>
+            </ItemTypeProvider>
+          );
+        })}
+        {food.map((item: Food) => {
+          return (
+            <ItemTypeProvider defaultItemType="food" key={item.id}>
+              <CartDrawerProvider>
+                <CartDialog item={item}>
+                  <ItemCard item={item} />
+                </CartDialog>
+              </CartDrawerProvider>
+            </ItemTypeProvider>
+          );
+        })}
+      </div>
+      <CartView food={food} beverage={beverage} />
     </main>
   );
 }
