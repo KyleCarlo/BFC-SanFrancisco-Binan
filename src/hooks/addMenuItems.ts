@@ -31,7 +31,7 @@ export async function addItem(
 
   try {
     const unique_name = await fetch(
-      `/api/menu/check_name?name=${values.name}&itemType=${itemType}`
+      `/api/menu/check/name?name=${values.name}&itemType=${itemType}`
     );
 
     if (!unique_name.ok) {
