@@ -20,20 +20,30 @@ export default function NavBar() {
           />
         </div>
       </div>
-      <ul className="flex flex-col items-center justify-around px-2">
-        <li>
+      <ul className="flex flex-col items-center justify-around">
+        <li className="h-1/6 flex justify-center">
           <Link href="/staff/orders">
-            <Coffee className={path === "/staff/orders" ? "text-gold" : ""} />
+            <Coffee
+              className={`h-full ${
+                path === "/staff/orders" ? "text-gold" : ""
+              }`}
+            />
           </Link>
         </li>
-        <li>
+        <li className="h-1/6 flex justify-center">
           <Link href="/staff/inventory">
-            <Box className={path === "/staff/inventory" ? "text-gold" : ""} />
+            <Box
+              className={`h-full ${
+                path === "/staff/inventory" ? "text-gold" : ""
+              }`}
+            />
           </Link>
         </li>
-        <li>
+        <li className="h-1/6 flex justify-center">
           <Link href="/staff">
-            <Contact className={path === "/staff" ? "text-gold" : ""} />
+            <Contact
+              className={`h-full ${path === "/staff" ? "text-gold" : ""}`}
+            />
           </Link>
         </li>
       </ul>
