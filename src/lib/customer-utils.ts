@@ -158,8 +158,6 @@ export function getOrderList(food: Food[], beverage: Beverage[], cart: Cart) {
         });
         quantity += item.quantity;
         total_cost += item.quantity * (beverageVariation.price as number);
-      } else {
-        throw Error("Please try to reload the page and reorder again.");
       }
     } else {
       const foodItem = food.find((fd) => fd.id === item.id);
@@ -176,11 +174,22 @@ export function getOrderList(food: Food[], beverage: Beverage[], cart: Cart) {
         });
         quantity += item.quantity;
         total_cost += item.quantity * (foodVariation.price as number);
-      } else {
-        throw Error("Please try to reload the page and reorder again.");
       }
     }
   });
 
   return { total_cost, quantity, orderList };
+}
+
+export function getIDofVariations(orderList: OrderTicketList) {
+  let food: number[] = [];
+  let beverage: number[] = [];
+
+  orderList.forEach((item) => {
+    if (item.itemType === "beverage")
+      beverage.push(item.variation_id as number);
+    else food.push(item.variation_id as number);
+  });
+
+  return { food, beverage };
 }

@@ -4,10 +4,20 @@ import Image from "next/image";
 import { inferTemperatureEmoji } from "@lib/customer-utils";
 import { OrderTicket } from "@models/OrderTicket";
 
-export default function CartList({ item }: { item: OrderTicket }) {
+export default function CartList({
+  item,
+  available,
+}: {
+  item: OrderTicket;
+  available: boolean;
+}) {
   return (
     <>
-      <div className="grid grid-cols-[25%_35%_20%_20%] justify-items-center items-center">
+      <div
+        className={`grid grid-cols-[25%_35%_20%_20%] justify-items-center items-center ${
+          !available && "opacity-40"
+        }`}
+      >
         <div className="w-full relative pt-[100%]">
           <Image
             fill={true}
@@ -37,9 +47,18 @@ export default function CartList({ item }: { item: OrderTicket }) {
           </p>
         </div>
         <div>
-          <span>{item.quantity}</span>
+          <span className={`${!available && "line-through"}`}>
+            {item.quantity}
+          </span>
         </div>
-        <div>₱ {item.quantity * item.price}</div>
+        <div className={`${!available && "line-through"}`}>
+          ₱ {item.quantity * item.price}
+        </div>
+        {!available && (
+          <p className="absolute text-bolder text-red-700 tracking-widest rotate-12">
+            ITEM NOT AVAILABLE
+          </p>
+        )}
       </div>
       <hr />
     </>
