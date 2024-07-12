@@ -9,9 +9,9 @@ import { usePathname } from "next/navigation";
 export default function NavBar() {
   const path = usePathname();
   return (
-    <nav className="h-[100dvh] border-2 border-r-gray-500 p-2">
-      <div className="py-4">
-        <div className="w-[90%] relative pt-[100%]">
+    <nav className="h-[100dvh] grid grid-rows-[60px_1fr] border-r-2 border-r-gray-500 justify-items-center pb-[60px]">
+      <div className="relative w-full flex items-center justify-center p-2">
+        <div className="w-[91%] relative pt-[100%]">
           <Image
             fill={true}
             src="/bfc-logo.png"
@@ -20,7 +20,7 @@ export default function NavBar() {
           />
         </div>
       </div>
-      <ul className="flex flex-col items-center justify-around h-[90%] px-2">
+      <ul className="flex flex-col items-center justify-around px-2">
         <li>
           <Link href="/staff/orders">
             <Coffee className={path === "/staff/orders" ? "text-gold" : ""} />
