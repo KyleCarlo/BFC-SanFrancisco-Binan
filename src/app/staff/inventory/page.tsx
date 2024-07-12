@@ -31,7 +31,7 @@ export default function InventoryPage() {
           <Input placeholder="Search for Item Name" />
           <SelectItemType />
         </div>
-        <div className="w-full px-10">
+        <div className="w-full px-4">
           {loading && <p>Loading...</p>}
           {!loading && itemType === "food" && (
             <FoodTable items={items as Food[]} />
