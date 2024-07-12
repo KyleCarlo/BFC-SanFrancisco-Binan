@@ -12,21 +12,30 @@ export async function GET(req: NextRequest) {
   if (!isValid) {
     return NextResponse.json({ message: "Invalid Item Type" }, { status: 400 });
   }
-  const existing = await db
-    .selectFrom(`${capitalize(itemType)}` as "Food" | "Beverage")
-    .select("name")
-    .where("name", "=", itemName)
-    .execute();
 
-  if (existing.length > 0) {
+  try {
+    const existing = await db
+      .selectFrom(`${capitalize(itemType)}` as "Food" | "Beverage")
+      .select("name")
+      .where("name", "=", itemName)
+      .execute();
+
+    if (existing.length > 0) {
+      return NextResponse.json(
+        { message: `${itemName} Already Exists. Please Rename.` },
+        { status: 400 }
+      );
+    }
+
     return NextResponse.json(
-      { message: `${itemName} Already Exists. Please Rename.` },
+      { message: "Item Name Available." },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      { message: "Filed to Check Name Uniqueness." },
       { status: 400 }
     );
   }
-
-  return NextResponse.json(
-    { message: "Item Name Available." },
-    { status: 200 }
-  );
 }
