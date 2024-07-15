@@ -140,16 +140,16 @@ export function getItemDetails(food: Food[], beverage: Beverage[], cart: Cart) {
   let quantity = 0;
   let itemDetailsList: ItemDetailsList = [];
 
-  cart.forEach((item) => {
-    if (item.itemType === "beverage") {
-      const beverageItem = beverage.find((bev) => bev.id === item.id);
+  cart.forEach((itemDetails) => {
+    if (itemDetails.itemType === "beverage") {
+      const beverageItem = beverage.find((bev) => bev.id === itemDetails.id);
       const beverageVariation = beverageItem?.variations.find(
-        (v) => v.id === item.variation_id
+        (v) => v.id === itemDetails.variation_id
       );
 
       if (beverageItem && beverageVariation) {
         itemDetailsList.push({
-          ...item,
+          ...itemDetails,
           name: beverageItem.name,
           image: beverageItem.image,
           price: beverageVariation.price as number,
@@ -157,24 +157,25 @@ export function getItemDetails(food: Food[], beverage: Beverage[], cart: Cart) {
           hot_cold: beverageVariation.hot_cold,
           concentrate: beverageVariation.concentrate,
         });
-        quantity += item.quantity;
-        total_cost += item.quantity * (beverageVariation.price as number);
+        quantity += itemDetails.quantity;
+        total_cost +=
+          itemDetails.quantity * (beverageVariation.price as number);
       }
     } else {
-      const foodItem = food.find((fd) => fd.id === item.id);
+      const foodItem = food.find((fd) => fd.id === itemDetails.id);
       const foodVariation = foodItem?.variations.find(
-        (v) => v.id === item.variation_id
+        (v) => v.id === itemDetails.variation_id
       );
       if (foodItem && foodVariation) {
         itemDetailsList.push({
-          ...item,
+          ...itemDetails,
           name: foodItem.name,
           image: foodItem.image,
           price: foodVariation.price as number,
           serving: foodVariation.serving,
         });
-        quantity += item.quantity;
-        total_cost += item.quantity * (foodVariation.price as number);
+        quantity += itemDetails.quantity;
+        total_cost += itemDetails.quantity * (foodVariation.price as number);
       }
     }
   });
