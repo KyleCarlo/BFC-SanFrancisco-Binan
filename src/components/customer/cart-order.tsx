@@ -5,7 +5,6 @@ import { Button } from "@components/ui/button";
 import CartList from "./cart-list";
 import verifyItemAvailability from "@hooks/verifyItemAvailability";
 import { useEffect, useState } from "react";
-import { set } from "zod";
 
 export default function CartOrderSubmission({
   orderList,
