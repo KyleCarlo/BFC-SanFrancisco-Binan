@@ -2,17 +2,17 @@
 
 import Image from "next/image";
 import { inferTemperatureEmoji } from "@lib/customer-utils";
-import { OrderTicket } from "@models/OrderTicket";
+import { ItemDetails } from "@models/Cart";
 
 export default function CartList({
   item,
   available,
 }: {
-  item: OrderTicket;
+  item: ItemDetails;
   available: boolean;
 }) {
   return (
-    <>
+    <div key={item.id} className="relative">
       <div
         className={`grid grid-cols-[25%_35%_20%_20%] justify-items-center items-center ${
           !available && "opacity-40"
@@ -61,6 +61,6 @@ export default function CartList({
         )}
       </div>
       <hr />
-    </>
+    </div>
   );
 }

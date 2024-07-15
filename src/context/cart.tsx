@@ -25,7 +25,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const cart = localStorage.getItem("cart");
     if (cart) {
-      console.log("cart", JSON.parse(cart));
       setCart(JSON.parse(cart));
     }
   }, []);

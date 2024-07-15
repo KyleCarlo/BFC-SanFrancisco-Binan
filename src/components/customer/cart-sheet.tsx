@@ -12,7 +12,7 @@ import { Button } from "@components/ui/button";
 import { useCartContext } from "@context/cart";
 import { Beverage } from "@models/Menu/Beverage";
 import { Food } from "@models/Menu/Food";
-import { getOrderList } from "@lib/customer-utils";
+import { getItemDetails } from "@lib/customer-utils";
 import CartOrderSubmission from "./cart-order";
 
 export default function CartView({
@@ -23,7 +23,7 @@ export default function CartView({
   beverage: Beverage[];
 }) {
   const { cart } = useCartContext();
-  const { quantity, total_cost, orderList } = getOrderList(
+  const { quantity, total_cost, itemDetailsList } = getItemDetails(
     food,
     beverage,
     cart
@@ -50,7 +50,7 @@ export default function CartView({
           <SheetDescription>Check your order...</SheetDescription>
         </SheetHeader>
         <CartOrderSubmission
-          orderList={orderList}
+          itemDetailsList={itemDetailsList}
           quantity={quantity}
           total_cost={total_cost}
         />

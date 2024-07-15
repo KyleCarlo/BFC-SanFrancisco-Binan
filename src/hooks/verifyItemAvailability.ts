@@ -1,10 +1,10 @@
-import { OrderTicketList } from "@models/OrderTicket";
+import { ItemDetailsList } from "@models/Cart";
 import { toast } from "sonner";
 import { getIDofVariations } from "@lib/customer-utils";
 import { Dispatch, SetStateAction } from "react";
 
 export default async function verifyItemAvailability(
-  orderList: OrderTicketList,
+  itemDetailsList: ItemDetailsList,
   validated_quantity: number,
   validated_total_cost: number,
   setValidatedQuantity: Dispatch<SetStateAction<number>>,
@@ -12,7 +12,7 @@ export default async function verifyItemAvailability(
   setAvailableOrders: Dispatch<SetStateAction<boolean[]>>
 ) {
   try {
-    const { food, beverage } = getIDofVariations(orderList);
+    const { food, beverage } = getIDofVariations(itemDetailsList);
 
     const response = await fetch(`/api/menu/check/availability`, {
       method: "POST",
@@ -21,8 +21,8 @@ export default async function verifyItemAvailability(
     const { available_beverage, available_food } = await response.json();
 
     const available: boolean[] = [];
-    orderList.map((order) => {
-      const { variation_id, itemType } = order;
+    itemDetailsList.map((itemDetails) => {
+      const { variation_id, itemType } = itemDetails;
       if (itemType === "beverage") {
         const item = available_beverage.find(
           (item: { id: number; available: number }) => item.id === variation_id
@@ -42,10 +42,10 @@ export default async function verifyItemAvailability(
       );
     }
 
-    orderList.map((order, index) => {
+    itemDetailsList.map((itemDetails, index) => {
       if (!available[index]) {
-        validated_quantity -= order.quantity;
-        validated_total_cost -= order.price * order.quantity;
+        validated_quantity -= itemDetails.quantity;
+        validated_total_cost -= itemDetails.price * itemDetails.quantity;
       }
     });
 

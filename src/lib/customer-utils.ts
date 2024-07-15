@@ -3,7 +3,7 @@ import { BeverageVariation, Beverage } from "@models/Menu/Beverage";
 import { FoodVariation, Food } from "@models/Menu/Food";
 import { CartItem, Cart } from "@models/Cart";
 import { ItemType } from "@models/Menu";
-import { OrderTicketList } from "@models/OrderTicket";
+import { ItemDetailsList } from "@models/Cart";
 import { DefaultValues } from "react-hook-form";
 
 export function getComputedPrice(
@@ -113,6 +113,7 @@ export function handleDeleteCartItem(
 ) {
   const index = getCartItemIndex(cart, values);
   cart.splice(index, 1);
+  localStorage.setItem("cart", JSON.stringify(cart));
   setCart([...cart]);
 }
 
@@ -134,10 +135,10 @@ export function parseDefaultCartItem(
   return defaultCart;
 }
 
-export function getOrderList(food: Food[], beverage: Beverage[], cart: Cart) {
+export function getItemDetails(food: Food[], beverage: Beverage[], cart: Cart) {
   let total_cost = 0;
   let quantity = 0;
-  let orderList: OrderTicketList = [];
+  let itemDetailsList: ItemDetailsList = [];
 
   cart.forEach((item) => {
     if (item.itemType === "beverage") {
@@ -147,7 +148,7 @@ export function getOrderList(food: Food[], beverage: Beverage[], cart: Cart) {
       );
 
       if (beverageItem && beverageVariation) {
-        orderList.push({
+        itemDetailsList.push({
           ...item,
           name: beverageItem.name,
           image: beverageItem.image,
@@ -165,7 +166,7 @@ export function getOrderList(food: Food[], beverage: Beverage[], cart: Cart) {
         (v) => v.id === item.variation_id
       );
       if (foodItem && foodVariation) {
-        orderList.push({
+        itemDetailsList.push({
           ...item,
           name: foodItem.name,
           image: foodItem.image,
@@ -178,14 +179,14 @@ export function getOrderList(food: Food[], beverage: Beverage[], cart: Cart) {
     }
   });
 
-  return { total_cost, quantity, orderList };
+  return { total_cost, quantity, itemDetailsList };
 }
 
-export function getIDofVariations(orderList: OrderTicketList) {
+export function getIDofVariations(itemDetailsList: ItemDetailsList) {
   let food: number[] = [];
   let beverage: number[] = [];
 
-  orderList.forEach((item) => {
+  itemDetailsList.forEach((item) => {
     if (item.itemType === "beverage")
       beverage.push(item.variation_id as number);
     else food.push(item.variation_id as number);

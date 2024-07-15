@@ -1,5 +1,5 @@
 "use client";
-import { OrderTicketList } from "@models/OrderTicket";
+import { ItemDetailsList } from "@models/Cart";
 import { ScrollArea } from "@components/ui/scroll-area";
 import { Button } from "@components/ui/button";
 import CartList from "./cart-list";
@@ -7,11 +7,11 @@ import verifyItemAvailability from "@hooks/verifyItemAvailability";
 import { useEffect, useState } from "react";
 
 export default function CartOrderSubmission({
-  orderList,
+  itemDetailsList,
   quantity,
   total_cost,
 }: {
-  orderList: OrderTicketList;
+  itemDetailsList: ItemDetailsList;
   quantity: number;
   total_cost: number;
 }) {
@@ -23,7 +23,7 @@ export default function CartOrderSubmission({
   useEffect(() => {
     setLoading(true);
     verifyItemAvailability(
-      orderList,
+      itemDetailsList,
       validated_quantity,
       validated_total_cost,
       setValidatedQuantity,
@@ -31,15 +31,15 @@ export default function CartOrderSubmission({
       setAvailableOrders
     );
     setLoading(false);
-  }, [orderList]);
+  }, [itemDetailsList]);
 
   return (
     <>
-      <hr />
-      <ScrollArea className="px-3">
+      <hr className="-mb-2" />
+      <ScrollArea className="px-3 -my-4">
         <div className="flex flex-col">
           {!loading ? (
-            orderList.map((item, index) => {
+            itemDetailsList.map((item, index) => {
               return (
                 <CartList
                   key={item.id}
@@ -60,7 +60,7 @@ export default function CartOrderSubmission({
         <span className="text-bold">₱ {validated_total_cost}</span>
       </div>
       <div className="flex justify-center">
-        <Button>Confirm Order</Button>
+        <Button onClick={() => {}}>Confirm Order</Button>
       </div>
     </>
   );
