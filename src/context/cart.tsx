@@ -2,7 +2,7 @@
 
 import { Cart } from "@models/Cart";
 import { createContext, useContext, Dispatch, SetStateAction } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const CartContext = createContext<{
   cart: Cart;
@@ -21,6 +21,14 @@ export function useCartContext() {
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<Cart>([]);
+
+  useEffect(() => {
+    const cart = localStorage.getItem("cart");
+    if (cart) {
+      console.log("cart", JSON.parse(cart));
+      setCart(JSON.parse(cart));
+    }
+  }, []);
 
   return (
     <CartContext.Provider value={{ cart, setCart }}>

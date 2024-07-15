@@ -102,7 +102,7 @@ export function handleAddToCart(
   if (cartIndexUpdated != previousCartIndex && previousCartIndex != -1) {
     cart.splice(previousCartIndex, 1);
   }
-
+  localStorage.setItem("cart", JSON.stringify(cart));
   setCart([...cart]);
 }
 

@@ -5,6 +5,7 @@ import { Button } from "@components/ui/button";
 import CartList from "./cart-list";
 import verifyItemAvailability from "@hooks/verifyItemAvailability";
 import { useEffect, useState } from "react";
+import { set } from "zod";
 
 export default function CartOrderSubmission({
   orderList,
@@ -18,8 +19,10 @@ export default function CartOrderSubmission({
   const [validated_quantity, setValidatedQuantity] = useState(quantity);
   const [validated_total_cost, setValidatedTotalCost] = useState(total_cost);
   const [available_orders, setAvailableOrders] = useState<boolean[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     verifyItemAvailability(
       orderList,
       validated_quantity,
@@ -28,6 +31,7 @@ export default function CartOrderSubmission({
       setValidatedTotalCost,
       setAvailableOrders
     );
+    setLoading(false);
   }, [orderList]);
 
   return (
@@ -35,15 +39,19 @@ export default function CartOrderSubmission({
       <hr className="mt-3" />
       <ScrollArea className="p-3 flex-grow h-[70dvh]">
         <div className="flex flex-col">
-          {orderList.map((item, index) => {
-            return (
-              <CartList
-                key={item.id}
-                item={item}
-                available={available_orders[index]}
-              />
-            );
-          })}
+          {!loading ? (
+            orderList.map((item, index) => {
+              return (
+                <CartList
+                  key={item.id}
+                  item={item}
+                  available={available_orders[index]}
+                />
+              );
+            })
+          ) : (
+            <div>Loading...</div>
+          )}
         </div>
       </ScrollArea>
       <hr />
