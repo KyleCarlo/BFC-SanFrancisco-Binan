@@ -44,7 +44,7 @@ export default function CartView({
           </Button>
         </div>
       </SheetTrigger>
-      <SheetContent className="w-full">
+      <SheetContent className="w-full grid grid-rows-[56px_1px_1fr_1px_25px_50px]">
         <SheetHeader>
           <SheetTitle>Order Summary</SheetTitle>
           <SheetDescription>Check your order...</SheetDescription>

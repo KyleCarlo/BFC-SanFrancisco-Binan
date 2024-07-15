@@ -35,8 +35,8 @@ export default function CartOrderSubmission({
 
   return (
     <>
-      <hr className="mt-3" />
-      <ScrollArea className="p-3 flex-grow h-[70dvh]">
+      <hr />
+      <ScrollArea className="px-3">
         <div className="flex flex-col">
           {!loading ? (
             orderList.map((item, index) => {
@@ -54,7 +54,7 @@ export default function CartOrderSubmission({
         </div>
       </ScrollArea>
       <hr />
-      <div className="grid grid-cols-[60%_20%_20%] justify-items-center px-3 py-3">
+      <div className="grid grid-cols-[60%_20%_20%] justify-items-center px-3">
         <span className="justify-self-end">Total</span>
         <span className="text-bold">{validated_quantity}</span>
         <span className="text-bold">₱ {validated_total_cost}</span>
