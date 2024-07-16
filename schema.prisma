@@ -25,24 +25,24 @@ enum BeverageHotCold {
 }
 
 model Beverage {
-  id          Int      @id @default(autoincrement())
-  name        String   @db.VarChar(255) @unique
-  image       String   @db.VarChar(400)
-  description String   @db.VarChar(255)
+  id          Int                 @id @default(autoincrement())
+  name        String              @unique @db.VarChar(255)
+  image       String              @db.VarChar(400)
+  description String              @db.VarChar(255)
   base        BeverageBase
   feature     Feature
   variations  BeverageVariation[]
 }
 
-model BeverageVariation{
-  id          Int      @id @default(autoincrement())
-  beverage    Beverage @relation(fields: [beverage_id], references: [id])
+model BeverageVariation {
+  id          Int              @id @default(autoincrement())
+  beverage    Beverage         @relation(fields: [beverage_id], references: [id])
   beverage_id Int
   price       Int
-  serving     String   @db.VarChar(255)
+  serving     String           @db.VarChar(255)
   concentrate Boolean
   hot_cold    BeverageHotCold?
-  available   Boolean  @default(true)
+  available   Boolean          @default(true)
 }
 
 enum FoodCategory {
@@ -53,22 +53,22 @@ enum FoodCategory {
 }
 
 model Food {
-  id          Int      @id @default(autoincrement())
-  name        String   @db.VarChar(255) @unique
-  image       String   @db.VarChar(400)
-  description String   @db.VarChar(255)
+  id          Int             @id @default(autoincrement())
+  name        String          @unique @db.VarChar(255)
+  image       String          @db.VarChar(400)
+  description String          @db.VarChar(255)
   category    FoodCategory
   feature     Feature
   variations  FoodVariation[]
 }
 
 model FoodVariation {
-  id          Int      @id @default(autoincrement())
-  food        Food     @relation(fields: [food_id], references: [id])
-  food_id     Int
-  price       Int      
-  serving     String   @db.VarChar(255)
-  available   Boolean  @default(true)
+  id        Int     @id @default(autoincrement())
+  food      Food    @relation(fields: [food_id], references: [id])
+  food_id   Int
+  price     Int
+  serving   String  @db.VarChar(255)
+  available Boolean @default(true)
 }
 
 enum UserRole {
@@ -78,9 +78,39 @@ enum UserRole {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  name      String
-  role      UserRole @default(Customer)
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  password String
+  name     String
+  role     UserRole @default(Customer)
+  Order    Order[]
+}
+
+enum OrderStatus {
+  Incoming
+  Processing
+  Complete
+  Received
+  Cancelled
+}
+
+enum OrderType {
+  DineIn
+  PickUpNow
+  PickUpLater
+  ParkNGo
+}
+
+model Order {
+  id          String   @id @default(uuid())
+  created_at  DateTime @default(now())
+  received_at DateTime?
+  user        User?     @relation(fields: [user_id], references: [id])
+  user_id     Int?
+  status      OrderStatus
+  order_type  OrderType
+  mop         String
+  items       Json
+  total_price Int
+  total_num   Int
 }
