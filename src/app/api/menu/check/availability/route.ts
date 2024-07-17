@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@lib/db";
-import { validateItemType } from "@lib/staff-utils";
-import { ItemType } from "@models/Menu";
-import { capitalize } from "@lib/utils";
 
 export async function POST(req: NextRequest) {
   const { food, beverage }: { food: number[]; beverage: number[] } =
