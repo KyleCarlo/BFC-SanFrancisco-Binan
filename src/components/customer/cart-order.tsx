@@ -85,7 +85,6 @@ export default function CartOrderSubmission({
               if (cart) {
                 const parsedCart = JSON.parse(cart);
                 parsedCart.filter((index: number) => available_orders[index]);
-                console.log(parsedCart);
                 localStorage.setItem("cart", JSON.stringify(parsedCart));
 
                 if (parsedCart.length > 0) {
