@@ -94,16 +94,38 @@ export async function PUT(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  const multiple = req.nextUrl.searchParams.get("multiple") as string;
   const bucket = req.nextUrl.searchParams.get("bucket") as string;
-  const filename = req.nextUrl.searchParams.get("filename") as string;
+
+  if (!multiple) {
+    const filename = req.nextUrl.searchParams.get("filename") as string;
+
+    try {
+      await minioClient.removeObject(bucket, filename);
+      return NextResponse.json({ message: "Image Deleted." }, { status: 200 });
+    } catch (error) {
+      console.error(error);
+      return NextResponse.json(
+        { message: "Error Deleting Image" },
+        { status: 500 }
+      );
+    }
+  }
 
   try {
-    await minioClient.removeObject(bucket, filename);
-    return NextResponse.json({ message: "Image Deleted." }, { status: 200 });
+    const imageNames = await req.json();
+    if (imageNames.length === 0) {
+      return NextResponse.json(
+        { message: "No Images Selected for Deletion." },
+        { status: 400 }
+      );
+    }
+    await minioClient.removeObjects(bucket, imageNames);
+    return NextResponse.json({ message: "Images Deleted." }, { status: 200 });
   } catch (error) {
-    console.error(error);
+    console.log(error);
     return NextResponse.json(
-      { message: "Error Deleting Image" },
+      { message: "Error Deleting Images" },
       { status: 500 }
     );
   }
