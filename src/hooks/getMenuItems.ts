@@ -35,7 +35,7 @@ export async function getMenuItems(
 export async function serverGetMenuItems() {
   try {
     const response_1 = await fetch(
-      `http:localhost:3000/api/menu?itemType=beverage`,
+      `http://localhost:3000/api/menu?itemType=beverage`,
       {
         method: "GET",
         cache: "no-store",
@@ -48,7 +48,7 @@ export async function serverGetMenuItems() {
     }
 
     const response_2 = await fetch(
-      `http:localhost:3000/api/menu?itemType=food`,
+      `http://localhost:3000/api/menu?itemType=food`,
       {
         method: "GET",
       }

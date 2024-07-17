@@ -9,6 +9,7 @@ import {
 } from "@/src/models/InventoryForm";
 import { FoodModel } from "@models/Menu/Food";
 import { BeverageModel } from "@models/Menu/Beverage";
+import { MOP } from "@models/MOP";
 
 export function validateItemType(itemType: string) {
   const properItemTypes = Object.keys(ItemTypeModel.Values);
@@ -58,7 +59,7 @@ export function validateVariation(
   return response;
 }
 
-export function parseDefaultValues(defaultValues: Food | Beverage) {
+export function parseDefaultMenuValues(defaultValues: Food | Beverage) {
   let base = (defaultValues as Beverage).base;
   let category = (defaultValues as Food).category;
   if (base) base = (base as string).toLowerCase() as Beverage["base"];
@@ -107,4 +108,23 @@ export function inferFormSchema(
     return BeverageModel;
   }
   return FoodModel;
+}
+
+export function parseDefaultMOPValues(defaultValues?: MOP) {
+  if (!defaultValues)
+    return {
+      id: 0,
+      acct_name: "",
+      bank_name: "",
+      available: true,
+      qr_code: "",
+    };
+
+  return {
+    id: defaultValues.id,
+    acct_name: defaultValues.acct_name,
+    bank_name: defaultValues.bank_name,
+    available: defaultValues.available,
+    qr_code: defaultValues.qr_code,
+  } as DefaultValues<MOP>;
 }

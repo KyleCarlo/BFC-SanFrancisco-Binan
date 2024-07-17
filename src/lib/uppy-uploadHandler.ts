@@ -7,7 +7,7 @@ export default async function handleUppyUpload(
 ) {
   if (result.successful.length === 0) {
     const response = await fetch(
-      `/api/image?bucket=${bucket}&filename=${filename}`,
+      `/api/image/menu?bucket=${bucket}&filename=${filename}`,
       {
         method: "GET",
       }
