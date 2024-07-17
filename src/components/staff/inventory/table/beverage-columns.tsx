@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Beverage, BeverageVariation } from "@models/Menu/Beverage";
 import { Checkbox } from "@components/ui/checkbox";
-import { MdDelete } from "react-icons/md";
+import { Trash2 } from "lucide-react";
 import Availibility from "./availability-switch";
 import onDelete from "@hooks/deleteMenuItems";
 import { toast } from "sonner";
@@ -13,19 +13,26 @@ const beverageColumns: ColumnDef<Beverage>[] = [
     header: ({ table }) => {
       return (
         <div className="flex justify-center">
-          <MdDelete
+          <Trash2
             className="text-gold hover:cursor-pointer"
             size={20}
             onClick={() => {
               const variation_ids: number[] = [];
+              const imageNames: string[] = [];
               const ids = table.getSelectedRowModel().rows.map((row) => {
+                const image = row.original.image
+                  .split("/")
+                  .pop()
+                  ?.split("?")[0];
+                if (image) imageNames.push(image);
+
                 row.original.variations.map((variation) => {
                   variation_ids.push(variation.id);
                 });
                 return row.original.id;
               });
               if (ids.length > 0) {
-                onDelete(ids, variation_ids, "beverage");
+                onDelete(ids, variation_ids, imageNames, "beverage");
               } else {
                 toast.warning("Please select a row to delete.");
               }

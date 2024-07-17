@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Food, FoodVariation } from "@models/Menu/Food";
 import Availibility from "./availability-switch";
 import { Checkbox } from "@components/ui/checkbox";
-import { MdDelete } from "react-icons/md";
+import { Trash2 } from "lucide-react";
 import onDelete from "@hooks/deleteMenuItems";
 import { toast } from "sonner";
 import EditItemDialog from "./editItem-dialog";
@@ -13,19 +13,26 @@ const foodColumns: ColumnDef<Food>[] = [
     header: ({ table }) => {
       return (
         <div className="flex justify-center">
-          <MdDelete
+          <Trash2
             className="text-gold hover:cursor-pointer"
             size={20}
             onClick={() => {
               const variation_ids: number[] = [];
+              const imageNames: string[] = [];
               const ids = table.getSelectedRowModel().rows.map((row) => {
+                const image = row.original.image
+                  .split("/")
+                  .pop()
+                  ?.split("?")[0];
+                if (image) imageNames.push(image);
+
                 row.original.variations.map((variation) => {
                   variation_ids.push(variation.id);
                 });
                 return row.original.id;
               });
               if (ids.length > 0) {
-                onDelete(ids, variation_ids, "food");
+                onDelete(ids, variation_ids, imageNames, "food");
               } else {
                 toast.warning("Please select a row to delete.");
               }
