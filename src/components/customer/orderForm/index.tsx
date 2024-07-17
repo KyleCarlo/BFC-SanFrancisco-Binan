@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Order, OrderModel } from "@models/Order";
 import { Form } from "@components/ui/form";
 import OrderTypeField from "./orderType-field";
+import ScheduleField from "./schedule-field";
 import MOPField from "./mop-field";
 
 export default function OrderForm({
@@ -29,7 +30,16 @@ export default function OrderForm({
         })}
       >
         <OrderTypeField form={form} />
-        <MOPField form={form} />
+        <hr />
+        <div className="grid grid-cols-2 gap-2 py-2">
+          <div className="pl-2">
+            <MOPField form={form} />
+          </div>
+          <div className="pr-2">
+            <ScheduleField />
+          </div>
+        </div>
+        <hr />
       </form>
     </Form>
   );
