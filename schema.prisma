@@ -103,6 +103,8 @@ model Order {
   customer_id Int?
   status      OrderStatus
   order_type  OrderType
+  scheduled   DateTime?
+  payment_pic String? 
   mop         String
   items       Json
   total_price Int
