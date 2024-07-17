@@ -11,12 +11,20 @@ import "@uppy/file-input/dist/style.min.css";
 import "@uppy/image-editor/dist/style.min.css";
 import { Button } from "./ui/button";
 
-export function Uploader({ uppy }: { uppy: Uppy<Record<string, unknown>> }) {
+export function Uploader({
+  uppy,
+  width,
+  height,
+}: {
+  uppy: Uppy<Record<string, unknown>>;
+  width?: number;
+  height?: number;
+}) {
   return (
     <Dashboard
       uppy={uppy}
-      width={400}
-      height={250}
+      width={width ?? 400}
+      height={height ?? 250}
       className="flex items-center"
       hideUploadButton={true}
       hideRetryButton={true}
@@ -28,18 +36,22 @@ export function UploadEditor({
   imageName,
   imageURL,
   uppy,
+  width,
+  height,
 }: {
   imageName: string;
   imageURL: string;
   uppy: Uppy<Record<string, unknown>>;
+  width?: number;
+  height?: number;
 }) {
   const [edit, setEdit] = useState(false);
   return (
     <>
       {edit ? (
-        <Uploader uppy={uppy} />
+        <Uploader uppy={uppy} width={width} height={height} />
       ) : (
-        <div className="h-[250px]">
+        <div className="h-[250px] flex flex-col items-center justify-center">
           <Image
             height={200}
             width={400}
