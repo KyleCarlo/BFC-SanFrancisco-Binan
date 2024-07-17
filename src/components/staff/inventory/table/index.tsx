@@ -1,4 +1,4 @@
-import InventoryTable from "./data-table";
+import InventoryTable from "@components/ui/data-table";
 import beverageColumns from "./beverage-columns";
 import foodColumns from "./food-columns";
 import { Food } from "@models/Menu/Food";
