@@ -24,7 +24,7 @@ export async function addItem(
 
   const uploadedFile = uppy.getFiles()[0];
   if (!uploadedFile) {
-    return toast.error("Please upload an image.");
+    return toast.error("Please Upload an Image.");
   }
 
   const filename = `${values.name}.${uploadedFile.extension}`;
@@ -35,7 +35,7 @@ export async function addItem(
     );
 
     if (!unique_name.ok) {
-      return toast.error("Item name already exists.");
+      return toast.error("Item Name Already Exists.");
     }
 
     uppy.setMeta({
