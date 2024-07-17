@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
 import { Uppy } from "@uppy/core";
-import { ItemType } from "@models/Menu";
 import { MOP } from "@models/MOP";
 import { toast } from "sonner";
 import handleUppyUpload from "@lib/uppy-uploadHandler";

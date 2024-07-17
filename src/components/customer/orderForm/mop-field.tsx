@@ -25,15 +25,11 @@ import {
 } from "@components/ui/select";
 
 export default function MOPField({ form }: { form: UseFormReturn<Order> }) {
-  const [mops, setMops] = useState<MOP[]>();
+  const [mops, setMops] = useState<MOP[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
-    getMOPs().then((MOPS) => {
-      setMops(MOPS);
-    });
-    setLoading(false);
+    getMOPs(setMops, setLoading);
   }, []);
 
   if (loading) {

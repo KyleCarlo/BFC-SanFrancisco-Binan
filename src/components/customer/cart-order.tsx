@@ -23,16 +23,15 @@ export default function CartOrderSubmission({
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
     verifyItemAvailability(
       itemDetailsList,
       validated_quantity,
       validated_total_cost,
       setValidatedQuantity,
       setValidatedTotalCost,
-      setAvailableOrders
+      setAvailableOrders,
+      setLoading
     );
-    setLoading(false);
   }, [itemDetailsList]);
 
   return (

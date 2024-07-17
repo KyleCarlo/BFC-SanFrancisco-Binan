@@ -1,14 +1,22 @@
-export default async function getMOPs() {
+import { Dispatch, SetStateAction } from "react";
+import { MOP } from "@models/MOP";
+import { toast } from "sonner";
+
+export default async function getMOPs(
+  setMops: Dispatch<SetStateAction<MOP[]>>,
+  setLoading: Dispatch<SetStateAction<boolean>>
+) {
+  setLoading(true);
   try {
-    const response = await fetch(`http://localhost:3000/api/mop`, {
+    const response = await fetch(`/api/mop`, {
       method: "GET",
       cache: "no-store",
     });
 
     const { MOP } = await response.json();
-    return MOP;
-  } catch (error) {
-    console.log(error);
-    return { message: "Error Fetching Mode of Payments." };
+    setMops(MOP);
+  } catch {
+    toast.error("Error Fetching Mode of Payments.");
   }
+  setLoading(false);
 }

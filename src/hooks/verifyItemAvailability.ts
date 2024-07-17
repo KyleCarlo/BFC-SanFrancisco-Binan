@@ -2,6 +2,7 @@ import { ItemDetailsList } from "@models/Cart";
 import { toast } from "sonner";
 import { getIDofVariations } from "@lib/customer-utils";
 import { Dispatch, SetStateAction } from "react";
+import { set } from "zod";
 
 export default async function verifyItemAvailability(
   itemDetailsList: ItemDetailsList,
@@ -9,8 +10,10 @@ export default async function verifyItemAvailability(
   validated_total_cost: number,
   setValidatedQuantity: Dispatch<SetStateAction<number>>,
   setValidatedTotalCost: Dispatch<SetStateAction<number>>,
-  setAvailableOrders: Dispatch<SetStateAction<boolean[]>>
+  setAvailableOrders: Dispatch<SetStateAction<boolean[]>>,
+  setLoading: Dispatch<SetStateAction<boolean>>
 ) {
+  setLoading(true);
   try {
     const { food, beverage } = getIDofVariations(itemDetailsList);
 
@@ -55,4 +58,5 @@ export default async function verifyItemAvailability(
   } catch {
     toast.error("Unknown error occurred.");
   }
+  setLoading(false);
 }

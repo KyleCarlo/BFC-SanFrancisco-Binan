@@ -24,12 +24,11 @@ export async function getMenuItems(
     }
 
     setItems(items);
-    setLoading(false);
   } catch {
     setItems([]);
-    setLoading(false);
     toast.error("Unknown error occurred.");
   }
+  setLoading(false);
 }
 
 export async function serverGetMenuItems() {
