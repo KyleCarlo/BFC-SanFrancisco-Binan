@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Coffee } from "lucide-react";
 import { Box } from "lucide-react";
 import { Contact } from "lucide-react";
+import { Store } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 export default function NavBar() {
@@ -43,6 +44,13 @@ export default function NavBar() {
           <Link href="/staff">
             <Contact
               className={`h-full ${path === "/staff" ? "text-gold" : ""}`}
+            />
+          </Link>
+        </li>
+        <li className="h-1/6 flex justify-center">
+          <Link href="/staff/store">
+            <Store
+              className={`h-full ${path === "/staff/store" ? "text-gold" : ""}`}
             />
           </Link>
         </li>
