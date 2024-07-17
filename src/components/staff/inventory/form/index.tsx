@@ -25,7 +25,7 @@ import { toast } from "sonner";
 import Variations from "./variations";
 import { Beverage } from "@models/Menu/Beverage";
 import { Food } from "@models/Menu/Food";
-import { parseDefaultValues, inferFormSchema } from "@lib/staff-utils";
+import { parseDefaultMenuValues, inferFormSchema } from "@lib/staff-utils";
 import { Form as FormSchema } from "@models/InventoryForm";
 
 export default function ItemForm({
@@ -46,7 +46,7 @@ export default function ItemForm({
       ? {
           variations: [{ serving: "", price: "", available: true }],
         }
-      : parseDefaultValues(inputValues),
+      : parseDefaultMenuValues(inputValues),
   });
 
   const fieldArray = useFieldArray({
@@ -54,7 +54,7 @@ export default function ItemForm({
     control: form.control,
   });
 
-  const [uppy] = useState(staffUppy(formType));
+  const [uppy] = useState(staffUppy(formType === "create" ? "POST" : "PUT"));
 
   return (
     <Form {...form}>
