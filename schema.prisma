@@ -71,18 +71,12 @@ model FoodVariation {
   available Boolean @default(true)
 }
 
-enum UserRole {
-  Admin
-  Staff
-  Customer
-}
-
-model User {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique
+model Customer {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  points   Int     @default(0) // loyalty points .2
   password String
   name     String
-  role     UserRole @default(Customer)
   Order    Order[]
 }
 
@@ -102,15 +96,37 @@ enum OrderType {
 }
 
 model Order {
-  id          String   @id @default(uuid())
-  created_at  DateTime @default(now())
+  id          String      @id @default(uuid())
+  created_at  DateTime    @default(now())
   received_at DateTime?
-  user        User?     @relation(fields: [user_id], references: [id])
-  user_id     Int?
+  customer    Customer?   @relation(fields: [customer_id], references: [id])
+  customer_id Int?
   status      OrderStatus
   order_type  OrderType
   mop         String
   items       Json
   total_price Int
   total_num   Int
+}
+
+enum StaffRole {
+  Admin
+  Employee
+  Dev
+}
+
+model Staff {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+  name     String
+  role     StaffRole
+}
+
+model MOP {
+  id        Int     @id @default(autoincrement())
+  acct_name String
+  bank_name String  @unique
+  available Boolean @default(true)
+  qr_code   String  @db.VarChar(400)
 }
