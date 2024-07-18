@@ -32,6 +32,8 @@
     "@uppy/xhr-upload": "^3.6.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "dayjs": "^1.11.11",
+    "embla-carousel-react": "^8.1.6",
     "kysely": "^0.27.3",
     "lucide-react": "^0.396.0",
     "minio": "^8.0.0",
