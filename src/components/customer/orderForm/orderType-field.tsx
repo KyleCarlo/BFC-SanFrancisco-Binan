@@ -12,6 +12,7 @@ export default function OrderTypeField({
   return (
     <div className="grid grid-rows-2 grid-cols-2 gap-2 p-2">
       <Button
+        type="button"
         variant="outline"
         onClick={() => form.setValue("order_type", "DineIn")}
         className={`${
@@ -21,6 +22,7 @@ export default function OrderTypeField({
         Dine-In
       </Button>
       <Button
+        type="button"
         variant="outline"
         onClick={() => form.setValue("order_type", "ParkNGo")}
         className={`${
@@ -30,6 +32,7 @@ export default function OrderTypeField({
         Park N{"'"} Go
       </Button>
       <Button
+        type="button"
         variant="outline"
         onClick={() => form.setValue("order_type", "PickUpNow")}
         className={`${
@@ -39,6 +42,7 @@ export default function OrderTypeField({
         Pick Up Now
       </Button>
       <Button
+        type="button"
         variant="outline"
         onClick={() => form.setValue("order_type", "PickUpLater")}
         className={`${

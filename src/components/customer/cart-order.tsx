@@ -5,7 +5,7 @@ import { Button } from "@components/ui/button";
 import OrderForm from "./orderForm";
 import CartList from "./cart-list";
 import verifyItemAvailability from "@hooks/verifyItemAvailability";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function CartOrderSubmission({
   itemDetailsList,
@@ -21,6 +21,7 @@ export default function CartOrderSubmission({
   const [available_orders, setAvailableOrders] = useState<boolean[]>([]);
   const [orderConfirmed, setOrderConfirmed] = useState(false);
   const [loading, setLoading] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     verifyItemAvailability(
@@ -65,6 +66,7 @@ export default function CartOrderSubmission({
           }`}
         >
           <OrderForm
+            formRef={formRef}
             validated_quantity={validated_quantity}
             validated_total_cost={validated_total_cost}
           />
@@ -79,7 +81,7 @@ export default function CartOrderSubmission({
       <div className="flex justify-center">
         <Button
           onClick={() => {
-            if (!orderConfirmed) {
+            if (!orderConfirmed && !loading) {
               const cart = localStorage.getItem("cart");
               if (cart) {
                 const parsedCart = JSON.parse(cart);
@@ -89,6 +91,12 @@ export default function CartOrderSubmission({
                 if (parsedCart.length > 0) {
                   setOrderConfirmed(true);
                 }
+              }
+            } else {
+              if (formRef.current) {
+                formRef.current.dispatchEvent(
+                  new Event("submit", { cancelable: true, bubbles: true })
+                );
               }
             }
           }}

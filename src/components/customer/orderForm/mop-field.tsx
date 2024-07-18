@@ -4,43 +4,29 @@ import { UseFormReturn } from "react-hook-form";
 import { Order } from "@models/Order";
 import { useState, useEffect } from "react";
 import { MOP } from "@models/MOP";
-import {
-  FormField,
-  FormItem,
-  FormLabel,
-  FormDescription,
-  FormMessage,
-  FormControl,
-} from "@components/ui/form";
+import { FormField, FormItem, FormControl } from "@components/ui/form";
 import getMOPs from "@/src/hooks/getMOPs";
 
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@components/ui/select";
 
-export default function MOPField({ form }: { form: UseFormReturn<Order> }) {
-  const [mops, setMops] = useState<MOP[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    getMOPs(setMops, setLoading);
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
+export default function MOPField({
+  form,
+  mops,
+}: {
+  form: UseFormReturn<Order>;
+  mops: MOP[];
+}) {
   if (
     form.watch("order_type") === "PickUpLater" &&
     form.watch("mop") === "Cash"
   ) {
-    form.setValue("mop", (mops as MOP[])[0].bank_name);
+    form.setValue("mop", mops[0].bank_name);
   }
 
   return (
@@ -55,7 +41,7 @@ export default function MOPField({ form }: { form: UseFormReturn<Order> }) {
             value={form.getValues("mop")}
           >
             <FormControl>
-              <SelectTrigger>
+              <SelectTrigger className={form.watch("mop") && "border-gold"}>
                 <SelectValue
                   placeholder="Payment Mode"
                   defaultValue={field.value}
