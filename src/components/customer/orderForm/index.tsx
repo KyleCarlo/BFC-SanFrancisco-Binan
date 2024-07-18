@@ -12,6 +12,7 @@ import { MOP } from "@models/MOP";
 import { RefObject, useEffect, useState } from "react";
 import QRField from "./QRField";
 import getMOPs from "@hooks/getMOPs";
+import { ScrollArea } from "@components/ui/scroll-area";
 
 export default function OrderForm({
   formRef,
@@ -50,20 +51,23 @@ export default function OrderForm({
           console.log("SUBMITTED");
           console.log(values);
         })}
+        className="h-full"
       >
-        <OrderTypeField form={form} />
-        <hr />
-        <div className="grid grid-cols-2 gap-2 py-2">
-          <div className="pl-2">
-            <MOPField form={form} mops={mops} />
+        <ScrollArea className="h-full px-3">
+          <OrderTypeField form={form} />
+          <hr />
+          <div className="grid grid-cols-2 gap-2 py-2">
+            <div className="pl-2">
+              <MOPField form={form} mops={mops} />
+            </div>
+            <div className="pr-2">
+              <ScheduleField form={form} />
+            </div>
           </div>
-          <div className="pr-2">
-            <ScheduleField form={form} />
-          </div>
-        </div>
-        <hr />
-        {loading && <div>Loading...</div>}
-        {!loading && form.watch("mop") && <QRField form={form} mops={mops} />}
+          <hr />
+          {loading && <div>Loading...</div>}
+          {!loading && form.watch("mop") && <QRField form={form} mops={mops} />}
+        </ScrollArea>
       </form>
     </Form>
   );
