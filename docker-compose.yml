@@ -18,3 +18,8 @@ services:
       - 9000:9000
       - 9001:9001
     command: server /data --console-address ":9001"
+  socket:
+    container_name: socket-server
+    build: socket-server/
+    ports:
+      - 8080:8080

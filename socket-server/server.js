@@ -1,8 +1,8 @@
-import { createServer } from "http";
-import { Server } from "socket.io";
+const server = require("http");
+const socket = require("socket.io");
 
-const httpServer = createServer();
-const io = new Server(httpServer, {
+const httpServer = server.createServer();
+const io = new socket.Server(httpServer, {
   cors: {
     origin: "http://localhost:3000",
   },
