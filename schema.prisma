@@ -105,10 +105,12 @@ model Order {
   order_type  OrderType
   scheduled   DateTime?
   payment_pic String? 
+  receiver_details Json
   mop         String
   items       Json
   total_price Int
   total_num   Int
+  
 }
 
 enum StaffRole {
