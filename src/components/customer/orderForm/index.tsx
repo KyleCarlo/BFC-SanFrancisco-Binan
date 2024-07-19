@@ -7,12 +7,15 @@ import { Form } from "@components/ui/form";
 import OrderTypeField from "./orderType-field";
 import ScheduleField from "./schedule-field";
 import MOPField from "./mop-field";
+import { PersonalDetailsField } from "./pID-field";
 import { Cart } from "@models/Cart";
 import { MOP } from "@models/MOP";
 import { RefObject, useEffect, useState } from "react";
+import { customerUppy } from "@lib/uppy-config";
 import QRField from "./QRField";
 import getMOPs from "@hooks/getMOPs";
 import { ScrollArea } from "@components/ui/scroll-area";
+import addOrder from "@hooks/addOrder";
 
 export default function OrderForm({
   formRef,
@@ -25,6 +28,7 @@ export default function OrderForm({
 }) {
   const [mops, setMops] = useState<MOP[]>([]);
   const [loading, setLoading] = useState(true);
+  const [uppy] = useState(customerUppy);
 
   useEffect(() => {
     getMOPs(setMops, setLoading);
@@ -32,6 +36,7 @@ export default function OrderForm({
     if (cart) {
       form.setValue("items", JSON.parse(cart) as Cart);
     }
+    uppy.clearUploadedFiles();
   }, []);
 
   const form = useForm<Order>({
@@ -48,8 +53,7 @@ export default function OrderForm({
       <form
         ref={formRef}
         onSubmit={form.handleSubmit((values) => {
-          console.log("SUBMITTED");
-          console.log(values);
+          addOrder(values, uppy);
         })}
         className="h-full"
       >
@@ -66,7 +70,11 @@ export default function OrderForm({
           </div>
           <hr />
           {loading && <div>Loading...</div>}
-          {!loading && form.watch("mop") && <QRField form={form} mops={mops} />}
+          {!loading && form.watch("mop") && (
+            <QRField form={form} mops={mops} uppy={uppy} />
+          )}
+          <hr />
+          <PersonalDetailsField form={form} />
         </ScrollArea>
       </form>
     </Form>
