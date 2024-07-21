@@ -4,6 +4,8 @@ import { nanoid } from "nanoid";
 import { toast } from "sonner";
 import socket from "@lib/socket";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import handleUppyUpload from "@lib/uppy-uploadHandler";
+import dayjs from "@lib/dayjs";
 
 export default async function addOrder(
   order: Order,
@@ -18,8 +20,41 @@ export default async function addOrder(
   if (order.order_type === "PickUpLater" && !order.scheduled) {
     return toast.error("Please Indicate the Schedule Pickup.");
   }
+
   order.id = order_id;
   try {
+    const filename = `${order_id}.${uploadedFile.extension}`;
+    if (order.mop !== "Cash") {
+      uppy.setMeta({
+        name: filename,
+        bucket: "payment",
+      });
+      const uppy_result = await uppy.upload();
+
+      const {
+        proceed,
+        message: { content, type },
+        imageURL,
+      } = await handleUppyUpload(uppy_result, order_id, "payment");
+
+      switch (type) {
+        case "error":
+          toast.error(content);
+          break;
+        case "warning":
+          toast.warning(content);
+          break;
+        case "success":
+          toast.success(content);
+          break;
+      }
+      if (!proceed) {
+        return;
+      }
+
+      order.payment_pic = imageURL;
+    }
+
     const response = await fetch("/api/order", {
       method: "POST",
       body: JSON.stringify(order),
@@ -30,6 +65,9 @@ export default async function addOrder(
     const { message } = await response.json();
     if (!response.ok) {
       toast.error(message);
+      await fetch(`/api/image?bucket=payment&filename=${filename}`, {
+        method: "DELETE",
+      });
       return { proceed: false };
     }
 
@@ -49,7 +87,7 @@ export default async function addOrder(
       return;
     });
     socket.on("connect", () => {
-      socket.emit("send_order", order_id);
+      socket.emit("send_order", order);
       localStorage.removeItem("cart");
       router.push(`/order/${order_id}`);
     });
