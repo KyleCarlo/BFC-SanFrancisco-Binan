@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import socket from "@lib/socket";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import handleUppyUpload from "@lib/uppy-uploadHandler";
-import dayjs from "@lib/dayjs";
 
 export default async function addOrder(
   order: Order,
@@ -22,11 +21,11 @@ export default async function addOrder(
   }
 
   order.id = order_id;
+
   try {
-    const filename = `${order_id}.${uploadedFile.extension}`;
     if (order.mop !== "Cash") {
       uppy.setMeta({
-        name: filename,
+        name: `${order_id}.${uploadedFile.extension}`,
         bucket: "payment",
       });
       const uppy_result = await uppy.upload();
@@ -55,7 +54,7 @@ export default async function addOrder(
       order.payment_pic = imageURL;
     }
 
-    const response = await fetch("/api/order", {
+    const response = await fetch("/api/order?done=false", {
       method: "POST",
       body: JSON.stringify(order),
       headers: {
@@ -65,9 +64,13 @@ export default async function addOrder(
     const { message } = await response.json();
     if (!response.ok) {
       toast.error(message);
-      await fetch(`/api/image?bucket=payment&filename=${filename}`, {
-        method: "DELETE",
-      });
+      if (uploadedFile)
+        await fetch(
+          `/api/image?bucket=payment&filename=${`${order_id}.${uploadedFile.extension}`}`,
+          {
+            method: "DELETE",
+          }
+        );
       return { proceed: false };
     }
 

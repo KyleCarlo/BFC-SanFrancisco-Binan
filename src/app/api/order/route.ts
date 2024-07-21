@@ -36,6 +36,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const done = req.nextUrl.searchParams.get("done") as string;
   const body = await req.json();
   body.created_at = dayjs().tz("Asia/Manila").toDate();
   if (body.order_type === "PickUpLater") {
@@ -43,10 +44,14 @@ export async function POST(req: NextRequest) {
   }
   try {
     await db
-      .insertInto("Order")
+      .insertInto(done === "true" ? "Order_Done" : "Order")
       .values({
         ...body,
         items: JSON.stringify(body.items),
+        received_at:
+          done === "true"
+            ? dayjs(body.received_at).tz("Asia/Manila").toDate()
+            : null,
         receiver_details: JSON.stringify(body.receiver_details),
       })
       .execute();

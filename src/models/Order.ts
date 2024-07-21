@@ -6,7 +6,7 @@ export const OrderStatusModel = z.enum([
   "Processing",
   "Complete",
   "Received",
-  "Cancelled",
+  "Rejected",
 ]);
 
 export const OrderTypeModel = z.enum([

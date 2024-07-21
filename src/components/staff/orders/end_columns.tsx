@@ -6,7 +6,7 @@ import ProofOfPayment from "./table_components/pop";
 import OrderActions from "./table_components/actions";
 import { Badge } from "@components/ui/badge";
 
-const orderColumns: ColumnDef<Order>[] = [
+const endColumns: ColumnDef<Order>[] = [
   {
     accessorKey: "id",
     header: "Receiver",
@@ -109,12 +109,22 @@ const orderColumns: ColumnDef<Order>[] = [
     header: "Count",
   },
   {
-    id: "actions",
-    header: "Action",
+    accessorKey: "received_at",
+    header: "Received Time",
     cell: ({ row }) => {
-      return <OrderActions order={row.original} status={row.original.status} />;
+      if (
+        row.original.status === "Received" ||
+        row.original.status === "Rejected"
+      ) {
+        if (row.original.received_at) {
+          const date = dayjs(row.original.received_at)
+            .tz("Asia/Manila")
+            .format("MM-DD hh:mm A");
+          return <span>{date}</span>;
+        }
+      }
     },
   },
 ];
 
-export default orderColumns;
+export default endColumns;

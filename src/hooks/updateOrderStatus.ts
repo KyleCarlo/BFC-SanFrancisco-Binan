@@ -1,5 +1,6 @@
 import { OrderStatus } from "@models/Order";
 import { toast } from "sonner";
+import dayjs from "@lib/dayjs";
 
 export default async function updateOrderStatus(
   id: string,
@@ -8,6 +9,7 @@ export default async function updateOrderStatus(
   try {
     const response = await fetch(`/api/order?id=${id}&status=${status}`, {
       method: "PATCH",
+      body: JSON.stringify({ received_at: dayjs().tz("Asia/Manila").toDate() }),
     });
 
     const { message } = await response.json();

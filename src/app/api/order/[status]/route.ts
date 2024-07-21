@@ -20,8 +20,11 @@ export async function GET(
   }
 
   try {
+    const table = ["Received", "Rejected"].includes(capitalize(status))
+      ? "Order_Done"
+      : "Order";
     const orders = await db
-      .selectFrom("Order")
+      .selectFrom(table)
       .selectAll()
       .where("status", "=", capitalize(status) as OrderStatus)
       .orderBy("created_at", "asc")

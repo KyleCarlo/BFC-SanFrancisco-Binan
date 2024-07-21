@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction } from "react";
 
 export async function getOrderByStatus(
   status: OrderStatus,
-  setIncomingOrders: Dispatch<SetStateAction<Order[]>>,
+  setOrders: Dispatch<SetStateAction<Order[]>>,
   setLoading: Dispatch<SetStateAction<boolean>>
 ) {
   setLoading(true);
@@ -20,9 +20,9 @@ export async function getOrderByStatus(
       return toast.error(message);
     }
 
-    setIncomingOrders(orders);
+    setOrders(orders);
   } catch {
-    setIncomingOrders([]);
+    setOrders([]);
     toast.error("Unknown error occurred.");
   }
   setLoading(false);
