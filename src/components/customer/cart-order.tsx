@@ -34,8 +34,6 @@ export default function CartOrderSubmission({
       setAvailableOrders,
       setLoading
     );
-
-    console.log(localStorage.getItem("cart"));
   }, [itemDetailsList]);
 
   return (
