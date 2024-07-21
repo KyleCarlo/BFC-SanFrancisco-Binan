@@ -73,10 +73,10 @@ model FoodVariation {
 
 model Customer {
   id       Int     @id @default(autoincrement())
-  email    String  @unique
+  email    String  @unique @db.VarChar(255)
   points   Int     @default(0) // loyalty points .2
-  password String
-  name     String
+  password String  @db.VarChar(255)
+  name     String  @db.VarChar(255)
   Order    Order[]
 }
 
@@ -104,9 +104,9 @@ model Order {
   status      OrderStatus
   order_type  OrderType
   scheduled   DateTime?
-  payment_pic String? 
+  payment_pic String?     @db.VarChar(400)
   receiver_details Json
-  mop         String
+  mop         String      @db.VarChar(255)
   items       Json
   total_price Int
   total_num   Int
@@ -121,9 +121,9 @@ enum StaffRole {
 
 model Staff {
   id       Int    @id @default(autoincrement())
-  email    String @unique
-  password String
-  name     String
+  email    String @unique @db.VarChar(255)
+  password String @db.VarChar(255)
+  name     String @db.VarChar(255)
   role     StaffRole
 }
 
