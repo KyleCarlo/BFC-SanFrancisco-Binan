@@ -1,13 +1,7 @@
-"use client";
-
+import IncomingOrders from "@components/staff/orders/incoming";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/ui/tabs";
-import socket from "@lib/socket";
 
 export default function StaffOrdersPage() {
-  socket.on("orders", (data) => {
-    console.log(data);
-    alert(data);
-  });
   return (
     <div className="p-4">
       <Tabs
@@ -19,7 +13,9 @@ export default function StaffOrdersPage() {
           <TabsTrigger value="processing">Processing</TabsTrigger>
           <TabsTrigger value="completed">Completed</TabsTrigger>
         </TabsList>
-        <TabsContent value="incoming">incoming orders here</TabsContent>
+        <TabsContent value="incoming">
+          <IncomingOrders />
+        </TabsContent>
         <TabsContent value="processing">processing orders here</TabsContent>
         <TabsContent value="completed">completed</TabsContent>
       </Tabs>

@@ -36,7 +36,9 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const body = await req.json();
   body.created_at = dayjs().tz("Asia/Manila").toDate();
-
+  if (body.order_type === "PickUpLater") {
+    body.scheduled = dayjs(body.scheduled).tz("Asia/Manila").toDate();
+  }
   try {
     await db
       .insertInto("Order")
