@@ -30,12 +30,6 @@ export default function CartView({
     cart
   );
 
-  useEffect(() => {
-    if (!localStorage.getItem("cart")) {
-      localStorage.setItem("cart", JSON.stringify(cart));
-    }
-  });
-
   return (
     <Sheet>
       <SheetTrigger asChild>

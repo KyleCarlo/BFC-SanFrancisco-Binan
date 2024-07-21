@@ -1,4 +1,5 @@
 import { CartProvider } from "@context/cart";
+import RouteHandler from "@components/routeHandler";
 
 export default function OrderLayout({
   children,
@@ -8,7 +9,9 @@ export default function OrderLayout({
   return (
     <html lang="en">
       <body>
-        <CartProvider>{children}</CartProvider>
+        <RouteHandler>
+          <CartProvider>{children}</CartProvider>
+        </RouteHandler>
       </body>
     </html>
   );
