@@ -195,3 +195,11 @@ export function getIDofVariations(itemDetailsList: ItemDetailsList) {
 
   return { food, beverage };
 }
+
+export function getAllAvailableItems(cart: Cart, available: boolean[]) {
+  let available_items: Cart = [];
+  cart.forEach((item, index) => {
+    if (available[index]) available_items.push(item);
+  });
+  return available_items;
+}

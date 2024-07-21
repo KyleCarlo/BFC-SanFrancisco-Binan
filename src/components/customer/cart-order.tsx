@@ -1,5 +1,5 @@
 "use client";
-import { ItemDetailsList } from "@models/Cart";
+import { ItemDetailsList, Cart } from "@models/Cart";
 import { ScrollArea } from "@components/ui/scroll-area";
 import { Button } from "@components/ui/button";
 import OrderForm from "./orderForm";
@@ -7,6 +7,7 @@ import CartList from "./cart-list";
 import verifyItemAvailability from "@hooks/verifyItemAvailability";
 import { useEffect, useState, useRef } from "react";
 import { toast } from "sonner";
+import { getAllAvailableItems } from "@/src/lib/customer-utils";
 
 export default function CartOrderSubmission({
   itemDetailsList,
@@ -90,9 +91,12 @@ export default function CartOrderSubmission({
             ) {
               const cart = localStorage.getItem("cart");
               if (cart) {
-                const parsedCart = JSON.parse(cart);
-                parsedCart.filter((index: number) => available_orders[index]);
-                localStorage.setItem("cart", JSON.stringify(parsedCart));
+                const parsedCart = JSON.parse(cart) as Cart;
+                const newCart = getAllAvailableItems(
+                  parsedCart,
+                  available_orders
+                );
+                localStorage.setItem("cart", JSON.stringify(newCart));
 
                 if (parsedCart.length > 0) {
                   setOrderConfirmed(true);
@@ -107,7 +111,7 @@ export default function CartOrderSubmission({
             }
 
             if (validated_quantity <= 0 || validated_total_cost <= 0) {
-              toast.warning("Invalid Cart.");
+              toast.warning("Invalid Cart. Please Check Your Cart.");
             }
           }}
         >

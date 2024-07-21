@@ -34,12 +34,15 @@ export default function OrderForm({
 
   useEffect(() => {
     getMOPs(setMops, setLoading);
+    uppy.clearUploadedFiles();
+  }, []);
+
+  useEffect(() => {
     const cart = localStorage.getItem("cart");
     if (cart) {
       form.setValue("items", JSON.parse(cart) as Cart);
     }
-    uppy.clearUploadedFiles();
-  }, []);
+  });
 
   const form = useForm<Order>({
     resolver: zodResolver(OrderModel),
