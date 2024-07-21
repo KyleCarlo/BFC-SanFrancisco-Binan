@@ -68,7 +68,7 @@ export default function AddToCartForm({
             );
           } else if (values.quantity === 0 && formType === "update") {
             handleDeleteCartItem(cart, setCart, values);
-            if (cart.length === 0) setDrawer(false);
+            setDrawer(false);
           }
           setOpen(false);
         })}

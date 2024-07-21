@@ -50,6 +50,7 @@ export async function serverGetMenuItems() {
       `http://localhost:3000/api/menu?itemType=food`,
       {
         method: "GET",
+        cache: "no-store",
       }
     );
 

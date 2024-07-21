@@ -32,9 +32,9 @@ export default async function addOrder(
       toast.error(message);
       return { proceed: false };
     }
-    const connection = socket.connect();
 
-    if (!connection.connected) {
+    socket.connect();
+    socket.on("connect_error", async () => {
       toast.error("Error Connecting to Server.");
       const response = await fetch(`/api/order?id=${order_id}`, {
         method: "DELETE",
@@ -46,13 +46,13 @@ export default async function addOrder(
       if (!response.ok) {
         return toast.error(message);
       }
-
       return;
-    }
-
-    socket.emit("send_order", order_id);
-    localStorage.removeItem("cart");
-    router.push(`/order/${order_id}`);
+    });
+    socket.on("connect", () => {
+      socket.emit("send_order", order_id);
+      localStorage.removeItem("cart");
+      router.push(`/order/${order_id}`);
+    });
   } catch {
     return toast.error("Unknown Error Occurred.");
   }

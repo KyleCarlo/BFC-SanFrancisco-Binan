@@ -60,7 +60,7 @@ export default function OrderForm({
         className="h-full"
       >
         <ScrollArea className="h-full px-3">
-          <OrderTypeField form={form} />
+          <OrderTypeField form={form} pickUpLater={mops.length > 0} />
           <hr />
           <div className="grid grid-cols-2 gap-2 py-2">
             <div className="pl-2">

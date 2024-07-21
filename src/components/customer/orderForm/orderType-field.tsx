@@ -6,8 +6,10 @@ import { Button } from "@components/ui/button";
 
 export default function OrderTypeField({
   form,
+  pickUpLater,
 }: {
   form: UseFormReturn<Order>;
+  pickUpLater: boolean;
 }) {
   return (
     <div className="grid grid-rows-2 grid-cols-2 gap-2 p-2">
@@ -44,6 +46,7 @@ export default function OrderTypeField({
       <Button
         type="button"
         variant="outline"
+        disabled={!pickUpLater}
         onClick={() => form.setValue("order_type", "PickUpLater")}
         className={`${
           form.watch("order_type") === "PickUpLater" && "border-gold text-gold"

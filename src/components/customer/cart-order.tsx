@@ -6,6 +6,7 @@ import OrderForm from "./orderForm";
 import CartList from "./cart-list";
 import verifyItemAvailability from "@hooks/verifyItemAvailability";
 import { useEffect, useState, useRef } from "react";
+import { toast } from "sonner";
 
 export default function CartOrderSubmission({
   itemDetailsList,
@@ -33,6 +34,8 @@ export default function CartOrderSubmission({
       setAvailableOrders,
       setLoading
     );
+
+    console.log(localStorage.getItem("cart"));
   }, [itemDetailsList]);
 
   return (
@@ -81,7 +84,12 @@ export default function CartOrderSubmission({
       <div className="flex justify-center">
         <Button
           onClick={() => {
-            if (!orderConfirmed && !loading) {
+            if (
+              !orderConfirmed &&
+              !loading &&
+              validated_quantity > 0 &&
+              validated_total_cost > 0
+            ) {
               const cart = localStorage.getItem("cart");
               if (cart) {
                 const parsedCart = JSON.parse(cart);
@@ -92,12 +100,16 @@ export default function CartOrderSubmission({
                   setOrderConfirmed(true);
                 }
               }
-            } else {
+            } else if (orderConfirmed) {
               if (formRef.current) {
                 formRef.current.dispatchEvent(
                   new Event("submit", { cancelable: true, bubbles: true })
                 );
               }
+            }
+
+            if (validated_quantity <= 0 || validated_total_cost <= 0) {
+              toast.warning("Invalid Cart.");
             }
           }}
         >
