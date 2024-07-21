@@ -16,6 +16,7 @@ import QRField from "./QRField";
 import getMOPs from "@hooks/getMOPs";
 import { ScrollArea } from "@components/ui/scroll-area";
 import addOrder from "@hooks/addOrder";
+import { useRouter } from "next/navigation";
 
 export default function OrderForm({
   formRef,
@@ -29,6 +30,7 @@ export default function OrderForm({
   const [mops, setMops] = useState<MOP[]>([]);
   const [loading, setLoading] = useState(true);
   const [uppy] = useState(customerUppy);
+  const router = useRouter();
 
   useEffect(() => {
     getMOPs(setMops, setLoading);
@@ -53,7 +55,7 @@ export default function OrderForm({
       <form
         ref={formRef}
         onSubmit={form.handleSubmit((values) => {
-          addOrder(values, uppy);
+          addOrder(values, uppy, router);
         })}
         className="h-full"
       >

@@ -38,6 +38,13 @@ export default function Test() {
         >
           Send Message
         </Button>
+        <Button
+          onClick={() => {
+            socket.connect();
+          }}
+        >
+          Connect
+        </Button>
       </div>
       <div>
         <ul>

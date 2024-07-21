@@ -59,3 +59,26 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  const order_id = req.nextUrl.searchParams.get("id") as string;
+
+  if (!order_id) {
+    return NextResponse.json({ message: "Invalid Order ID." }, { status: 400 });
+  }
+
+  try {
+    await db.deleteFrom("Order").where("id", "=", order_id).execute();
+
+    return NextResponse.json(
+      { message: "Successfully Deleted Order." },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { message: "Error Deleting Order." },
+      { status: 500 }
+    );
+  }
+}
