@@ -5,7 +5,6 @@ import { CartItem, Cart } from "@models/Cart";
 import { ItemType } from "@models/Menu";
 import { ItemDetailsList } from "@models/Cart";
 import { DefaultValues } from "react-hook-form";
-import dayjs from "./dayjs";
 
 export function getComputedPrice(
   form: UseFormReturn<CartItem | any | undefined>,
@@ -195,10 +194,4 @@ export function getIDofVariations(itemDetailsList: ItemDetailsList) {
   });
 
   return { food, beverage };
-}
-
-export function generateOrderID() {
-  const timeCode = dayjs().valueOf().toString(36);
-  const mathR = Math.random().toString(36).substring(2, 6);
-  return `${timeCode}-${mathR}`;
 }
