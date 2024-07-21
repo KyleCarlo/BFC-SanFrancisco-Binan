@@ -72,12 +72,13 @@ model FoodVariation {
 }
 
 model Customer {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique @db.VarChar(255)
-  points   Int     @default(0) // loyalty points .2
-  password String  @db.VarChar(255)
-  name     String  @db.VarChar(255)
-  Order    Order[]
+  id         Int          @id @default(autoincrement())
+  email      String       @unique @db.VarChar(255)
+  points     Int          @default(0) // loyalty points .2
+  password   String       @db.VarChar(255)
+  name       String       @db.VarChar(255)
+  Order      Order[]
+  Order_Done Order_Done[]
 }
 
 enum OrderStatus {
@@ -85,7 +86,7 @@ enum OrderStatus {
   Processing
   Complete
   Received
-  Cancelled
+  Rejected
 }
 
 enum OrderType {
@@ -96,21 +97,37 @@ enum OrderType {
 }
 
 model Order {
-  id          String      @id @default(uuid())
-  created_at  DateTime    @default(now())
-  received_at DateTime?
-  customer    Customer?   @relation(fields: [customer_id], references: [id])
-  customer_id Int?
-  status      OrderStatus
-  order_type  OrderType
-  scheduled   DateTime?
-  payment_pic String?     @db.VarChar(400)
+  id               String      @id @default(uuid())
+  created_at       DateTime    @default(now())
+  received_at      DateTime?
+  customer         Customer?   @relation(fields: [customer_id], references: [id])
+  customer_id      Int?
+  status           OrderStatus
+  order_type       OrderType
+  scheduled        DateTime?
+  payment_pic      String?     @db.VarChar(400)
   receiver_details Json
-  mop         String      @db.VarChar(255)
-  items       Json
-  total_price Int
-  total_num   Int
-  
+  mop              String      @db.VarChar(255)
+  items            Json
+  total_price      Int
+  total_num        Int
+}
+
+model Order_Done {
+  id               String      @id @default(uuid())
+  created_at       DateTime    @default(now())
+  received_at      DateTime?
+  customer         Customer?   @relation(fields: [customer_id], references: [id])
+  customer_id      Int?
+  status           OrderStatus
+  order_type       OrderType
+  scheduled        DateTime?
+  payment_pic      String?     @db.VarChar(400)
+  receiver_details Json
+  mop              String      @db.VarChar(255)
+  items            Json
+  total_price      Int
+  total_num        Int
 }
 
 enum StaffRole {
@@ -120,10 +137,10 @@ enum StaffRole {
 }
 
 model Staff {
-  id       Int    @id @default(autoincrement())
-  email    String @unique @db.VarChar(255)
-  password String @db.VarChar(255)
-  name     String @db.VarChar(255)
+  id       Int       @id @default(autoincrement())
+  email    String    @unique @db.VarChar(255)
+  password String    @db.VarChar(255)
+  name     String    @db.VarChar(255)
   role     StaffRole
 }
 
