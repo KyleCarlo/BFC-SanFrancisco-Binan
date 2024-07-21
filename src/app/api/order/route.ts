@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import dayjs from "@lib/dayjs";
 import db from "@lib/db";
+import { OrderStatusModel, OrderStatus } from "@models/Order";
+import { capitalize } from "@lib/utils";
 
 export async function GET(req: NextRequest) {
   const order_id = req.nextUrl.searchParams.get("id") as string;
@@ -57,6 +59,43 @@ export async function POST(req: NextRequest) {
     console.error(error);
     return NextResponse.json(
       { message: "Error submitting order." },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(req: NextRequest) {
+  const status = req.nextUrl.searchParams.get("status") as OrderStatus;
+  const order_id = req.nextUrl.searchParams.get("id") as string;
+
+  if (!order_id) {
+    return NextResponse.json({ message: "Invalid Order ID." }, { status: 400 });
+  }
+  if (
+    !status ||
+    !Object.keys(OrderStatusModel.Values).includes(capitalize(status))
+  ) {
+    return NextResponse.json(
+      { message: "Invalid Order Status." },
+      { status: 400 }
+    );
+  }
+
+  try {
+    await db
+      .updateTable("Order")
+      .set({ status: capitalize(status) as OrderStatus })
+      .where("id", "=", order_id)
+      .execute();
+
+    return NextResponse.json(
+      { message: "Successfully Updated Order." },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { message: "Error Updating Order." },
       { status: 500 }
     );
   }

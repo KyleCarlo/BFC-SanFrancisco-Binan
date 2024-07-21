@@ -3,6 +3,7 @@ import { Order } from "@models/Order";
 import dayjs from "@lib/dayjs";
 import IDDialog from "./table_components/id";
 import ProofOfPayment from "./table_components/pop";
+import OrderActions from "./table_components/actions";
 
 const orderColumns: ColumnDef<Order>[] = [
   {
@@ -87,6 +88,18 @@ const orderColumns: ColumnDef<Order>[] = [
   {
     accessorKey: "total_num",
     header: "Count",
+  },
+  {
+    id: "actions",
+    header: "Action",
+    cell: ({ row }) => {
+      return (
+        <OrderActions
+          id={row.original.id as string}
+          status={row.original.status}
+        />
+      );
+    },
   },
 ];
 
