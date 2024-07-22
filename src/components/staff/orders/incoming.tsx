@@ -8,7 +8,6 @@ import DataTable from "@components/ui/data-table";
 import orderColumns from "./table_columns";
 
 export default function IncomingOrders() {
-  const [r_messages, setR_messages] = useState<Order[]>([]);
   const [incomingOrders, setIncomingOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -16,7 +15,7 @@ export default function IncomingOrders() {
     socket.connect();
 
     socket.on("rcv_order", (data: Order) => {
-      setR_messages([...r_messages, data]);
+      setIncomingOrders([...incomingOrders, data]);
     });
 
     return () => {

@@ -29,7 +29,11 @@ export default async function WaitingPage({
 
   return (
     <div className="h-[100dvh] grid grid-rows-[0.2fr_1fr] overflow-hidden p-4 items-stretch justify-center text-center">
-      <OrderStatus status={order.status} />
+      <OrderStatus
+        id={order.id as string}
+        status={order.status}
+        type={order.order_type}
+      />
       <Tabs
         defaultValue="qr-code"
         className="w-full max-w-[500px] overflow-hidden"

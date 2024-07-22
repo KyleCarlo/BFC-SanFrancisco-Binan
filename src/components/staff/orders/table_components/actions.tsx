@@ -47,7 +47,6 @@ export default function OrderActions({
         <Button
           className="bg-green-300"
           onClick={() => {
-            alert("clicked");
             updateOrderEnd(order as Order, "Received");
           }}
         >
@@ -58,7 +57,6 @@ export default function OrderActions({
         <Button
           variant="destructive"
           onClick={() => {
-            alert("clicked");
             updateOrderEnd(order as Order, "Rejected");
           }}
         >

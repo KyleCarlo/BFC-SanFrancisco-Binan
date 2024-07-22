@@ -1,6 +1,7 @@
 import { OrderStatus } from "@models/Order";
 import { toast } from "sonner";
 import dayjs from "@lib/dayjs";
+import socket from "@lib/socket";
 
 export default async function updateOrderStatus(
   id: string,
@@ -18,6 +19,7 @@ export default async function updateOrderStatus(
       return toast.error(message);
     }
 
+    socket.emit("send_confirmation", { id, status });
     toast.success(message);
   } catch {
     toast.error("Unknown error occurred.");
