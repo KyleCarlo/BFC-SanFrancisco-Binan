@@ -3,6 +3,7 @@ import ProcessingOrders from "@components/staff/orders/processing";
 import CompletedOrders from "@components/staff/orders/complete";
 import EndOrders from "@components/staff/orders/end";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/ui/tabs";
+import { OrdersProvider } from "@context/order";
 
 export default function StaffOrdersPage() {
   return (
@@ -19,22 +20,30 @@ export default function StaffOrdersPage() {
         </TabsList>
         <TabsContent value="incoming" className="w-full">
           <div className="w-full">
-            <IncomingOrders />
+            <OrdersProvider>
+              <IncomingOrders />
+            </OrdersProvider>
           </div>
         </TabsContent>
         <TabsContent value="processing" className="w-full">
           <div className="w-full">
-            <ProcessingOrders />
+            <OrdersProvider>
+              <ProcessingOrders />
+            </OrdersProvider>
           </div>
         </TabsContent>
         <TabsContent value="completed" className="w-full">
           <div className="w-full">
-            <CompletedOrders />
+            <OrdersProvider>
+              <CompletedOrders />
+            </OrdersProvider>
           </div>
         </TabsContent>
         <TabsContent value="end" className="w-full">
           <div className="w-full">
-            <EndOrders />
+            <OrdersProvider>
+              <EndOrders />
+            </OrdersProvider>
           </div>
         </TabsContent>
       </Tabs>

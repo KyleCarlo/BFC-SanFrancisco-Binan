@@ -1,37 +1,37 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Order } from "@models/Order";
 import { getOrderByStatus } from "@hooks/getOrder";
-import socket from "@lib/socket";
 import DataTable from "@components/ui/data-table";
 import orderColumns from "./table_columns";
+import { useOrdersContext } from "@context/order";
+import socketReceiver from "@lib/socketReceiver";
 
 export default function IncomingOrders() {
-  const [incomingOrders, setIncomingOrders] = useState<Order[]>([]);
+  const { orders, setOrders } = useOrdersContext();
+  const [receivedIDs, setReceivedIDs] = useState<string[]>(
+    orders.map((order) => order.id as string)
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    socket.connect();
-
-    socket.on("rcv_order", (data: Order) => {
-      setIncomingOrders([...incomingOrders, data]);
-    });
-
-    return () => {
-      socket.off("rcv_order");
-      socket.disconnect();
-    };
-  });
+    return socketReceiver(
+      receivedIDs,
+      setReceivedIDs,
+      orders,
+      setOrders,
+      "Incoming"
+    );
+  }, [orders, setOrders, receivedIDs]);
 
   useEffect(() => {
-    getOrderByStatus("Incoming", setIncomingOrders, setLoading);
+    getOrderByStatus("Incoming", setOrders, setLoading);
   }, []);
 
   return (
     <div>
       {loading && <span>Loading...</span>}
-      {!loading && <DataTable data={incomingOrders} columns={orderColumns} />}
+      {!loading && <DataTable data={orders} columns={orderColumns} />}
     </div>
   );
 }

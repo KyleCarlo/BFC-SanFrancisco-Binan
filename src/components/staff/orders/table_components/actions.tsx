@@ -1,3 +1,5 @@
+"use client";
+
 import { Order, OrderStatus } from "@models/Order";
 import { Button } from "@components/ui/button";
 import updateOrderStatus from "@hooks/updateOrderStatus";
@@ -16,14 +18,21 @@ export default function OrderActions({
         <Button
           className="bg-green-300"
           onClick={() => {
-            updateOrderStatus(order.id as string, "Processing");
+            updateOrderStatus(order, "Processing");
           }}
         >
           <span className="font-semibold tracking-wide text-green-950">
             Accept
           </span>
         </Button>
-        <Button variant="destructive">Reject</Button>
+        <Button
+          variant="destructive"
+          onClick={() => {
+            updateOrderEnd(order as Order, "Rejected");
+          }}
+        >
+          Reject
+        </Button>
       </div>
     );
 
@@ -32,7 +41,7 @@ export default function OrderActions({
       <Button
         className="bg-green-300"
         onClick={() => {
-          updateOrderStatus(order.id as string, "Complete");
+          updateOrderStatus(order, "Complete");
         }}
       >
         <span className="font-semibold tracking-wide text-green-950">

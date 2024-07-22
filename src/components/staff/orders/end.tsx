@@ -1,39 +1,50 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Order } from "@models/Order";
-import { getOrderByStatus } from "@hooks/getOrder";
-import socket from "@lib/socket";
 import DataTable from "@components/ui/data-table";
 import endColumns from "./end_columns";
-import getEndOrders from "@/src/hooks/getEndOrders";
+import getEndOrders from "@hooks/getEndOrders";
+import socketReceiver from "@lib/socketReceiver";
+import { useOrdersContext } from "@context/order";
 
 export default function EndOrders() {
-  const [r_messages, setR_messages] = useState<Order[]>([]);
-  const [endOrders, setEndOrders] = useState<Order[]>([]);
+  const { orders, setOrders } = useOrdersContext();
   const [loading, setLoading] = useState(true);
-
-  //   useEffect(() => {
-  //     socket.connect();
-
-  //     socket.on("rcv_order", (data: Order) => {
-  //       setR_messages([...r_messages, data]);
-  //     });
-
-  //     return () => {
-  //       socket.off("rcv_order");
-  //       socket.disconnect();
-  //     };
-  //   });
+  const [receivedIDs, setReceivedIDs] = useState<string[]>(
+    orders.map((order) => order.id as string)
+  );
 
   useEffect(() => {
-    getEndOrders(setEndOrders, setLoading);
+    const cleanUp1 = socketReceiver(
+      receivedIDs,
+      setReceivedIDs,
+      orders,
+      setOrders,
+      "Received"
+    );
+
+    const cleanUp2 = socketReceiver(
+      receivedIDs,
+      setReceivedIDs,
+      orders,
+      setOrders,
+      "Rejected"
+    );
+
+    return () => {
+      cleanUp1();
+      cleanUp2();
+    };
+  }, [orders, setOrders, receivedIDs]);
+
+  useEffect(() => {
+    getEndOrders(setOrders, setLoading);
   }, []);
 
   return (
     <div>
       {loading && <span>Loading...</span>}
-      {!loading && <DataTable data={endOrders} columns={endColumns} />}
+      {!loading && <DataTable data={orders} columns={endColumns} />}
     </div>
   );
 }

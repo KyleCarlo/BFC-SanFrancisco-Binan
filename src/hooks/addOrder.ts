@@ -90,7 +90,7 @@ export default async function addOrder(
       return;
     });
     socket.on("connect", () => {
-      socket.emit("send_order", order);
+      socket.emit("send_order", { order, method: "POST" });
       localStorage.removeItem("cart");
       router.push(`/order/${order_id}`);
     });
