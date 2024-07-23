@@ -1,6 +1,5 @@
 import { serverGetOrder } from "@hooks/getOrder";
-import { renderSVG } from "uqr";
-import QRCode from "@components/qrcode";
+import QrCode from "react-qr-code";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/ui/tabs";
 import { serverGetCartDetails } from "@hooks/getCartDetails";
 import CartList from "@components/customer/cart-list";
@@ -18,7 +17,6 @@ export default async function WaitingPage({
     return <h1>{message_1}</h1>;
   }
 
-  const qr_svg = renderSVG(params.id);
   const { itemDetails, message: message_2 } = await serverGetCartDetails(
     order.items
   );
@@ -45,8 +43,12 @@ export default async function WaitingPage({
         <TabsContent value="qr-code">
           <div className="py-2">
             <p>Order ID: {params.id}</p>
-            <div className="px-5 mb-5">
-              <QRCode qr_svg={qr_svg} />
+            <div className="flex justify-center mb-5">
+              <QrCode
+                value={params.id}
+                size={280}
+                className="bg-white p-3 rounded-lg"
+              />
             </div>
             <h1>Keep the QR for Tracking and Receiving the Order.</h1>
           </div>

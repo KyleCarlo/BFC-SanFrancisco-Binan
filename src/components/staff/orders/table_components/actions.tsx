@@ -4,6 +4,8 @@ import { Order, OrderStatus } from "@models/Order";
 import { Button } from "@components/ui/button";
 import updateOrderStatus from "@hooks/updateOrderStatus";
 import updateOrderEnd from "@hooks/updateOrderEnd";
+import ActionsDialog from "./qr-dialog";
+import RejectDialog from "./reject-dialog";
 
 export default function OrderActions({
   status,
@@ -25,14 +27,9 @@ export default function OrderActions({
             Accept
           </span>
         </Button>
-        <Button
-          variant="destructive"
-          onClick={() => {
-            updateOrderEnd(order as Order, "Rejected");
-          }}
-        >
-          Reject
-        </Button>
+        <RejectDialog order={order}>
+          <Button variant="destructive">Reject</Button>
+        </RejectDialog>
       </div>
     );
 
@@ -53,24 +50,16 @@ export default function OrderActions({
   if (status === "Complete")
     return (
       <div className="flex flex-col gap-2">
-        <Button
-          className="bg-green-300"
-          onClick={() => {
-            updateOrderEnd(order as Order, "Received");
-          }}
-        >
-          <span className="font-semibold tracking-wide text-green-950">
-            Received
-          </span>
-        </Button>
-        <Button
-          variant="destructive"
-          onClick={() => {
-            updateOrderEnd(order as Order, "Rejected");
-          }}
-        >
-          Reject
-        </Button>
+        <ActionsDialog order={order}>
+          <Button className="bg-green-300">
+            <span className="font-semibold tracking-wide text-green-950">
+              Received
+            </span>
+          </Button>
+        </ActionsDialog>
+        <RejectDialog order={order}>
+          <Button variant="destructive">Reject</Button>
+        </RejectDialog>
       </div>
     );
 }

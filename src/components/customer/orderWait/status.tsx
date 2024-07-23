@@ -51,6 +51,10 @@ export default function OrderStatus({
             (type === "PickUpNow" && "You can Pick Up your order now.")}
         </p>
       )}
+      {curr_status === "Received" && <p>Thank you! Please Come Again.</p>}
+      {curr_status === "Rejected" && (
+        <p>Sorry, your order has been Rejected.</p>
+      )}
       <Progress value={progress[curr_status]} className="max-w-[200px]" />
     </div>
   );
