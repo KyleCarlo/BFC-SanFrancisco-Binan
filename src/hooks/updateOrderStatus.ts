@@ -23,10 +23,17 @@ export default async function updateOrderStatus(
 
     toast.success(message);
 
+    const event = {
+      Incoming: "",
+      Processing: "send_processing",
+      Complete: "send_complete",
+      Rejected: "",
+      Received: "",
+    };
+
+    const new_order = { ...orderToUpdate, status: new_status };
     socket.emit("send_confirmation", { id, status: new_status });
-    socket.emit("send_order", { order: orderToUpdate, method: "DELETE" });
-    orderToUpdate.status = new_status;
-    socket.emit("send_order", { order: orderToUpdate, method: "POST" });
+    socket.emit(event[new_status], new_order);
   } catch {
     toast.error("Unknown error occurred.");
   }

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import DataTable from "@components/ui/data-table";
 import endColumns from "./end_columns";
 import getEndOrders from "@hooks/getEndOrders";
-import socketReceiver from "@lib/socketReceiver";
+import socket from "@lib/socket";
 import { useOrdersContext } from "@context/order";
 
 export default function EndOrders() {
@@ -15,26 +15,12 @@ export default function EndOrders() {
   );
 
   useEffect(() => {
-    const cleanUp1 = socketReceiver(
-      receivedIDs,
-      setReceivedIDs,
-      orders,
-      setOrders,
-      "Received"
-    );
-
-    const cleanUp2 = socketReceiver(
-      receivedIDs,
-      setReceivedIDs,
-      orders,
-      setOrders,
-      "Rejected"
-    );
-
-    return () => {
-      cleanUp1();
-      cleanUp2();
-    };
+    socket.on("rcv_end", (order) => {
+      if (!receivedIDs.includes(order.id as string)) {
+        setOrders([order, ...orders]);
+        setReceivedIDs([...receivedIDs, order.id as string]);
+      }
+    });
   }, [orders, setOrders, receivedIDs]);
 
   useEffect(() => {

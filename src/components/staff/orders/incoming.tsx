@@ -5,7 +5,8 @@ import { getOrderByStatus } from "@hooks/getOrder";
 import DataTable from "@components/ui/data-table";
 import orderColumns from "./table_columns";
 import { useOrdersContext } from "@context/order";
-import socketReceiver from "@lib/socketReceiver";
+import socket from "@lib/socket";
+import { Order } from "@models/Order";
 
 export default function IncomingOrders() {
   const { orders, setOrders } = useOrdersContext();
@@ -15,13 +16,21 @@ export default function IncomingOrders() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    return socketReceiver(
-      receivedIDs,
-      setReceivedIDs,
-      orders,
-      setOrders,
-      "Incoming"
-    );
+    socket.on("rcv_order", (order: Order) => {
+      if (!receivedIDs.includes(order.id as string)) {
+        setOrders([...orders, order]);
+        setReceivedIDs([...receivedIDs, order.id as string]);
+      }
+    });
+
+    socket.on("delete_order", (order_id: string) => {
+      setOrders(orders.filter((o) => o.id !== order_id));
+    });
+
+    return () => {
+      socket.off("rcv_order");
+      socket.off("delete_order");
+    };
   }, [orders, setOrders, receivedIDs]);
 
   useEffect(() => {

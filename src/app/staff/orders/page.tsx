@@ -1,11 +1,23 @@
+"use client";
+
 import IncomingOrders from "@components/staff/orders/incoming";
 import ProcessingOrders from "@components/staff/orders/processing";
 import CompletedOrders from "@components/staff/orders/complete";
 import EndOrders from "@components/staff/orders/end";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/ui/tabs";
 import { OrdersProvider } from "@context/order";
+import { useEffect } from "react";
+import socket from "@lib/socket";
 
 export default function StaffOrdersPage() {
+  useEffect(() => {
+    socket.connect();
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
   return (
     <div className="p-4">
       <Tabs
