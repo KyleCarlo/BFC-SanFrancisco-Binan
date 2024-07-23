@@ -1,5 +1,9 @@
+"use client";
+
 import { ReactNode } from "react";
 import { Button } from "@components/ui/button";
+import { QrReader } from "react-qr-reader";
+import { Result } from "@zxing/library";
 import {
   Dialog,
   DialogContent,
@@ -11,6 +15,8 @@ import {
 } from "@components/ui/dialog";
 import { Order } from "@models/Order";
 import updateOrderEnd from "@/src/hooks/updateOrderEnd";
+import { useState, useEffect } from "react";
+import { set } from "zod";
 
 export default function ActionsDialog({
   children,
@@ -19,8 +25,23 @@ export default function ActionsDialog({
   children: ReactNode;
   order: Order;
 }) {
+  const [open, setOpen] = useState(false);
+  const [scanResult, setScanResult] = useState<string>("");
+  const onResult = (result: Result | null | undefined) => {
+    if (result) {
+      if (result.getText() === order.id) {
+        setOpen(false);
+        setScanResult(result.getText());
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (scanResult === order.id) updateOrderEnd(order, "Received");
+  }, [scanResult, order]);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -29,7 +50,10 @@ export default function ActionsDialog({
             Cross check the order ID with the QR code or manually verify.
           </DialogDescription>
         </DialogHeader>
-
+        <QrReader
+          constraints={{ facingMode: "environment" }}
+          onResult={onResult}
+        />
         <DialogFooter>
           <Button
             onClick={() => {

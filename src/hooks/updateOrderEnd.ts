@@ -2,6 +2,7 @@ import { Order, OrderStatus } from "@models/Order";
 import { toast } from "sonner";
 import dayjs from "@lib/dayjs";
 import socket from "@lib/socket";
+import { Dispatch, SetStateAction } from "react";
 
 export default async function updateOrderEnd(
   orderToUpdate: Order,
@@ -42,6 +43,9 @@ export default async function updateOrderEnd(
       Received: "end_order",
     };
 
+    if (new_status === "Received") toast.success("Successfully Updated Order.");
+    else if (new_status === "Rejected")
+      toast.warning("Order has been rejected.");
     const new_order = { ...orderToUpdate, status: new_status };
     socket.emit("send_confirmation", { id, status: new_status });
     socket.emit(event[new_status], new_order);
