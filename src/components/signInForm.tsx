@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Form,
   FormControl,
@@ -14,6 +15,8 @@ import { Login, LoginModel } from "@models/User";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User } from "lucide-react";
 import { RectangleEllipsis } from "lucide-react";
+import { login } from "@lib/auth";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 export default function SignInForm({ role }: { role: "staff" | "customer" }) {
@@ -25,8 +28,15 @@ export default function SignInForm({ role }: { role: "staff" | "customer" }) {
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(async (values) => {})}
-        className="space-y-3 w-full max-w-[280px]"
+        onSubmit={form.handleSubmit(async (values) => {
+          const { proceed, message } = await login(values);
+          if (proceed) {
+            router.refresh();
+          } else {
+            toast.error(message);
+          }
+        })}
+        className="space-y-3 w-full max-w-[280px] px-2"
       >
         <FormField
           control={form.control}

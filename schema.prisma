@@ -71,16 +71,6 @@ model FoodVariation {
   available Boolean @default(true)
 }
 
-model Customer {
-  id         String       @id @default(nanoid())
-  email      String       @unique @db.VarChar(255)
-  points     Int          @default(0) // loyalty points .2
-  password   String       @db.VarChar(255)
-  name       String       @db.VarChar(255)
-  Order      Order[]
-  Order_Done Order_Done[]
-}
-
 enum OrderStatus {
   Incoming
   Processing
@@ -142,6 +132,21 @@ model Staff {
   password String    @db.VarChar(255)
   name     String    @db.VarChar(255)
   role     StaffRole
+}
+
+enum CustomerRole {
+  Customer
+}
+
+model Customer {
+  id         String       @id @default(nanoid())
+  email      String       @unique @db.VarChar(255)
+  password   String       @db.VarChar(255)
+  name       String       @db.VarChar(255)
+  role       CustomerRole @default(Customer)
+  points     Int          @default(0) // loyalty points .2
+  Order      Order[]
+  Order_Done Order_Done[]
 }
 
 model MOP {

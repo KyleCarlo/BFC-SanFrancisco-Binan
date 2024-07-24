@@ -24,6 +24,13 @@ export default function NavBar() {
       </div>
       <ul className="flex flex-col items-center justify-around">
         <li className="h-1/6 flex justify-center">
+          <Link href="/staff">
+            <Contact
+              className={`h-full ${path === "/staff" ? "text-gold" : ""}`}
+            />
+          </Link>
+        </li>
+        <li className="h-1/6 flex justify-center">
           <Link href="/staff/orders">
             <Coffee
               className={`h-full ${
@@ -41,13 +48,7 @@ export default function NavBar() {
             />
           </Link>
         </li>
-        <li className="h-1/6 flex justify-center">
-          <Link href="/staff">
-            <Contact
-              className={`h-full ${path === "/staff" ? "text-gold" : ""}`}
-            />
-          </Link>
-        </li>
+
         <li className="h-1/6 flex justify-center">
           <Link href="/staff/store">
             <Store
