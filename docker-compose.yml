@@ -20,6 +20,8 @@ services:
     command: server /data --console-address ":9001"
   socket:
     container_name: socket-server
+    env_file:
+      - .env
     build: socket-server/
     ports:
       - 8080:8080

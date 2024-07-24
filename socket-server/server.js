@@ -1,10 +1,14 @@
 const server = require("http");
 const socket = require("socket.io");
+require("dotenv").config();
 
 const httpServer = server.createServer();
 const io = new socket.Server(httpServer, {
   cors: {
-    origin: "http://localhost:3000",
+    origin:
+      process.env.NODE_ENV === "production"
+        ? "http://vps-99b080e8.vps.ovh.ca:3000"
+        : "http://localhost:3000",
   },
 });
 
@@ -74,5 +78,6 @@ io.on("connection", (socket) => {
 });
 
 httpServer.listen(8080, () => {
+  console.log(`Running in ${process.env.NODE_ENV} mode`);
   console.log("Socket server listening on port 8080");
 });
