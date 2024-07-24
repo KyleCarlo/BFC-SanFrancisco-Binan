@@ -27,31 +27,29 @@ export default async function OrderPage() {
     );
   }
   return (
-    <main className="flex items-center justify-center flex-wrap">
-      <div>
-        {beverage.map((item: Beverage) => {
-          return (
-            <ItemTypeProvider defaultItemType="beverage" key={item.id}>
-              <CartDrawerProvider>
-                <CartDialog item={item}>
-                  <ItemCard item={item} />
-                </CartDialog>
-              </CartDrawerProvider>
-            </ItemTypeProvider>
-          );
-        })}
-        {food.map((item: Food) => {
-          return (
-            <ItemTypeProvider defaultItemType="food" key={item.id}>
-              <CartDrawerProvider>
-                <CartDialog item={item}>
-                  <ItemCard item={item} />
-                </CartDialog>
-              </CartDrawerProvider>
-            </ItemTypeProvider>
-          );
-        })}
-      </div>
+    <main className="grid grid-cols-[repeat(auto-fit,_minmax(160px,_1fr))] justify-items-center m-2">
+      {beverage.map((item: Beverage) => {
+        return (
+          <ItemTypeProvider defaultItemType="beverage" key={item.id}>
+            <CartDrawerProvider>
+              <CartDialog item={item}>
+                <ItemCard item={item} />
+              </CartDialog>
+            </CartDrawerProvider>
+          </ItemTypeProvider>
+        );
+      })}
+      {food.map((item: Food) => {
+        return (
+          <ItemTypeProvider defaultItemType="food" key={item.id}>
+            <CartDrawerProvider>
+              <CartDialog item={item}>
+                <ItemCard item={item} />
+              </CartDialog>
+            </CartDrawerProvider>
+          </ItemTypeProvider>
+        );
+      })}
       <CartView food={food} beverage={beverage} />
     </main>
   );
