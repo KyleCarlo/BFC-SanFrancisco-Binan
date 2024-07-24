@@ -72,7 +72,7 @@ model FoodVariation {
 }
 
 model Customer {
-  id         Int          @id @default(autoincrement())
+  id         String       @id @default(nanoid())
   email      String       @unique @db.VarChar(255)
   points     Int          @default(0) // loyalty points .2
   password   String       @db.VarChar(255)
@@ -97,11 +97,11 @@ enum OrderType {
 }
 
 model Order {
-  id               String      @id @default(uuid())
+  id               String      @id @default(nanoid())
   created_at       DateTime    @default(now())
   received_at      DateTime?
   customer         Customer?   @relation(fields: [customer_id], references: [id])
-  customer_id      Int?
+  customer_id      String?
   status           OrderStatus
   order_type       OrderType
   scheduled        DateTime?
@@ -114,11 +114,11 @@ model Order {
 }
 
 model Order_Done {
-  id               String      @id @default(uuid())
+  id               String      @id @default(nanoid())
   created_at       DateTime    @default(now())
   received_at      DateTime?
   customer         Customer?   @relation(fields: [customer_id], references: [id])
-  customer_id      Int?
+  customer_id      String?
   status           OrderStatus
   order_type       OrderType
   scheduled        DateTime?
@@ -137,7 +137,7 @@ enum StaffRole {
 }
 
 model Staff {
-  id       Int       @id @default(autoincrement())
+  id       String    @id @default(nanoid())
   email    String    @unique @db.VarChar(255)
   password String    @db.VarChar(255)
   name     String    @db.VarChar(255)
