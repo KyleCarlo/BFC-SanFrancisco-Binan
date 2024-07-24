@@ -3,7 +3,7 @@ import { ItemDetailsList, Cart } from "@models/Cart";
 import { ScrollArea } from "@components/ui/scroll-area";
 import { Button } from "@components/ui/button";
 import OrderForm from "./orderForm";
-import CartList from "./cart-list";
+import CartList from "@components/cart-list";
 import verifyItemAvailability from "@hooks/verifyItemAvailability";
 import { useEffect, useState, useRef } from "react";
 import { toast } from "sonner";

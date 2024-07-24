@@ -5,6 +5,7 @@ import IDDialog from "./table_components/id";
 import ProofOfPayment from "./table_components/pop";
 import OrderActions from "./table_components/actions";
 import { Badge } from "@components/ui/badge";
+import ItemsDialog from "./table_components/orderItems";
 
 const orderColumns: ColumnDef<Order>[] = [
   {
@@ -66,6 +67,14 @@ const orderColumns: ColumnDef<Order>[] = [
   {
     accessorKey: "order_type",
     header: "Type",
+  },
+  {
+    accessorKey: "items",
+    header: "Items",
+    cell: ({ row }) => {
+      const items = row.original.items;
+      return <ItemsDialog items={items} />;
+    },
   },
   {
     accessorKey: "scheduled",

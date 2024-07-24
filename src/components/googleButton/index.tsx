@@ -1,14 +1,13 @@
 "use client";
 
 import "./style.css";
-import { signIn } from "next-auth/react";
 
 export default function GoogleButton() {
   return (
     <button
       className="gsi-material-button"
       onClick={() => {
-        signIn("google");
+        // signIn("google");
       }}
     >
       <div className="gsi-material-button-state"></div>

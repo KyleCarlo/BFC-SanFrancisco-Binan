@@ -2,7 +2,7 @@ import { serverGetOrder } from "@hooks/getOrder";
 import QrCode from "react-qr-code";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/ui/tabs";
 import { serverGetCartDetails } from "@hooks/getCartDetails";
-import CartList from "@components/customer/cart-list";
+import CartList from "@/src/components/cart-list";
 import OrderStatus from "@components/customer/orderWait/status";
 import { ScrollArea } from "@components/ui/scroll-area";
 
