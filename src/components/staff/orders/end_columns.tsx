@@ -3,8 +3,8 @@ import { Order } from "@models/Order";
 import dayjs from "@lib/dayjs";
 import IDDialog from "./table_components/id";
 import ProofOfPayment from "./table_components/pop";
-import OrderActions from "./table_components/actions";
 import { Badge } from "@components/ui/badge";
+import ItemsDialog from "./table_components/orderItems";
 
 const endColumns: ColumnDef<Order>[] = [
   {
@@ -66,6 +66,14 @@ const endColumns: ColumnDef<Order>[] = [
   {
     accessorKey: "order_type",
     header: "Type",
+  },
+  {
+    accessorKey: "items",
+    header: "Items",
+    cell: ({ row }) => {
+      const items = row.original.items;
+      return <ItemsDialog items={items} />;
+    },
   },
   {
     accessorKey: "scheduled",
