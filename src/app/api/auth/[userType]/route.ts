@@ -4,6 +4,7 @@ import { capitalize } from "@lib/utils";
 import { cookies } from "next/headers";
 import dayjs from "@lib/dayjs";
 import { encrypt } from "@lib/auth";
+import * as argon2 from "argon2";
 
 export async function POST(
   req: NextRequest,
@@ -28,16 +29,22 @@ export async function POST(
   try {
     const user = await db
       .selectFrom(capitalize(params.userType) as "Customer" | "Staff")
-      .select(["id", "email", "role"])
+      .select(["id", "email", "role", "first_name", "last_name", "password"])
       .where("email", "=", body.email)
-      .where("password", "=", body.password)
       .execute();
 
     if (user.length === 0) {
-      return NextResponse.json(
-        { message: "Invalid Credentials." },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: "Invalid Email." }, { status: 400 });
+    }
+
+    if (user[0].role === "Customer") {
+      const isValid = await argon2.verify(user[0].password, body.password);
+      if (!isValid) {
+        return NextResponse.json(
+          { message: "Invalid Password." },
+          { status: 400 }
+        );
+      }
     }
 
     const expires = dayjs().tz("Asia/Manila").add(30, "second").toDate();

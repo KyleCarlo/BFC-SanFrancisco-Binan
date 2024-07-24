@@ -17,11 +17,22 @@ export const CustomerModel = z.object({
   name: z.string(),
   role: z.literal("Customer"),
   points: z.number().default(0),
+  created_at: z.date(),
 });
 
 export const LoginModel = z.object({
   email: z.string().email(),
-  password: z.string(),
+  password: z.string().min(1, "Required").max(255, "Maximum of 255 characters"),
+});
+
+export const SignUpModel = z.object({
+  email: z.string().email(),
+  password: z
+    .string()
+    .min(8, "Minimum of 8 characters")
+    .max(50, "Maximum of 50 characters"),
+  first_name: z.string().min(1, "Required").max(50, "Maximum of 50 characters"),
+  last_name: z.string().min(1, "Required").max(50, "Maximum of 50 characters"),
 });
 
 export const UserSessionModel = z.object({
@@ -34,4 +45,5 @@ export type StaffRole = z.infer<typeof StaffRoleModel>;
 export type Staff = z.infer<typeof StaffModel>;
 export type Customer = z.infer<typeof CustomerModel>;
 export type Login = z.infer<typeof LoginModel>;
+export type SignUp = z.infer<typeof SignUpModel>;
 export type UserSession = z.infer<typeof UserSessionModel>;

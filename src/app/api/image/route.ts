@@ -6,11 +6,7 @@ export async function GET(req: NextRequest) {
   const filename = req.nextUrl.searchParams.get("filename") as string;
 
   try {
-    const presignedUrl = await minioClient.presignedGetObject(
-      bucket,
-      filename,
-      24 * 60 * 60
-    );
+    const presignedUrl = await minioClient.presignedGetObject(bucket, filename);
 
     return NextResponse.json({ presignedUrl }, { status: 200 });
   } catch (error) {
@@ -37,11 +33,7 @@ export async function POST(req: NextRequest) {
     }
 
     await minioClient.putObject(bucket, image.name, buffer);
-    const imageURL = await minioClient.presignedGetObject(
-      bucket,
-      image.name,
-      24 * 60 * 60
-    );
+    const imageURL = await minioClient.presignedGetObject(bucket, image.name);
 
     return NextResponse.json(
       { imageURL, message: "Successful Image Upload." },
@@ -74,11 +66,7 @@ export async function PUT(req: NextRequest) {
     await minioClient.removeObject(bucket, oldImage);
 
     await minioClient.putObject(bucket, image.name, buffer);
-    const imageURL = await minioClient.presignedGetObject(
-      bucket,
-      image.name,
-      24 * 60 * 60
-    );
+    const imageURL = await minioClient.presignedGetObject(bucket, image.name);
 
     return NextResponse.json(
       { imageURL, message: "Successful Image Update." },
