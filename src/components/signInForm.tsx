@@ -29,9 +29,12 @@ export default function SignInForm({ role }: { role: "staff" | "customer" }) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(async (values) => {
-          const { proceed, message } = await login(values);
+          const { proceed, message } = await login(role, values);
           if (proceed) {
-            router.refresh();
+            if (role === "staff") router.refresh();
+            if (role === "customer") {
+              router.push("/order");
+            }
           } else {
             toast.error(message);
           }
@@ -84,7 +87,7 @@ export default function SignInForm({ role }: { role: "staff" | "customer" }) {
             </FormItem>
           )}
         />
-        <Button variant="outline" type="submit" className="w-full">
+        <Button variant="secondary" type="submit" className="w-full">
           Sign In
         </Button>
       </form>
