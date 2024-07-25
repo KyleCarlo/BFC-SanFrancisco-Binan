@@ -48,7 +48,9 @@ export async function login(
 
 export async function getSession() {
   try {
-    const response = await fetch("http://localhost:3000/api/auth/");
+    const response = await fetch("http://localhost:3000/api/auth/", {
+      method: "POST",
+    });
 
     const { session, message } = await response.json();
 

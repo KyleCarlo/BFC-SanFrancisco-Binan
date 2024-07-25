@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { decrypt } from "@lib/auth";
 
-export async function GET() {
+export async function POST(req: NextRequest) {
   try {
     const session = cookies().get("bfc-sfb-session");
 
