@@ -45,10 +45,18 @@ export async function POST(
           { status: 400 }
         );
       }
+    } else {
+      if (user[0].password !== body.password) {
+        return NextResponse.json(
+          { message: "Invalid Password." },
+          { status: 400 }
+        );
+      }
     }
 
-    const expires = dayjs().tz("Asia/Manila").add(30, "second").toDate();
-    const session = await encrypt({ user: user[0], expires });
+    const days = ["Admin", "Dev", "Customer"].includes(user[0].role) ? 30 : 1;
+    const expires = dayjs().tz("Asia/Manila").add(days, "days").toDate();
+    const session = await encrypt({ user: user[0], expires }, days);
 
     cookies().set("bfc-sfb-session", session, { expires, httpOnly: true });
     return NextResponse.json({ message: "Login Successful." });

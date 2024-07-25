@@ -3,7 +3,6 @@
 import { Order, OrderStatus } from "@models/Order";
 import { Button } from "@components/ui/button";
 import updateOrderStatus from "@hooks/updateOrderStatus";
-import updateOrderEnd from "@hooks/updateOrderEnd";
 import ActionsDialog from "./qr-dialog";
 import RejectDialog from "./reject-dialog";
 

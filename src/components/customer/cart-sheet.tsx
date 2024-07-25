@@ -14,7 +14,6 @@ import { Beverage } from "@models/Menu/Beverage";
 import { Food } from "@models/Menu/Food";
 import { getItemDetails } from "@lib/customer-utils";
 import CartOrderSubmission from "./cart-order";
-import { useEffect } from "react";
 
 export default function CartView({
   food,
@@ -23,7 +22,7 @@ export default function CartView({
   food: Food[];
   beverage: Beverage[];
 }) {
-  const { cart, setCart } = useCartContext();
+  const { cart } = useCartContext();
   const { quantity, total_cost, itemDetailsList } = getItemDetails(
     food,
     beverage,

@@ -50,6 +50,7 @@ export default function OrderForm({
       status: "Incoming",
       total_num: validated_quantity,
       total_price: validated_total_cost,
+      mop: "",
     },
   });
 

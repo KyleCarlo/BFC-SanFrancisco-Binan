@@ -6,7 +6,8 @@ export const StaffModel = z.object({
   id: z.string(),
   email: z.string().email(),
   password: z.string(),
-  name: z.string(),
+  first_name: z.string(),
+  last_name: z.string(),
   role: StaffRoleModel,
 });
 
@@ -14,7 +15,8 @@ export const CustomerModel = z.object({
   id: z.string(),
   email: z.string().email(),
   password: z.string(),
-  name: z.string(),
+  first_name: z.string(),
+  last_name: z.string(),
   role: z.literal("Customer"),
   points: z.number().default(0),
   created_at: z.date(),

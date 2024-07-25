@@ -1,7 +1,7 @@
 "use client";
 
 import getMOPs from "@hooks/getMOPs";
-import MOPTable from "@components/ui/data-table";
+import DataTable from "@components/ui/data-table";
 import MOPColumns from "@components/staff/mop/table/columns";
 import AddMOPDialog from "@components/staff/mop/addMOP-dialog";
 import { useEffect, useState } from "react";
@@ -22,7 +22,7 @@ export default function StorePage() {
       </div>
       <div className="w-full px-4">
         {loading && <div>Loading...</div>}
-        {!loading && <MOPTable data={mops} columns={MOPColumns} />}
+        {!loading && <DataTable data={mops} columns={MOPColumns} />}
       </div>
     </main>
   );

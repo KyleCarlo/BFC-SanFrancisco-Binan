@@ -58,4 +58,49 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function PATCH(req: NextRequest) {}
+export async function PATCH(req: NextRequest) {
+  const body = await req.json();
+
+  if (!body || !body.id || !body.total_price) {
+    return NextResponse.json(
+      {
+        message: "Invalid Request. Please Include Customer ID and total price.",
+      },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const customer = await db
+      .selectFrom("Customer")
+      .select(["id", "points"])
+      .where("id", "=", body.id)
+      .execute();
+
+    if (customer.length === 0) {
+      return NextResponse.json(
+        { message: "Invalid Customer ID. Customer Not Found." },
+        { status: 400 }
+      );
+    }
+
+    const calculatedPoints =
+      Math.floor(body.total_price / 20) + customer[0].points;
+    await db
+      .updateTable("Customer")
+      .where("id", "=", body.id)
+      .set("points", calculatedPoints)
+      .execute();
+
+    return NextResponse.json(
+      { message: "Customer Points Successfully Updated." },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { message: "Failed to Update Profile." },
+      { status: 500 }
+    );
+  }
+}

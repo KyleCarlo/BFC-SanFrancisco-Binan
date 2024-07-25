@@ -2,9 +2,13 @@ import { cookies } from "next/headers";
 import SignInForm from "@components/signInForm";
 import { decrypt } from "@lib/auth";
 import { UserSession } from "@models/User";
+import StaffList from "@components/staff/staffTable";
+import { redirect } from "next/navigation";
+import getStaffs from "@hooks/getStaffs";
 
 export default async function StaffHomePage() {
   const session = cookies().get("bfc-sfb-session");
+  const { staff, message } = await getStaffs();
 
   if (!session) {
     return (
@@ -19,9 +23,13 @@ export default async function StaffHomePage() {
 
   const { user } = (await decrypt(session.value)) as { user: UserSession };
 
-  return (
-    <main>
-      <h1>Staffs</h1>
-    </main>
-  );
+  if (["Admin", "Dev", "Staff"].includes(user.role)) {
+    return (
+      <div>
+        <StaffList staff={staff} message={message} />
+      </div>
+    );
+  }
+
+  redirect("/sign-in");
 }

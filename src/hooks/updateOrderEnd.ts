@@ -35,6 +35,26 @@ export default async function updateOrderEnd(
       return toast.error(message_2);
     }
 
+    if (orderToUpdate.customer_id && new_status === "Received") {
+      console.log(orderToUpdate.customer_id);
+      const response = await fetch(`/api/customer`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          id: orderToUpdate.customer_id,
+          total_price: orderToUpdate.total_price,
+        }),
+      });
+
+      const { message } = await response.json();
+      if (!response.ok) {
+        toast.error(message);
+      } else {
+        toast.success(
+          `Customer ID: ${orderToUpdate.customer_id} gained points.`
+        );
+      }
+    }
+
     const event = {
       Incoming: "",
       Processing: "send_processing",

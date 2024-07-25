@@ -5,6 +5,8 @@ import { toast } from "sonner";
 import socket from "@lib/socket";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import handleUppyUpload from "@lib/uppy-uploadHandler";
+import { getSession } from "@lib/auth";
+import { UserSession } from "@models/User";
 
 export default async function addOrder(
   order: Order,
@@ -13,6 +15,13 @@ export default async function addOrder(
 ) {
   const order_id = nanoid();
   const uploadedFile = uppy.getFiles()[0];
+
+  if (!order.order_type) {
+    return toast.error("Please Select Order Type.");
+  }
+  if (order.mop === "") {
+    return toast.error("Please Select Mode of Payment.");
+  }
   if (order.mop !== "Cash" && !uploadedFile) {
     return toast.error("Please Upload Proof of Payment.");
   }
@@ -23,6 +32,11 @@ export default async function addOrder(
   order.id = order_id;
 
   try {
+    const { session } = await getSession();
+    console.log(session);
+    if (session && (session.user as UserSession).role === "Customer")
+      order.customer_id = (session.user as UserSession).id;
+
     if (order.mop !== "Cash") {
       uppy.setMeta({
         name: `${order_id}.${uploadedFile.extension}`,

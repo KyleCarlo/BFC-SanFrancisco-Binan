@@ -1,10 +1,11 @@
 import { serverGetOrder } from "@hooks/getOrder";
-import QrCode from "react-qr-code";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/ui/tabs";
 import { serverGetCartDetails } from "@hooks/getCartDetails";
 import CartList from "@/src/components/cart-list";
 import OrderStatus from "@components/customer/orderWait/status";
 import { ScrollArea } from "@components/ui/scroll-area";
+import QRDownload from "@/src/components/customer/orderWait/QRnDL";
+import { OrderType } from "@/src/models/Order";
 
 export default async function WaitingPage({
   params,
@@ -30,7 +31,7 @@ export default async function WaitingPage({
       <OrderStatus
         id={order.id as string}
         status={order.status}
-        type={order.order_type}
+        type={order.order_type as OrderType}
       />
       <Tabs
         defaultValue="qr-code"
@@ -43,12 +44,8 @@ export default async function WaitingPage({
         <TabsContent value="qr-code">
           <div className="py-2">
             <p>Order ID: {params.id}</p>
-            <div className="flex justify-center mb-5">
-              <QrCode
-                value={params.id}
-                size={280}
-                className="bg-white p-3 rounded-lg"
-              />
+            <div className="flex flex-col items-center">
+              <QRDownload id={params.id} />
             </div>
             <h1>Keep the QR for Tracking and Receiving the Order.</h1>
           </div>

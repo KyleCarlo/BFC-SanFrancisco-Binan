@@ -5,7 +5,10 @@ export async function GET() {
   try {
     const staff = await db.selectFrom("Staff").selectAll().execute();
 
-    return NextResponse.json({ staff }, { status: 200 });
+    return NextResponse.json(
+      { staff, message: "Successfully Fetched Staffs." },
+      { status: 200 }
+    );
   } catch (error) {
     console.error(error);
     return NextResponse.json(

@@ -2,11 +2,11 @@ import { SignJWT, jwtVerify } from "jose";
 
 const key = new TextEncoder().encode(process.env.JWT_SECRET as string);
 
-export async function encrypt(payload: any) {
+export async function encrypt(payload: any, days: number) {
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime("30 sec from now")
+    .setExpirationTime(`${days} days`)
     .sign(key);
 }
 
