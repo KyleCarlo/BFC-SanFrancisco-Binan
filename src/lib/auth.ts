@@ -29,7 +29,7 @@ export async function login(
   }
 ) {
   try {
-    const response = await fetch(`http://localhost:3000/api/auth/${userType}`, {
+    const response = await fetch(`/api/auth/${userType}`, {
       method: "POST",
       body: JSON.stringify({ email, password }),
     });
@@ -48,7 +48,7 @@ export async function login(
 
 export async function getSession() {
   try {
-    const response = await fetch("http://localhost:3000/api/auth/", {
+    const response = await fetch("/api/auth/", {
       method: "POST",
     });
 
@@ -66,7 +66,7 @@ export async function getSession() {
 
 export async function logout() {
   try {
-    const response = await fetch("http://localhost:3000/api/auth/logout", {
+    const response = await fetch("/api/auth/logout", {
       method: "POST",
     });
 
