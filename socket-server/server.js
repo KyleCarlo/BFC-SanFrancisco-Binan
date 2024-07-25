@@ -7,7 +7,7 @@ const io = new socket.Server(httpServer, {
   cors: {
     origin:
       process.env.NODE_ENV === "production"
-        ? "http://vps-99b080e8.vps.ovh.ca:3000"
+        ? "https://bfc-sfb.com"
         : "http://localhost:3000",
   },
 });
