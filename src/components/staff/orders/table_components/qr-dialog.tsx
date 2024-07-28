@@ -16,6 +16,7 @@ import {
 import { Order } from "@models/Order";
 import updateOrderEnd from "@/src/hooks/updateOrderEnd";
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 export default function ActionsDialog({
   children,
@@ -31,6 +32,8 @@ export default function ActionsDialog({
       if (result.getText() === order.id) {
         setOpen(false);
         setScanResult(result.getText());
+      } else {
+        toast.error("Invalid QR Code");
       }
     }
   };

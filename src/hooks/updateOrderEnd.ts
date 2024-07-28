@@ -2,7 +2,6 @@ import { Order, OrderStatus } from "@models/Order";
 import { toast } from "sonner";
 import dayjs from "@lib/dayjs";
 import socket from "@lib/socket";
-import { Dispatch, SetStateAction } from "react";
 
 export default async function updateOrderEnd(
   orderToUpdate: Order,
