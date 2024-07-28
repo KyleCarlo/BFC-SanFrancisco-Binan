@@ -5,7 +5,6 @@ export const StaffRoleModel = z.enum(["Admin", "Employee", "Dev"]);
 export const StaffModel = z.object({
   id: z.string(),
   email: z.string().email(),
-  password: z.string(),
   first_name: z.string(),
   last_name: z.string(),
   role: StaffRoleModel,
