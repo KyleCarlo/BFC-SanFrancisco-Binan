@@ -68,7 +68,7 @@ export default async function updateOrderEnd(
       toast.warning("Order has been rejected.");
     const new_order = { ...orderToUpdate, status: new_status };
     socket.emit("send_confirmation", { id, status: new_status });
-    socket.emit(event[new_status], new_order);
+    socket.emit(event[new_status], new_order, orderToUpdate.status);
   } catch {
     toast.error("Unknown error occurred.");
   }

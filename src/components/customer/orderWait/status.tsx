@@ -15,12 +15,17 @@ export default function OrderStatus({
   type: OrderType;
 }) {
   const [curr_status, setCurr_status] = useState<OrderStatus>(status);
+
   useEffect(() => {
     socket.connect();
     socket.emit("join_room", id);
     socket.on("rcv_confirmation", (status: OrderStatus) => {
       if (Object.keys(OrderStatusModel.Values).includes(status)) {
         setCurr_status(status);
+        if (["Processing", "Complete", "Received"].includes(status)) {
+          const client_flow_notif = new Audio("/client-flow-notif.mp3");
+          client_flow_notif.play();
+        }
       }
     });
 

@@ -11,7 +11,9 @@ import { UserSession } from "@models/User";
 export default async function addOrder(
   order: Order,
   uppy: Uppy<Record<string, unknown>, Record<string, unknown>>,
-  router: AppRouterInstance
+  router: AppRouterInstance,
+  isConnected: boolean,
+  error: string | null
 ) {
   const order_id = nanoid();
   const uploadedFile = uppy.getFiles()[0];
@@ -28,12 +30,14 @@ export default async function addOrder(
   if (order.order_type === "PickUpLater" && !order.scheduled) {
     return toast.error("Please Indicate the Schedule Pickup.");
   }
+  if (!isConnected) {
+    return toast.error(error);
+  }
 
   order.id = order_id;
 
   try {
     const { session } = await getSession();
-    console.log(session);
     if (session && (session.user as UserSession).role === "Customer")
       order.customer_id = (session.user as UserSession).id;
 
@@ -88,26 +92,9 @@ export default async function addOrder(
       return { proceed: false };
     }
 
-    socket.connect();
-    socket.on("connect_error", async () => {
-      toast.error("Error Connecting to Server.");
-      const response = await fetch(`/api/order?id=${order_id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const { message } = await response.json();
-      if (!response.ok) {
-        return toast.error(message);
-      }
-      return;
-    });
-    socket.on("connect", () => {
-      socket.emit("send_order", order);
-      localStorage.removeItem("cart");
-      router.push(`/order/${order_id}`);
-    });
+    socket.emit("send_order", order);
+    localStorage.removeItem("cart");
+    router.push(`/order/${order_id}`);
   } catch {
     return toast.error("Unknown Error Occurred.");
   }

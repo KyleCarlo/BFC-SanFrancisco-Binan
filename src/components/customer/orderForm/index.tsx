@@ -17,6 +17,7 @@ import getMOPs from "@hooks/getMOPs";
 import { ScrollArea } from "@components/ui/scroll-area";
 import addOrder from "@hooks/addOrder";
 import { useRouter } from "next/navigation";
+import socket from "@lib/socket";
 
 export default function OrderForm({
   formRef,
@@ -28,6 +29,8 @@ export default function OrderForm({
   validated_total_cost: number;
 }) {
   const [mops, setMops] = useState<MOP[]>([]);
+  const [isConnected, setIsConnected] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [uppy] = useState(customerUppy);
   const router = useRouter();
@@ -35,6 +38,30 @@ export default function OrderForm({
   useEffect(() => {
     getMOPs(setMops, setLoading);
     uppy.clearUploadedFiles();
+  }, []);
+
+  useEffect(() => {
+    socket.connect();
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log("connected");
+      setIsConnected(true);
+    });
+    socket.on("connect_error", (error) => {
+      console.log("connect_error", error.message);
+      setIsConnected(false);
+      setError(`${error.message}. Try to Refresh the Page.`);
+    });
+    return () => {
+      socket.off("connect");
+      socket.off("connect_error");
+    };
   }, []);
 
   useEffect(() => {
@@ -59,7 +86,7 @@ export default function OrderForm({
       <form
         ref={formRef}
         onSubmit={form.handleSubmit((values) => {
-          addOrder(values, uppy, router);
+          addOrder(values, uppy, router, isConnected, error);
         })}
         className="h-full"
       >

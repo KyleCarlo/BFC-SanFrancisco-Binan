@@ -1,12 +1,15 @@
 import { Staff } from "@models/User";
+import { toast } from "sonner";
+import { Dispatch, SetStateAction } from "react";
 
-export default async function getStaffs() {
+export default async function getStaffs(
+  setStaffs: Dispatch<SetStateAction<Staff[]>>,
+  setLoading: Dispatch<SetStateAction<boolean>>
+) {
+  setLoading(true);
   try {
-    const response = await fetch(`http://localhost:3000/api/staff`, {
+    const response = await fetch(`/api/staff`, {
       method: "GET",
-      next: {
-        revalidate: 1,
-      },
     });
 
     const { staff, message } = (await response.json()) as {
@@ -15,16 +18,19 @@ export default async function getStaffs() {
     };
 
     if (!response.ok) {
-      return { message };
+      setLoading(false);
+      return toast.error(message);
     }
 
     const admins = staff.filter((s) => s.role === "Admin");
     const devs = staff.filter((s) => s.role === "Dev");
     const employees = staff.filter((s) => s.role === "Employee");
 
-    return { staff: [...admins, ...devs, ...employees], message };
-  } catch (error) {
-    console.log(error);
-    return { message: "Error Fetching Staff." };
+    setStaffs([...admins, ...devs, ...employees]);
+    setLoading(false);
+  } catch {
+    setStaffs([]);
+    setLoading(false);
+    toast.error("Unknown Error Occurred.");
   }
 }
