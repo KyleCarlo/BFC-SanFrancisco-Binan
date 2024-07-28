@@ -30,6 +30,7 @@ io.on("connection", (socket) => {
     console.log("send_order");
     console.log(socket.id, data);
     io.emit("rcv_order", data);
+    io.emit("notify_staff", { status: "Incoming", id: data.id });
   });
 
   /**
@@ -51,6 +52,8 @@ io.on("connection", (socket) => {
     console.log(socket.id, data);
     io.emit("rcv_processing", data);
     io.emit("delete_order", data.id);
+    io.emit("notify_staff", { status: "Processing", id: data.id });
+    io.emit("decrement_queue", { status: "Incoming", id: data.id });
   });
 
   /**
@@ -62,18 +65,24 @@ io.on("connection", (socket) => {
     console.log(socket.id, data);
     io.emit("rcv_complete", data);
     io.emit("delete_processing", data.id);
+    io.emit("notify_staff", { status: "Complete", id: data.id });
+    io.emit("decrement_queue", { status: "Processing", id: data.id });
   });
 
   /**
    * Staff sends an order to staffs listening to "Rejected" or "Cancelled" status
    * data : Order
    */
-  socket.on("end_order", (data) => {
+  socket.on("end_order", (data, prev_status) => {
     console.log("end_order");
     console.log(socket.id, data);
     io.emit("rcv_end", data);
-    io.emit("delete_complete", data.id);
-    io.emit("delete_order", data.id);
+    io.emit(
+      prev_status === "Incoming" ? "delete_order" : "delete_complete",
+      data.id
+    );
+    io.emit("notify_staff", { status: data.status, id: data.id });
+    io.emit("decrement_queue", { status: prev_status, id: data.id });
   });
 });
 
