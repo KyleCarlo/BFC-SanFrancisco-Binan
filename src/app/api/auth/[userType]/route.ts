@@ -56,7 +56,10 @@ export async function POST(
 
     const days = ["Admin", "Dev", "Customer"].includes(user[0].role) ? 30 : 1;
     const expires = dayjs().tz("Asia/Manila").add(days, "days").toDate();
-    const session = await encrypt({ user: user[0], expires }, days);
+    const session = await encrypt(
+      { user: { ...user[0], password: undefined }, expires },
+      days
+    );
 
     cookies().set("bfc-sfb-session", session, { expires, httpOnly: true });
     return NextResponse.json({ message: "Login Successful." });
