@@ -4,14 +4,20 @@ import { StaffRoleModel } from "@models/User";
 import { UserSession } from "@models/User";
 
 export async function middleware(request: NextRequest) {
-  if (request.nextUrl.pathname.startsWith("/staff/")) {
-    const session = request.cookies.get("bfc-sfb-session");
+  const path = request.nextUrl.pathname;
+  const session = request.cookies.get("bfc-sfb-session");
+  if (path.startsWith("/staff") && path !== "/staff/sign-in") {
     if (!session) {
-      return NextResponse.redirect(new URL("/staff", request.url));
+      return NextResponse.redirect(new URL("/staff/sign-in", request.url));
     }
     const { user } = (await decrypt(session.value)) as { user: UserSession };
     if (!Object.keys(StaffRoleModel.Values).includes(user.role))
-      return NextResponse.redirect(new URL("/staff", request.url));
+      return NextResponse.redirect(new URL(`/account/${user.id}`, request.url));
+  } else if (path === "/staff/sign-in" && session) {
+    const { user } = (await decrypt(session.value)) as { user: UserSession };
+    if (!Object.keys(StaffRoleModel.Values).includes(user.role))
+      return NextResponse.redirect(new URL(`/account/${user.id}`, request.url));
+    else return NextResponse.redirect(new URL("/staff", request.url));
   }
   return NextResponse.next();
 }
