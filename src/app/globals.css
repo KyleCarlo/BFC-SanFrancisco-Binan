@@ -83,7 +83,7 @@
 @layer base {
   :root {
     --black: hsl(0, 0%, 0%);
-    --gold: hsl(38, 95%, 70%);
+    --gold: hsl(39, 94%, 69%);
     --white: hsl(49, 65%, 97%);
     --gray: hsl(0, 0%, 79%);
     --dark-gray: hsl(0, 0%, 20%);
