@@ -15,6 +15,7 @@ import { ScrollArea } from "@components/ui/scroll-area";
 import { Cart, ItemDetailsList } from "@models/Cart";
 import { getCartDetails } from "@/src/hooks/getCartDetails";
 import { useEffect, useState } from "react";
+import CartList from "./cart-list";
 
 export default function ItemsDialog({ items }: { items: Cart }) {
   const [itemDetailsList, setItemDetailsList] = useState<ItemDetailsList>([]);
@@ -37,7 +38,11 @@ export default function ItemsDialog({ items }: { items: Cart }) {
           <div className="flex flex-col items-center">
             {!loading ? (
               itemDetailsList.map((item) => {
-                return <div key={item.id} className="w-full"></div>;
+                return (
+                  <div key={item.id} className="w-full">
+                    <CartList item={item} />
+                  </div>
+                );
               })
             ) : (
               <div>Loading...</div>
