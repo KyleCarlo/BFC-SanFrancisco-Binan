@@ -48,7 +48,7 @@ export default function LoginPage() {
             if (!proceed) {
               return toast.error(message);
             }
-            if (!session || session.role !== "Customer") {
+            if (!session || session.user.role !== "Customer") {
               setShowLogin(true);
             } else {
               router.push("/order");

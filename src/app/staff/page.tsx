@@ -1,35 +1,23 @@
-import { cookies } from "next/headers";
-import SignInForm from "@components/signInForm";
-import { decrypt } from "@lib/auth";
-import { UserSession } from "@models/User";
-import StaffList from "@components/staff/staffTable";
-import { redirect } from "next/navigation";
+"use client";
+
+import { Staff } from "@models/User";
 import getStaffs from "@hooks/getStaffs";
+import { useEffect, useState } from "react";
+import DataTable from "@components/ui/data-table";
+import staffColumns from "@components/staff/staffTable/columns";
 
-export default async function StaffHomePage() {
-  const session = cookies().get("bfc-sfb-session");
-  const { staff, message } = await getStaffs();
+export default function StaffHomePage() {
+  const [loading, setLoading] = useState(true);
+  const [staffs, setStaffs] = useState<Staff[]>([]);
 
-  if (!session) {
-    return (
-      <div className="flex flex-col justify-center items-center h-[100dvh]">
-        <h1 className="text-bold text-italic text-xl mb-5 text-gold">
-          BFC Staff Login
-        </h1>
-        <SignInForm role="staff" />
-      </div>
-    );
-  }
+  useEffect(() => {
+    getStaffs(setStaffs, setLoading);
+  }, []);
 
-  const { user } = (await decrypt(session.value)) as { user: UserSession };
-
-  if (["Admin", "Dev", "Staff"].includes(user.role)) {
-    return (
-      <div>
-        <StaffList staff={staff} message={message} />
-      </div>
-    );
-  }
-
-  redirect("/sign-in");
+  return (
+    <div className="p-4">
+      {loading && <span>Loading...</span>}
+      {!loading && <DataTable columns={staffColumns} data={staffs} />}
+    </div>
+  );
 }

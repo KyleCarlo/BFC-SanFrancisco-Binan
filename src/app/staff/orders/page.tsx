@@ -6,17 +6,11 @@ import CompletedOrders from "@components/staff/orders/complete";
 import EndOrders from "@components/staff/orders/end";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/ui/tabs";
 import { OrdersProvider } from "@context/order";
-import { useEffect } from "react";
-import socket from "@lib/socket";
+import { useOrderCountContext } from "@context/orderCount";
+import NotifBadge from "@components/staff/notif-badge";
 
 export default function StaffOrdersPage() {
-  useEffect(() => {
-    socket.connect();
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  const { orderCount } = useOrderCountContext();
 
   return (
     <div className="p-4">
@@ -24,12 +18,40 @@ export default function StaffOrdersPage() {
         defaultValue="incoming"
         className="w-full flex flex-col items-center"
       >
-        <TabsList>
-          <TabsTrigger value="incoming">Incoming</TabsTrigger>
-          <TabsTrigger value="processing">Processing</TabsTrigger>
-          <TabsTrigger value="completed">Completed</TabsTrigger>
-          <TabsTrigger value="end">Received/Rejected</TabsTrigger>
-        </TabsList>
+        <div className="flex flex-wrap gap-y-2 justify-center">
+          <TabsList className="min-[513px]:rounded-r-[0] min-[513px]:pr-[0]">
+            <div className="relative">
+              {orderCount.Incoming > 0 && (
+                <span className="absolute top-[-10px] right-[-3px]">
+                  <NotifBadge count={orderCount.Incoming} status="Incoming" />
+                </span>
+              )}
+              <TabsTrigger value="incoming">Incoming</TabsTrigger>
+            </div>
+            <div className="relative">
+              {orderCount.Processing > 0 && (
+                <span className="absolute top-[-10px] right-[-3px]">
+                  <NotifBadge
+                    count={orderCount.Processing}
+                    status="Processing"
+                  />
+                </span>
+              )}
+              <TabsTrigger value="processing">Processing</TabsTrigger>
+            </div>
+          </TabsList>
+          <TabsList className="min-[513px]:rounded-l-[0] min-[513px]:pl-[0]">
+            <div className="relative">
+              {orderCount.Complete > 0 && (
+                <span className="absolute top-[-10px] right-[-3px]">
+                  <NotifBadge count={orderCount.Complete} status="Complete" />
+                </span>
+              )}
+              <TabsTrigger value="completed">Completed</TabsTrigger>
+            </div>
+            <TabsTrigger value="end">Received/Rejected</TabsTrigger>
+          </TabsList>
+        </div>
         <TabsContent value="incoming" className="w-full">
           <div className="w-full">
             <OrdersProvider>

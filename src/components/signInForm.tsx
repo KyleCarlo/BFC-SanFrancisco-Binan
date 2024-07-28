@@ -35,7 +35,7 @@ export default function SignInForm({ role }: { role: "staff" | "customer" }) {
         onSubmit={form.handleSubmit(async (values) => {
           const { proceed, message } = await login(role, values);
           if (proceed) {
-            if (role === "staff") router.refresh();
+            if (role === "staff") router.push("/staff");
             if (role === "customer") {
               router.push("/order");
             }
