@@ -146,10 +146,17 @@ model Customer {
   created_at DateTime     @default(now())
   first_name String       @db.VarChar(255)
   last_name  String       @db.VarChar(255)
+  birthday   DateTime     
   role       CustomerRole @default(Customer)
   points     Int          @default(0) // loyalty points .2
   Order      Order[]
   Order_Done Order_Done[]
+}
+
+model OTP {
+  email   String @id @db.VarChar(255)
+  otp     String @db.VarChar(255)
+  created_at DateTime @default(now())
 }
 
 model MOP {
