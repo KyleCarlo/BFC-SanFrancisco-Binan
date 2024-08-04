@@ -16,6 +16,7 @@ export const CustomerModel = z.object({
   password: z.string(),
   first_name: z.string(),
   last_name: z.string(),
+  birthday: z.date(),
   role: z.literal("Customer"),
   points: z.number().default(0),
   created_at: z.date(),
@@ -34,6 +35,7 @@ export const SignUpModel = z.object({
     .max(50, "Maximum of 50 characters"),
   first_name: z.string().min(1, "Required").max(50, "Maximum of 50 characters"),
   last_name: z.string().min(1, "Required").max(50, "Maximum of 50 characters"),
+  birthday: z.date().optional(),
 });
 
 export const UserSessionModel = z.object({
