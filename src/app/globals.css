@@ -152,6 +152,11 @@
 @layer base {
   * {
     @apply border-border;
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
   }
   body {
     @apply dark bg-background text-foreground;
