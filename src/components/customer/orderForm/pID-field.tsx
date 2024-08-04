@@ -35,9 +35,26 @@ export function PersonalDetailsField({ form }: { form: UseFormReturn<Order> }) {
         render={({ field }) => {
           return (
             <FormItem className="grid grid-cols-[0px_1fr] items-center">
-              <FormLabel className="pl-2 text-xs text-nowrap">
-                Contact #
-              </FormLabel>
+              <FormLabel className="pl-2 text-nowrap">Contact No.</FormLabel>
+              <FormControl className="m-0">
+                <Input
+                  {...field}
+                  type="tel"
+                  className="pl-[90px] w-full relative bottom-1"
+                  autoComplete="false"
+                />
+              </FormControl>
+            </FormItem>
+          );
+        }}
+      />
+      <FormField
+        control={form.control}
+        name="receiver_details.comments"
+        render={({ field }) => {
+          return (
+            <FormItem className="grid grid-cols-[0px_1fr] items-center">
+              <FormLabel className="pl-2 text-nowrap">Comments</FormLabel>
               <FormControl className="m-0">
                 <Input
                   {...field}
@@ -51,15 +68,14 @@ export function PersonalDetailsField({ form }: { form: UseFormReturn<Order> }) {
       />
       {form.watch("order_type") === "ParkNGo" && (
         <>
+          <h1 className="-ml-2 text-bold">Vehicle Info</h1>
           <FormField
             control={form.control}
             name="receiver_details.vehicle_plate"
             render={({ field }) => {
               return (
                 <FormItem className="grid grid-cols-[0px_1fr] items-center">
-                  <FormLabel className="pl-2 text-xs text-nowrap">
-                    Vehicle Plate
-                  </FormLabel>
+                  <FormLabel className="pl-2 text-nowrap">Plate No.</FormLabel>
                   <FormControl className="m-0">
                     <Input
                       {...field}
@@ -73,18 +89,19 @@ export function PersonalDetailsField({ form }: { form: UseFormReturn<Order> }) {
           />
           <FormField
             control={form.control}
-            name="receiver_details.vehicle_color"
+            name="receiver_details.vehicle_description"
             render={({ field }) => {
               return (
                 <FormItem className="grid grid-cols-[0px_1fr] items-center">
-                  <FormLabel className="pl-2 text-xs text-nowrap">
-                    Vehicle Color
+                  <FormLabel className="pl-2 text-nowrap">
+                    Description
                   </FormLabel>
                   <FormControl className="m-0">
                     <Input
                       {...field}
                       className="pl-[90px] w-full relative bottom-1"
                       autoComplete="false"
+                      placeholder="Color or Model"
                     />
                   </FormControl>
                 </FormItem>

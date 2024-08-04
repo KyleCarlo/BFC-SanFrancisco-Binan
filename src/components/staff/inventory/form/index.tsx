@@ -27,6 +27,7 @@ import { Beverage } from "@models/Menu/Beverage";
 import { Food } from "@models/Menu/Food";
 import { parseDefaultMenuValues, inferFormSchema } from "@lib/staff-utils";
 import { Form as FormSchema } from "@models/InventoryForm";
+import { useItemInventoryContext } from "@context/itemInventory";
 
 export default function ItemForm({
   setOpen,
@@ -39,6 +40,7 @@ export default function ItemForm({
 }) {
   const { itemType } = useItemTypeContext();
   const formSchema = inferFormSchema(itemType, formType);
+  const { setItemInventory } = useItemInventoryContext();
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -61,9 +63,15 @@ export default function ItemForm({
       <form
         onSubmit={form.handleSubmit((values) => {
           if (formType === "create") {
-            addItem(values, uppy, itemType, setOpen);
+            addItem(values, uppy, itemType, setOpen, setItemInventory);
           } else if (formType === "update") {
-            editItem(values as Food | Beverage, uppy, itemType, setOpen);
+            editItem(
+              values as Food | Beverage,
+              uppy,
+              itemType,
+              setOpen,
+              setItemInventory
+            );
           }
         })}
         className="space-y-2"

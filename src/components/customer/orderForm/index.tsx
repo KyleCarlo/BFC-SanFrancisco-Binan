@@ -107,6 +107,7 @@ export default function OrderForm({
             <QRField form={form} mops={mops} uppy={uppy} />
           )}
           <hr />
+          <h1 className="-mb-2 text-bold mt-1">Contact Info</h1>
           <PersonalDetailsField form={form} />
         </ScrollArea>
       </form>

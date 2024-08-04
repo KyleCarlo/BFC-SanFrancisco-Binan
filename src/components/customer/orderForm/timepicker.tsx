@@ -120,7 +120,7 @@ export default function TimePicker({
         orientation="vertical"
         className="w-[50px]"
       >
-        <CarouselContent className="-mt-1 h-[50px] ">
+        <CarouselContent className="-mt-1 h-[50px]">
           {Array.from({ length: 60 }).map((_, index) => (
             <CarouselItem
               key={index}

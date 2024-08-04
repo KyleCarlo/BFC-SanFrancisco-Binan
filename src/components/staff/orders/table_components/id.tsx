@@ -2,7 +2,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -46,11 +45,11 @@ export default function IDDialog({
               <p>{receiver.vehicle_plate}</p>
             </>
           )}
-          {receiver.vehicle_color && (
+          {receiver.vehicle_description && (
             <>
               <p className="text-gold">Vehicle Color</p>
               <p>|</p>
-              <p>{receiver.vehicle_color}</p>
+              <p>{receiver.vehicle_description}</p>
             </>
           )}
         </div>
