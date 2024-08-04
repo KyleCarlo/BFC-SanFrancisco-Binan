@@ -31,12 +31,12 @@ export default function HomePage() {
   return (
     <main className="h-dvh overflow-hidden">
       <div className="h-dvh relative pt-[200%]">
-        <Image
+        {/* <Image
           src="/store-portrait.jpg"
           alt="BFC-portrait"
           className="opacity-20 absolute top-0 z-[-10]"
           fill={true}
-        />
+        /> */}
       </div>
       <div className="absolute top-0 w-full h-dvh overflow-hidden">
         <div className="z-30 absolute bottom-0 right-0 p-10">
