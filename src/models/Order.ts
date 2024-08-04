@@ -18,9 +18,13 @@ export const OrderTypeModel = z.enum([
 
 export const OrderReceiverDetailsModel = z.object({
   name: z.string().min(1),
-  contact_number: z.string().min(1),
+  contact_number: z
+    .string()
+    .min(1)
+    .regex(/^[\d\s]+$/),
   vehicle_plate: z.string().optional(),
-  vehicle_color: z.string().optional(),
+  vehicle_description: z.string().optional(),
+  comments: z.string().optional(),
 });
 
 export const OrderModel = z.object({
