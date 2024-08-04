@@ -7,12 +7,28 @@ import * as argon2 from "argon2";
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
+  if (!body.customer) {
+    return NextResponse.json(
+      { message: "Invalid Request. Please Include Customer Details." },
+      { status: 400 }
+    );
+  }
+
+  if (!body.otp) {
+    return NextResponse.json(
+      { message: "Invalid Request. Please Include OTP." },
+      { status: 400 }
+    );
+  }
+
+  const { customer, otp } = body;
+
   if (
-    !body ||
-    !body.email ||
-    !body.password ||
-    !body.first_name ||
-    !body.last_name
+    !customer ||
+    !customer.email ||
+    !customer.password ||
+    !customer.first_name ||
+    !customer.last_name
   ) {
     return NextResponse.json(
       { message: "Email, Password, First Name, and Last Name are Required." },
@@ -24,7 +40,7 @@ export async function POST(req: NextRequest) {
     const user = await db
       .selectFrom("Customer")
       .select("email")
-      .where("email", "=", body.email)
+      .where("email", "=", customer.email)
       .execute();
 
     if (user.length > 0) {
@@ -34,12 +50,30 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const hashedPassword = await argon2.hash(body.password);
+    const userOTP = await db
+      .selectFrom("OTP")
+      .select("otp")
+      .where("email", "=", customer.email)
+      .execute();
+
+    if (userOTP.length === 0) {
+      return NextResponse.json(
+        { message: "Invalid OTP. Please Request for OTP Again." },
+        { status: 400 }
+      );
+    }
+
+    if (!(await argon2.verify(userOTP[0].otp, otp))) {
+      return NextResponse.json({ message: "Invalid OTP." }, { status: 400 });
+    }
+
+    const hashedPassword = await argon2.hash(customer.password);
     await db
       .insertInto("Customer")
       .values({
-        ...body,
+        ...customer,
         password: hashedPassword,
+        birthday: dayjs(customer.birthday).tz("Asia/Manila").toDate(),
         id: nanoid(),
         created_at: dayjs().tz("Asia/Manila").toDate(),
       })
