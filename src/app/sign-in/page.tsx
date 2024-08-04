@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import GoogleButton from "@components/googleButton";
 import SignInForm from "@components/signInForm";
 import { logout, getSession } from "@lib/auth";
 import { toast } from "sonner";
@@ -74,12 +73,6 @@ export default function LoginPage() {
         <Link href="/sign-up" className="text-gold underline text-right">
           Don{"'"}t have an account yet?
         </Link>
-        <div className="my-2 flex gap-3">
-          <p className="tracking-[-3px]">--------------------------------</p>
-          <p>or</p>
-          <p className="tracking-[-3px]">--------------------------------</p>
-        </div>
-        <GoogleButton />
       </main>
     </>
   );
