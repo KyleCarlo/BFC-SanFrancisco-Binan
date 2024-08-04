@@ -11,10 +11,11 @@ import { Food } from "@models/Menu/Food";
 import { Beverage } from "@models/Menu/Beverage";
 import { getMenuItems } from "@hooks/getMenuItems";
 import { ItemTypeContext } from "@context/itemType";
+import { ItemInventoryProvider } from "@context/itemInventory";
 
 export default function InventoryPage() {
   const [itemType, setItemType] = useState<ItemType>("beverage");
-  const [items, setItems] = useState<Food[] | Beverage[] | []>([]);
+  const [items, setItems] = useState<Array<Food | Beverage>>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -24,20 +25,25 @@ export default function InventoryPage() {
   return (
     <main className="flex flex-col justify-center items-center">
       <ItemTypeContext.Provider value={{ itemType, setItemType }}>
-        <div className="flex items-center gap-4 p-4">
-          <AddItemDialog />
-          <Input placeholder="Search for Item Name" />
-          <SelectItemType />
-        </div>
-        <div className="w-full px-4">
-          {loading && <p>Loading...</p>}
-          {!loading && itemType === "food" && (
-            <FoodTable items={items as Food[]} />
-          )}
-          {!loading && itemType === "beverage" && (
-            <BeverageTable items={items as Beverage[]} />
-          )}
-        </div>
+        <ItemInventoryProvider
+          itemInventory={items}
+          setItemInventory={setItems}
+        >
+          <div className="flex items-center gap-4 p-4">
+            <AddItemDialog />
+            <Input placeholder="Search for Item Name" />
+            <SelectItemType />
+          </div>
+          <div className="w-full px-4">
+            {loading && <p>Loading...</p>}
+            {!loading && itemType === "food" && (
+              <FoodTable items={items as Food[]} />
+            )}
+            {!loading && itemType === "beverage" && (
+              <BeverageTable items={items as Beverage[]} />
+            )}
+          </div>
+        </ItemInventoryProvider>
       </ItemTypeContext.Provider>
     </main>
   );

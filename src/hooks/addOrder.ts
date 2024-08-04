@@ -30,6 +30,15 @@ export default async function addOrder(
   if (order.order_type === "PickUpLater" && !order.scheduled) {
     return toast.error("Please Indicate the Schedule Pickup.");
   }
+  if (order.order_type === "ParkNGo" && !order.receiver_details.vehicle_plate) {
+    return toast.error("Please Indicate the Vehicle Plate.");
+  }
+  if (
+    order.order_type === "ParkNGo" &&
+    !order.receiver_details.vehicle_description
+  ) {
+    return toast.error("Please Indicate the Vehicle Description.");
+  }
   if (!isConnected) {
     return toast.error(error);
   }

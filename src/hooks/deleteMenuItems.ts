@@ -1,11 +1,15 @@
 import { ItemType } from "@models/Menu";
 import { toast } from "sonner";
+import { Dispatch, SetStateAction } from "react";
+import { Food } from "@models/Menu/Food";
+import { Beverage } from "@models/Menu/Beverage";
 
 export default async function onDelete(
   ids: number[],
   variation_ids: number[],
   imageNames: string[],
-  itemType: ItemType
+  itemType: ItemType,
+  setItemInventory: Dispatch<SetStateAction<Array<Food | Beverage>>>
 ) {
   try {
     const response = await fetch(`/api/menu?itemType=${itemType}`, {
@@ -36,6 +40,7 @@ export default async function onDelete(
     }
 
     toast.success(message);
+    setItemInventory((prev) => prev.filter((item) => !ids.includes(item.id)));
   } catch {
     toast.error("Unknown error occurred.");
   }

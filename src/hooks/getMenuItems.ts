@@ -7,7 +7,7 @@ import { toast } from "sonner";
 export async function getMenuItems(
   itemType: ItemType,
   setLoading: React.Dispatch<SetStateAction<boolean>>,
-  setItems: React.Dispatch<SetStateAction<[] | Food[] | Beverage[]>>
+  setItems: React.Dispatch<SetStateAction<Array<Food | Beverage>>>
 ) {
   setLoading(true);
   try {

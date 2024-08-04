@@ -7,12 +7,16 @@ import { ItemType } from "@models/Menu";
 import { validateVariation } from "@lib/staff-utils";
 import handleUppyUpload from "@lib/uppy-uploadHandler";
 import { BeverageForm, FoodForm } from "@models/InventoryForm";
+import { Food } from "@models/Menu/Food";
+import { Beverage } from "@models/Menu/Beverage";
+import { capitalize } from "@lib/utils";
 
 export async function addItem(
   values: BeverageForm | FoodForm,
   uppy: Uppy<Record<string, unknown>, Record<string, unknown>>,
   itemType: ItemType,
-  setOpen: Dispatch<SetStateAction<boolean>>
+  setOpen: Dispatch<SetStateAction<boolean>>,
+  setItemInventory: Dispatch<SetStateAction<Array<Food | Beverage>>>
 ) {
   const { isValid, message } = validateVariation(
     values.variations as BeverageVariation[] | FoodVariation[],
@@ -84,6 +88,31 @@ export async function addItem(
 
     toast.success(message);
     setOpen(false);
+    const item = {
+      ...values,
+      feature: capitalize(values.feature),
+      image: imageURL,
+    } as Food | Beverage;
+
+    if (itemType === "food") {
+      (item as FoodForm).category = capitalize(
+        (values as FoodForm).category
+      ) as Food["category"];
+    } else {
+      (item as BeverageForm).variations.forEach((variation, index) => {
+        if (!variation.concentrate) {
+          const hot_cold = (item as BeverageForm).variations[index]
+            .hot_cold as string;
+          (item as BeverageForm).variations[index].hot_cold = capitalize(
+            hot_cold
+          ) as BeverageVariation["hot_cold"];
+        }
+      });
+      (item as BeverageForm).base = capitalize(
+        (values as BeverageForm).base
+      ) as Beverage["base"];
+    }
+    setItemInventory((prev) => [...prev, item]);
   } catch {
     toast.error("Unknown error occurred.");
   }
