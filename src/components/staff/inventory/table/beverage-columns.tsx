@@ -6,11 +6,13 @@ import Availibility from "./availability-switch";
 import onDelete from "@hooks/deleteMenuItems";
 import { toast } from "sonner";
 import EditItemDialog from "./editItem-dialog";
+import { useItemInventoryContext } from "@context/itemInventory";
 
 const beverageColumns: ColumnDef<Beverage>[] = [
   {
     id: "actions",
-    header: ({ table }) => {
+    header: function ActionsColumn({ table }) {
+      const { setItemInventory } = useItemInventoryContext();
       return (
         <div className="flex justify-center">
           <Trash2
@@ -32,7 +34,13 @@ const beverageColumns: ColumnDef<Beverage>[] = [
                 return row.original.id;
               });
               if (ids.length > 0) {
-                onDelete(ids, variation_ids, imageNames, "beverage");
+                onDelete(
+                  ids,
+                  variation_ids,
+                  imageNames,
+                  "beverage",
+                  setItemInventory
+                );
               } else {
                 toast.warning("Please select a row to delete.");
               }

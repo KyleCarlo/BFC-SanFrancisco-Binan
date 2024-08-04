@@ -6,11 +6,13 @@ import { Trash2 } from "lucide-react";
 import onDelete from "@hooks/deleteMenuItems";
 import { toast } from "sonner";
 import EditItemDialog from "./editItem-dialog";
+import { useItemInventoryContext } from "@context/itemInventory";
 
 const foodColumns: ColumnDef<Food>[] = [
   {
     id: "actions",
-    header: ({ table }) => {
+    header: function ActionsColumn({ table }) {
+      const { setItemInventory } = useItemInventoryContext();
       return (
         <div className="flex justify-center">
           <Trash2
@@ -32,7 +34,13 @@ const foodColumns: ColumnDef<Food>[] = [
                 return row.original.id;
               });
               if (ids.length > 0) {
-                onDelete(ids, variation_ids, imageNames, "food");
+                onDelete(
+                  ids,
+                  variation_ids,
+                  imageNames,
+                  "food",
+                  setItemInventory
+                );
               } else {
                 toast.warning("Please select a row to delete.");
               }
