@@ -19,6 +19,21 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL(`/account/${user.id}`, request.url));
     else return NextResponse.redirect(new URL("/staff", request.url));
   }
+  if (path === "/api/menu" && request.method != "GET") {
+    if (!session) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    const { user } = (await decrypt(session.value)) as { user: UserSession };
+    if (
+      !["Admin", "Dev", "Employee"].includes(user.role) &&
+      request.method === "PATCH"
+    ) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    if (!["Admin", "Dev"].includes(user.role) && request.method !== "PATCH") {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+  }
   return NextResponse.next();
 }
 
