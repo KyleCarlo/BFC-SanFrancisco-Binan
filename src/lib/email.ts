@@ -9,8 +9,8 @@ export const transporter = nodemailer.createTransport({
     user: process.env.OTP_SENDER as string,
     pass: process.env.OTP_SENDER_AUTH as string,
   },
-  logger: true,
-  debug: true,
+  logger: process.env.NODE_ENV === "production" ? false : true,
+  debug: process.env.NODE_ENV === "production" ? false : true,
 });
 
 export function OTPmessage(first_name: string, otp: string) {
