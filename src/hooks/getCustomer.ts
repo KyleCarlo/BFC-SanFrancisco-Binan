@@ -1,4 +1,5 @@
 import { Customer } from "@models/User";
+import { cookies } from "next/headers";
 
 export async function serverGetCustomer(id: string) {
   try {
@@ -7,6 +8,7 @@ export async function serverGetCustomer(id: string) {
       {
         method: "GET",
         cache: "no-store",
+        headers: { cookie: cookies().toString() },
       }
     );
 

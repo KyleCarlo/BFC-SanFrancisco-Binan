@@ -6,6 +6,9 @@ import { UserSession } from "@models/User";
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const session = request.cookies.get("bfc-sfb-session");
+  console.log("path", path);
+  // console.log("session -1", session);
+
   if (path.startsWith("/staff") && path !== "/staff/sign-in") {
     if (!session) {
       return NextResponse.redirect(new URL("/staff/sign-in", request.url));
@@ -34,13 +37,45 @@ export async function middleware(request: NextRequest) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
   }
+  if (path.startsWith("/account")) {
+    if (!session)
+      return NextResponse.redirect(new URL("/sign-in", request.url));
+
+    const { user } = (await decrypt(session.value)) as { user: UserSession };
+    if (user.role === "Customer" && path !== `/account/${user.id}`)
+      return NextResponse.redirect(new URL(`/account/${user.id}`, request.url));
+
+    if (["Admin", "Employee"].includes(user.role))
+      return NextResponse.redirect(new URL("/staff", request.url));
+  }
+
+  if (path === "/api/customer" && request.method === "GET") {
+    const id = request.nextUrl.searchParams.get("id");
+    if (!id) {
+      return NextResponse.json(
+        { message: "Invalid Customer ID." },
+        { status: 400 }
+      );
+    }
+    if (!session) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    const { user } = (await decrypt(session.value)) as { user: UserSession };
+    if (user.role === "Customer" && id !== user.id) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    if (["Admin", "Employee"].includes(user.role))
+      return NextResponse.redirect(new URL("/staff", request.url));
+  }
+
   return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
+    "/((?!api|_next/static|_next/image|icon.ico).*)",
     "/staff/:path*",
+    "/account/:id*",
     "/api/:path*",
   ],
 };
