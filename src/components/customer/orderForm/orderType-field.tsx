@@ -12,8 +12,8 @@ export default function OrderTypeField({
   pickUpLater: boolean;
 }) {
   return (
-    <div className="grid grid-rows-2 grid-cols-2 gap-2 p-2">
-      <Button
+    <div className="grid grid-rows-1 grid-cols-2 gap-2 p-2">
+      {/* <Button
         type="button"
         variant="outline"
         onClick={() => form.setValue("order_type", "DineIn")}
@@ -22,17 +22,7 @@ export default function OrderTypeField({
         }`}
       >
         Dine-In
-      </Button>
-      <Button
-        type="button"
-        variant="outline"
-        onClick={() => form.setValue("order_type", "ParkNGo")}
-        className={`${
-          form.watch("order_type") === "ParkNGo" && "border-gold text-gold"
-        }`}
-      >
-        Park N{"'"} Go
-      </Button>
+      </Button> */}
       <Button
         type="button"
         variant="outline"
@@ -53,6 +43,16 @@ export default function OrderTypeField({
         }`}
       >
         Pick Up Later
+      </Button>
+      <Button
+        type="button"
+        variant="outline"
+        onClick={() => form.setValue("order_type", "ParkNGo")}
+        className={`col-span-2 ${
+          form.watch("order_type") === "ParkNGo" && "border-gold text-gold"
+        }`}
+      >
+        Park N{"'"} Go
       </Button>
     </div>
   );
