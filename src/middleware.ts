@@ -6,8 +6,6 @@ import { UserSession } from "@models/User";
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const session = request.cookies.get("bfc-sfb-session");
-  console.log("path", path);
-  // console.log("session -1", session);
 
   if (path.startsWith("/staff") && path !== "/staff/sign-in") {
     if (!session) {
