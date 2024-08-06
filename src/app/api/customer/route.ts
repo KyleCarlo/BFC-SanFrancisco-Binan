@@ -4,6 +4,47 @@ import dayjs from "@lib/dayjs";
 import { nanoid } from "nanoid";
 import * as argon2 from "argon2";
 
+export async function GET(req: NextRequest) {
+  const id = req.nextUrl.searchParams.get("id") as string;
+  if (!id) {
+    return NextResponse.json(
+      { message: "Invalid Customer ID." },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const customer = await db
+      .selectFrom("Customer")
+      .select([
+        "id",
+        "email",
+        "created_at",
+        "first_name",
+        "last_name",
+        "birthday",
+        "points",
+      ])
+      .where("id", "=", id)
+      .execute();
+
+    if (customer.length === 0) {
+      return NextResponse.json(
+        { message: "Customer Not Found." },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({ customer: customer[0] }, { status: 200 });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      { message: "Failed to Fetch Customer Details." },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(req: NextRequest) {
   const body = await req.json();
 

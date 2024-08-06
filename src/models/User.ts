@@ -13,11 +13,9 @@ export const StaffModel = z.object({
 export const CustomerModel = z.object({
   id: z.string(),
   email: z.string().email(),
-  password: z.string(),
   first_name: z.string(),
   last_name: z.string(),
   birthday: z.date(),
-  role: z.literal("Customer"),
   points: z.number().default(0),
   created_at: z.date(),
 });
