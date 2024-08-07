@@ -3,6 +3,7 @@ import db from "@lib/db";
 import dayjs from "@lib/dayjs";
 import { nanoid } from "nanoid";
 import * as argon2 from "argon2";
+import { Cart } from "@models/Cart";
 
 export async function GET(req: NextRequest) {
   const id = req.nextUrl.searchParams.get("id") as string;
@@ -136,7 +137,7 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   const body = await req.json();
 
-  if (!body || !body.id || !body.total_price) {
+  if (!body || !body.id || !body.items) {
     return NextResponse.json(
       {
         message: "Invalid Request. Please Include Customer ID and total price.",
@@ -159,22 +160,60 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
-    const calculatedPoints =
-      Math.floor(body.total_price / 20) + customer[0].points;
+    const beverageCart = (body.items as Cart).filter(
+      (item) => item.itemType === "beverage"
+    );
+
+    if (beverageCart.length === 0) {
+      return NextResponse.json(
+        { message: "No Beverage in Cart." },
+        { status: 400 }
+      );
+    }
+
+    const beverage = await db
+      .selectFrom("BeverageVariation")
+      .select(["id", "price"])
+      .where(
+        "id",
+        "in",
+        beverageCart.map((item) => item.variation_id)
+      )
+      .execute();
+
+    if (beverage.length === 0) {
+      return NextResponse.json(
+        { message: "No Beverage Exist." },
+        { status: 400 }
+      );
+    }
+
+    let earnedPoints = 0;
+    beverageCart.forEach((item) => {
+      const unit = beverage.find((bev) => {
+        return bev.id === item.variation_id;
+      });
+
+      if (unit) earnedPoints += unit.price * item.quantity;
+    });
+    earnedPoints = Math.floor(earnedPoints / 20);
+
     await db
       .updateTable("Customer")
       .where("id", "=", body.id)
-      .set("points", calculatedPoints)
+      .set("points", earnedPoints + customer[0].points)
       .execute();
 
     return NextResponse.json(
-      { message: "Customer Points Successfully Updated." },
+      {
+        message: `Customer ${customer[0].id} Earned ${earnedPoints} Points.`,
+      },
       { status: 200 }
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Failed to Update Profile." },
+      { message: "Failed to Update Customer Points." },
       { status: 500 }
     );
   }

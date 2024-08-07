@@ -35,22 +35,20 @@ export default async function updateOrderEnd(
     }
 
     if (orderToUpdate.customer_id && new_status === "Received") {
-      console.log(orderToUpdate.customer_id);
       const response = await fetch(`/api/customer`, {
         method: "PATCH",
         body: JSON.stringify({
           id: orderToUpdate.customer_id,
-          total_price: orderToUpdate.total_price,
+          items: orderToUpdate.items,
         }),
       });
 
       const { message } = await response.json();
       if (!response.ok) {
-        toast.error(message);
+        if (response.status === 400) toast.warning(message);
+        else toast.error(message);
       } else {
-        toast.success(
-          `Customer ID: ${orderToUpdate.customer_id} gained points.`
-        );
+        toast.success(message);
       }
     }
 
