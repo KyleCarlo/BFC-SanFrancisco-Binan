@@ -1,8 +1,7 @@
-import { ItemDetailsList } from "@models/Cart";
+import { ItemDetails, ItemDetailsList } from "@models/Cart";
 import { toast } from "sonner";
 import { getIDofVariations } from "@lib/customer-utils";
 import { Dispatch, SetStateAction } from "react";
-import { set } from "zod";
 
 export default async function verifyItemAvailability(
   itemDetailsList: ItemDetailsList,
@@ -11,6 +10,7 @@ export default async function verifyItemAvailability(
   setValidatedQuantity: Dispatch<SetStateAction<number>>,
   setValidatedTotalCost: Dispatch<SetStateAction<number>>,
   setAvailableOrders: Dispatch<SetStateAction<boolean[]>>,
+  setDiscountAmount: Dispatch<SetStateAction<number>>,
   setLoading: Dispatch<SetStateAction<boolean>>
 ) {
   setLoading(true);
@@ -55,6 +55,16 @@ export default async function verifyItemAvailability(
     setValidatedQuantity(validated_quantity);
     setValidatedTotalCost(validated_total_cost);
     setAvailableOrders(available);
+    if (!available.includes(true)) return;
+
+    const highestPriceItem = itemDetailsList.reduce((max, itemDetails, index) =>
+      !available[index]
+        ? max
+        : itemDetails.price > max.price
+        ? itemDetails
+        : max
+    );
+    setDiscountAmount(highestPriceItem.price * 0.2857);
   } catch {
     toast.error("Unknown error occurred.");
   }
