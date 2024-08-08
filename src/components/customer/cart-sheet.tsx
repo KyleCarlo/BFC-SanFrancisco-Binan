@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@components/ui/sheet";
 import { Button } from "@components/ui/button";
 import { useCartContext } from "@context/cart";
 import { Beverage } from "@models/Menu/Beverage";
@@ -45,11 +38,7 @@ export default function CartView({
           </Button>
         </div>
       </SheetTrigger>
-      <SheetContent className="w-full grid grid-rows-[56px_1px_1fr_1px_25px_50px]">
-        <SheetHeader>
-          <SheetTitle>Order Summary</SheetTitle>
-          <SheetDescription>Check your order...</SheetDescription>
-        </SheetHeader>
+      <SheetContent className="w-full grid grid-rows-[56px_1px_1fr_1px_25px_25px_50px]">
         <CartOrderSubmission
           itemDetailsList={itemDetailsList}
           quantity={quantity}
