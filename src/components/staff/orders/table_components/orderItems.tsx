@@ -17,16 +17,27 @@ import {
 } from "@components/ui/sheet";
 
 export default function ItemsDialog({ items }: { items: Cart }) {
+  const [open, setOpen] = useState(false);
   const [itemDetailsList, setItemDetailsList] = useState<ItemDetailsList>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    getCartDetails(items, setItemDetailsList, setLoading);
-  }, [items]);
+    if (open && itemDetailsList.length === 0) {
+      setTimeout(() => {
+        getCartDetails(items, setItemDetailsList, setLoading);
+      }, 500);
+    }
+  }, [open, items, itemDetailsList]);
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger className="w-full">
-        <Button>Show</Button>
+        <Button
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          Show
+        </Button>
       </SheetTrigger>
       <SheetContent className="w-full grid grid-rows-[min-content_1fr]">
         <SheetHeader>

@@ -4,7 +4,10 @@ import db from "@lib/db";
 export async function PATCH(req: NextRequest) {
   const customerID = req.nextUrl.searchParams.get("id") as string;
   if (!customerID) {
-    return { status: 400, json: { message: "Invalid Customer ID." } };
+    return NextResponse.json(
+      { message: "Invalid Customer ID." },
+      { status: 400 }
+    );
   }
 
   try {
