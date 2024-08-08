@@ -86,12 +86,19 @@ enum OrderType {
   ParkNGo
 }
 
+enum OrderDiscount {
+  PWD
+  Senior
+}
+
 model Order {
   id               String      @id @default(nanoid())
   created_at       DateTime    @default(now())
   received_at      DateTime?
   customer         Customer?   @relation(fields: [customer_id], references: [id])
   customer_id      String?
+  discount         OrderDiscount?
+  discount_id      String?
   status           OrderStatus
   order_type       OrderType
   scheduled        DateTime?
@@ -109,6 +116,8 @@ model Order_Done {
   received_at      DateTime?
   customer         Customer?   @relation(fields: [customer_id], references: [id])
   customer_id      String?
+  discount         OrderDiscount?
+  discount_id      String?
   status           OrderStatus
   order_type       OrderType
   scheduled        DateTime?

@@ -27,11 +27,15 @@ export const OrderReceiverDetailsModel = z.object({
   comments: z.string().optional(),
 });
 
+export const OrderDiscountModel = z.enum(["Senior", "PWD"]);
+
 export const OrderModel = z.object({
   id: z.string().optional(),
   created_at: z.date().optional(),
   received_at: z.date().optional(),
   customer_id: z.string().optional(),
+  discount: OrderDiscountModel.optional(),
+  discount_id: z.string().optional(),
   status: OrderStatusModel,
   order_type: OrderTypeModel.optional(),
   scheduled: z.date().optional(),
@@ -46,4 +50,5 @@ export const OrderModel = z.object({
 export type Order = z.infer<typeof OrderModel>;
 export type OrderStatus = z.infer<typeof OrderStatusModel>;
 export type OrderType = z.infer<typeof OrderTypeModel>;
+export type OrderDiscount = z.infer<typeof OrderDiscountModel>;
 export type OrderReceiverDetails = z.infer<typeof OrderReceiverDetailsModel>;
