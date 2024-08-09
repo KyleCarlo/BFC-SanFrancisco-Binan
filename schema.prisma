@@ -98,7 +98,7 @@ model Order {
   customer         Customer?   @relation(fields: [customer_id], references: [id])
   customer_id      String?
   discount         OrderDiscount?
-  discount_id      String?
+  discount_id      String?     @db.VarChar(400)
   status           OrderStatus
   order_type       OrderType
   scheduled        DateTime?
@@ -117,7 +117,7 @@ model Order_Done {
   customer         Customer?   @relation(fields: [customer_id], references: [id])
   customer_id      String?
   discount         OrderDiscount?
-  discount_id      String?
+  discount_id      String?     @db.VarChar(400)
   status           OrderStatus
   order_type       OrderType
   scheduled        DateTime?
