@@ -130,7 +130,7 @@ export function parseDefaultCartItem(
       id: itemID,
       variation_id: variations[0].id,
       quantity: 1,
-      sugar_level: itemType === "beverage" ? "50%" : undefined,
+      sugar_level: itemType === "beverage" ? "75%" : undefined,
     } as DefaultValues<CartItem>;
   return defaultCart;
 }
