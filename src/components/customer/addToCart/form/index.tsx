@@ -94,7 +94,7 @@ export default function AddToCartForm({
               <>
                 <span>{formType === "create" ? "Add to" : "Update"} Cart</span>
                 <span className="px-2">-</span>
-                <span className="text-gold">{computedPrice}</span>
+                <span className="text-gold">{computedPrice.toFixed(2)}</span>
               </>
             ) : (
               <>

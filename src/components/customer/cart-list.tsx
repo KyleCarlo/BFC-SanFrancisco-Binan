@@ -14,7 +14,7 @@ export default function CartList({
   return (
     <div key={item.id} className="relative">
       <div
-        className={`grid grid-cols-[25%_35%_20%_20%] justify-items-center items-center ${
+        className={`grid grid-cols-[25%_35%_10%_30%] justify-items-center items-center ${
           !available && "opacity-40"
         }`}
       >
@@ -52,7 +52,7 @@ export default function CartList({
           </span>
         </div>
         <div className={`${!available && "line-through"}`}>
-          ₱ {item.quantity * item.price}
+          ₱ {(item.quantity * item.price).toFixed(2)}
         </div>
         {!available && (
           <p className="absolute text-bolder text-red-700 tracking-widest rotate-12">

@@ -56,8 +56,8 @@ export default function VariantSelect({
               {cartItem.quantity}
             </span>
           </p>
-          <p className=" text-nowrap w-16 justify-self-end flex items-center justify-start text-sm">
-            ₱ {price}
+          <p className=" text-nowrap w-18 justify-self-end flex items-center justify-start text-sm">
+            ₱ {price.toFixed(2)}
           </p>
         </div>
       </div>

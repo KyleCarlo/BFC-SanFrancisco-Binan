@@ -34,7 +34,7 @@ export default function ItemCard({ item }: { item: Beverage | Food }) {
           {item.name}
         </h1>
         <p className="text-center text-xs px-2 pb-3">
-          ₱ {item.variations[0].price}
+          ₱ {(item.variations[0].price as number).toFixed(2)}
         </p>
       </div>
     </div>

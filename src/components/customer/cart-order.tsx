@@ -122,6 +122,8 @@ export default function CartOrderSubmission({
             formRef={formRef}
             validated_quantity={validated_quantity}
             validated_total_cost={validated_total_cost}
+            discountType={discountType}
+            discountAmount={discountAmount}
           />
         </div>
       </div>
@@ -172,7 +174,9 @@ export default function CartOrderSubmission({
         <span className="justify-self-end">Less</span>
         <span className="text-bold"></span>
         <span
-          className={`text-bold ${discountType !== undefined && "text-gold"}`}
+          className={`text-bold justify-self-end ${
+            discountType !== undefined && "text-gold"
+          }`}
         >
           {discountType !== undefined ? `-${discountAmount.toFixed(2)}` : "0"}
         </span>
@@ -186,15 +190,15 @@ export default function CartOrderSubmission({
           }`}
         >
           <span
-            className={`text-bold ${
+            className={`text-bold text-nowrap ${
               discountType !== undefined &&
               "line-through text-xs text-end text-[--gray]"
             }`}
           >
-            ₱ {validated_total_cost}
+            ₱ {validated_total_cost.toFixed(2)}
           </span>
           {discountType !== undefined && (
-            <span className="text-bold">
+            <span className="text-bold text-nowrap">
               ₱ {(validated_total_cost - discountAmount).toFixed(2)}
             </span>
           )}
@@ -217,7 +221,6 @@ export default function CartOrderSubmission({
                   available_orders
                 );
                 localStorage.setItem("cart", JSON.stringify(newCart));
-
                 if (parsedCart.length > 0) {
                   setOrderConfirmed(true);
                 }

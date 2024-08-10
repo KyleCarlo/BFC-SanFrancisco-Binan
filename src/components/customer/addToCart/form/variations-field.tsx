@@ -57,7 +57,7 @@ export default function VariationsField({
                         )}
                       </span>
                       <span className="text-sm font-normal flex-1 text-nowrap flex justify-end">
-                        <div className="w-12">₱ {variation.price}</div>
+                        <div className="w-[80px]">₱ {variation.price}</div>
                       </span>
                     </FormLabel>
                   </FormItem>

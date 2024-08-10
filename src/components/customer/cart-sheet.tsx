@@ -34,7 +34,7 @@ export default function CartView({
             variant="outline"
             className="border-2 relative bottom-3 w-[90%] max-w-[400px]"
           >
-            {quantity} item{quantity > 1 ?? "s"} - ₱{total_cost}
+            {quantity} item{quantity > 1 ?? "s"} - ₱{total_cost.toFixed(2)}
           </Button>
         </div>
       </SheetTrigger>
@@ -42,7 +42,7 @@ export default function CartView({
         <CartOrderSubmission
           itemDetailsList={itemDetailsList}
           quantity={quantity}
-          total_cost={total_cost}
+          total_cost={Number(total_cost.toFixed(2))}
         />
       </SheetContent>
     </Sheet>
