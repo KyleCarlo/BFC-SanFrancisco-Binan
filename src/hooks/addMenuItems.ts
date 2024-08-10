@@ -112,7 +112,18 @@ export async function addItem(
         (values as BeverageForm).base
       ) as Beverage["base"];
     }
-    setItemInventory((prev) => [...prev, item]);
+    setItemInventory((prev) => [
+      ...prev,
+      {
+        ...item,
+        variations: item.variations.map((v) => {
+          return {
+            ...v,
+            price: (v.price as number).toFixed(2),
+          };
+        }),
+      } as Food | Beverage,
+    ]);
   } catch {
     toast.error("Unknown error occurred.");
   }
