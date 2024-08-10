@@ -7,14 +7,17 @@ import {
   DialogTrigger,
 } from "@components/ui/dialog";
 import { Button } from "@components/ui/button";
-import { OrderReceiverDetails } from "@models/Order";
+import { OrderReceiverDetails, OrderType } from "@models/Order";
+import ParkingField from "@components/parking-field";
 
 export default function IDDialog({
   id,
   receiver,
+  order_type,
 }: {
   id: string;
   receiver: OrderReceiverDetails;
+  order_type: OrderType;
 }) {
   return (
     <Dialog>
@@ -51,6 +54,14 @@ export default function IDDialog({
               <p>|</p>
               <p>{receiver.vehicle_description}</p>
             </>
+          )}
+          {order_type === "ParkNGo" && (
+            <div className="col-span-3">
+              <ParkingField
+                location={receiver.parking_location}
+                disableButtons={true}
+              />
+            </div>
           )}
         </div>
       </DialogContent>
