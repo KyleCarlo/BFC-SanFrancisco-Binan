@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Order } from "@models/Order";
+import { Order, OrderType } from "@models/Order";
 import dayjs from "@lib/dayjs";
 import IDDialog from "./table_components/id";
 import ProofOfPayment from "./table_components/pop";
@@ -15,6 +15,7 @@ const endColumns: ColumnDef<Order>[] = [
         <IDDialog
           id={row.original.id as string}
           receiver={row.original.receiver_details}
+          order_type={row.original.order_type as OrderType}
         />
       );
     },
@@ -91,7 +92,7 @@ const endColumns: ColumnDef<Order>[] = [
     accessorKey: "total_price",
     header: "Total",
     cell: ({ row }) => {
-      return <span>₱{row.original.total_price}</span>;
+      return <span>₱{row.original.total_price.toFixed(2)}</span>;
     },
   },
   {

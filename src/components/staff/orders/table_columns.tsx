@@ -1,11 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Order } from "@models/Order";
+import { Order, OrderType } from "@models/Order";
 import dayjs from "@lib/dayjs";
 import IDDialog from "./table_components/id";
 import ProofOfPayment from "./table_components/pop";
 import OrderActions from "./table_components/actions";
 import { Badge } from "@components/ui/badge";
 import ItemsDialog from "./table_components/orderItems";
+import DiscountDialog from "./table_components/discount-dialog";
 
 const orderColumns: ColumnDef<Order>[] = [
   {
@@ -16,6 +17,7 @@ const orderColumns: ColumnDef<Order>[] = [
         <IDDialog
           id={row.original.id as string}
           receiver={row.original.receiver_details}
+          order_type={row.original.order_type as OrderType}
         />
       );
     },
@@ -92,7 +94,17 @@ const orderColumns: ColumnDef<Order>[] = [
     accessorKey: "total_price",
     header: "Total",
     cell: ({ row }) => {
-      return <span>₱{row.original.total_price}</span>;
+      return (
+        <div className="flex flex-col gap-2 justify-center items-center">
+          <span>₱{row.original.total_price.toFixed(2)}</span>
+          {row.original.discount && (
+            <DiscountDialog
+              image={row.original.discount_id as string}
+              discountType={row.original.discount}
+            />
+          )}
+        </div>
+      );
     },
   },
   {
