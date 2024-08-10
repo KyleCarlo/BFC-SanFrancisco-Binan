@@ -107,7 +107,15 @@ export async function editItem(
     setItemInventory((prev) => {
       const new_items = prev.map((prevItem) => {
         if (prevItem.id === item.id) {
-          return item;
+          return {
+            ...item,
+            variations: item.variations.map((v) => {
+              return {
+                ...v,
+                price: (v.price as number).toFixed(2),
+              };
+            }),
+          } as Food | Beverage;
         }
         return prevItem;
       });
