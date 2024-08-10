@@ -7,6 +7,7 @@ import {
   FormItem,
   FormControl,
 } from "@components/ui/form";
+import ParkingField from "@components/parking-field";
 
 export function PersonalDetailsField({ form }: { form: UseFormReturn<Order> }) {
   return (
@@ -108,6 +109,7 @@ export function PersonalDetailsField({ form }: { form: UseFormReturn<Order> }) {
               );
             }}
           />
+          <ParkingField form={form} />
         </>
       )}
     </div>
