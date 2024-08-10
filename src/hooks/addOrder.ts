@@ -7,16 +7,21 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import handleUppyUpload from "@lib/uppy-uploadHandler";
 import { getSession } from "@lib/auth";
 import { UserSession } from "@models/User";
+import { Dispatch, SetStateAction } from "react";
 
 export default async function addOrder(
   order: Order,
-  uppy: Uppy<Record<string, unknown>, Record<string, unknown>>,
+  uppy_receipt: Uppy<Record<string, unknown>, Record<string, unknown>>,
+  uppy_discount: Uppy<Record<string, unknown>, Record<string, unknown>>,
   router: AppRouterInstance,
   isConnected: boolean,
-  error: string | null
+  error: string | null,
+  setDiscountUploaded: Dispatch<SetStateAction<boolean>>,
+  setReceiptUploaded: Dispatch<SetStateAction<boolean>>
 ) {
   const order_id = nanoid();
-  const uploadedFile = uppy.getFiles()[0];
+  const uploadedReceipt = uppy_receipt.getFiles()[0];
+  const uploadedDiscount = uppy_discount.getFiles()[0];
 
   if (!order.order_type) {
     return toast.error("Please Select Order Type.");
@@ -24,8 +29,11 @@ export default async function addOrder(
   if (order.mop === "") {
     return toast.error("Please Select Mode of Payment.");
   }
-  if (order.mop !== "Cash" && !uploadedFile) {
+  if (order.mop !== "Cash" && !uploadedReceipt) {
     return toast.error("Please Upload Proof of Payment.");
+  }
+  if (order.discount && !uploadedDiscount) {
+    return toast.error(`Please Upload ${order.discount} ID.`);
   }
   if (order.order_type === "PickUpLater" && !order.scheduled) {
     return toast.error("Please Indicate the Schedule Pickup.");
@@ -39,8 +47,20 @@ export default async function addOrder(
   ) {
     return toast.error("Please Indicate the Vehicle Description.");
   }
+  if (
+    order.order_type === "ParkNGo" &&
+    !order.receiver_details.parking_location
+  ) {
+    return toast.error("Please Indicate the Parking Location.");
+  }
   if (!isConnected) {
     return toast.error(error);
+  }
+
+  if (order.order_type !== "ParkNGo") {
+    delete order.receiver_details.vehicle_plate;
+    delete order.receiver_details.vehicle_description;
+    delete order.receiver_details.parking_location;
   }
 
   order.id = order_id;
@@ -51,11 +71,11 @@ export default async function addOrder(
       order.customer_id = (session.user as UserSession).id;
 
     if (order.mop !== "Cash") {
-      uppy.setMeta({
-        name: `${order_id}.${uploadedFile.extension}`,
+      uppy_receipt.setMeta({
+        name: `${order_id}.${uploadedReceipt.extension}`,
         bucket: "payment",
       });
-      const uppy_result = await uppy.upload();
+      const uppy_result = await uppy_receipt.upload();
 
       const {
         proceed,
@@ -81,6 +101,37 @@ export default async function addOrder(
       order.payment_pic = imageURL;
     }
 
+    if (order.discount) {
+      uppy_discount.setMeta({
+        name: `${order_id}.${uploadedDiscount.extension}`,
+        bucket: "discountid",
+      });
+      const uppy_result = await uppy_discount.upload();
+
+      const {
+        proceed,
+        message: { content, type },
+        imageURL,
+      } = await handleUppyUpload(uppy_result, order_id, "discountid");
+
+      switch (type) {
+        case "error":
+          toast.error(content);
+          break;
+        case "warning":
+          toast.warning(content);
+          break;
+        case "success":
+          toast.success(content);
+          break;
+      }
+      if (!proceed) {
+        return;
+      }
+
+      order.discount_id = imageURL;
+    }
+
     const response = await fetch("/api/order?done=false", {
       method: "POST",
       body: JSON.stringify(order),
@@ -91,14 +142,26 @@ export default async function addOrder(
     const { message } = await response.json();
     if (!response.ok) {
       toast.error(message);
-      if (uploadedFile)
+      if (uploadedReceipt)
         await fetch(
-          `/api/image?bucket=payment&filename=${`${order_id}.${uploadedFile.extension}`}`,
+          `/api/image?bucket=payment&filename=${`${order_id}.${uploadedReceipt.extension}`}`,
           {
             method: "DELETE",
           }
         );
-      return { proceed: false };
+      if (uploadedDiscount) {
+        await fetch(
+          `/api/image?bucket=discountid&filename=${`${order_id}.${uploadedDiscount.extension}`}`,
+          {
+            method: "DELETE",
+          }
+        );
+      }
+      uppy_receipt.clearUploadedFiles();
+      uppy_discount.clearUploadedFiles();
+      setReceiptUploaded(false);
+      setDiscountUploaded(false);
+      return;
     }
 
     socket.emit("send_order", order);
