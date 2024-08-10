@@ -16,6 +16,16 @@ export const OrderTypeModel = z.enum([
   "ParkNGo",
 ]);
 
+export const ParkingLocationModel = z.enum([
+  "ul",
+  "ur",
+  "r",
+  "ll",
+  "lr",
+  "ll2",
+  "lr2",
+]);
+
 export const OrderReceiverDetailsModel = z.object({
   name: z.string().min(1),
   contact_number: z
@@ -24,6 +34,7 @@ export const OrderReceiverDetailsModel = z.object({
     .regex(/^[\d\s]+$/),
   vehicle_plate: z.string().optional(),
   vehicle_description: z.string().optional(),
+  parking_location: ParkingLocationModel.optional(),
   comments: z.string().optional(),
 });
 
@@ -52,3 +63,4 @@ export type OrderStatus = z.infer<typeof OrderStatusModel>;
 export type OrderType = z.infer<typeof OrderTypeModel>;
 export type OrderDiscount = z.infer<typeof OrderDiscountModel>;
 export type OrderReceiverDetails = z.infer<typeof OrderReceiverDetailsModel>;
+export type ParkingLocation = z.infer<typeof ParkingLocationModel>;
