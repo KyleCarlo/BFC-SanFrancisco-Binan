@@ -65,7 +65,7 @@ export default function SignUpPage() {
           <p>
             As a new member, you can start earning points with every cup of
             coffee you enjoy.{" "}
-            <Link href="/sign-in" className="text-gold">
+            <Link href="/sign-in" className="text-gold underline">
               Be sure to log in here
             </Link>{" "}
             to track your points, manage your orders, and access special offers
