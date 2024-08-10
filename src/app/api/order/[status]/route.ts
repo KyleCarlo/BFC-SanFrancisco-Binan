@@ -29,7 +29,9 @@ export async function GET(
       .where("status", "=", capitalize(status) as OrderStatus)
       .orderBy("created_at", "asc")
       .execute();
-
+    orders.map((order) => {
+      order.total_price = order.total_price / 100;
+    });
     return NextResponse.json({ orders }, { status: 200 });
   } catch (error) {
     console.error(error);

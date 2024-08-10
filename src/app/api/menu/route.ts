@@ -4,6 +4,13 @@ import { ItemType } from "@models/Menu";
 import { capitalize } from "@lib/utils";
 import { validateItemType } from "@lib/staff-utils";
 
+type InputVariation = {
+  serving: string;
+  price: number;
+  concentrate?: boolean;
+  hot_cold?: string;
+};
+
 // GET MENU LISTS
 export async function GET(req: NextRequest) {
   const itemType = req.nextUrl.searchParams.get("itemType") as ItemType;
@@ -32,9 +39,14 @@ export async function GET(req: NextRequest) {
 
     items.forEach((item) => {
       Object.assign(item, {
-        variations: itemVariations.filter(
-          (v) => v[`${itemType}_id`] === item.id
-        ),
+        variations: itemVariations
+          .filter((v) => v[`${itemType}_id`] === item.id)
+          .map((v) => {
+            return {
+              ...v,
+              price: v.price / 100,
+            };
+          }),
       });
     });
 
@@ -67,13 +79,6 @@ export async function POST(req: NextRequest) {
       .values(body)
       .execute();
 
-    type InputVariation = {
-      serving: string;
-      price: number;
-      concentrate?: boolean;
-      hot_cold?: string;
-    };
-
     await db
       .insertInto(
         `${capitalize(itemType)}Variation` as
@@ -83,6 +88,7 @@ export async function POST(req: NextRequest) {
       .values(
         variations.map((variation: InputVariation) => ({
           ...variation,
+          price: variation.price * 100,
           [`${itemType}_id`]: inserted_item[0].insertId,
         }))
       )
@@ -140,7 +146,12 @@ export async function PUT(req: NextRequest) {
           | "FoodVariation"
           | "BeverageVariation"
       )
-      .values(variations)
+      .values(
+        variations.map((variation: InputVariation) => ({
+          ...variation,
+          price: variation.price * 100,
+        }))
+      )
       .execute();
     return NextResponse.json(
       { message: `Item Details Successfully Updated.` },

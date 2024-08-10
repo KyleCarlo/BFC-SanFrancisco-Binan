@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
             ...item,
             name: food.name,
             image: food.image,
-            price: food_variation.price,
+            price: food_variation.price / 100,
             serving: food_variation.serving,
           };
         }
@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
             ...item,
             name: beverage.name,
             image: beverage.image,
-            price: beverage_variation.price,
+            price: beverage_variation.price / 100,
             serving: beverage_variation.serving,
             hot_cold: beverage_variation.hot_cold as string,
             concentrate: beverage_variation.concentrate == 1 ? true : false,

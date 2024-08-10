@@ -25,6 +25,8 @@ export async function GET(req: NextRequest) {
       );
     }
 
+    order[0].total_price /= 100;
+
     return NextResponse.json({ order }, { status: 200 });
   } catch (error) {
     console.log(error);
@@ -39,10 +41,10 @@ export async function POST(req: NextRequest) {
   const done = req.nextUrl.searchParams.get("done") as string;
   const body = await req.json();
   body.created_at = dayjs().tz("Asia/Manila").toDate();
-  if (body.order_type === "PickUpLater") {
-    body.scheduled = dayjs(body.scheduled).tz("Asia/Manila").toDate();
-  }
   try {
+    if (body.order_type === "PickUpLater") {
+      body.scheduled = dayjs(body.scheduled).tz("Asia/Manila").toDate();
+    }
     await db
       .insertInto(done === "true" ? "Order_Done" : "Order")
       .values({
@@ -52,6 +54,7 @@ export async function POST(req: NextRequest) {
           done === "true"
             ? dayjs(body.received_at).tz("Asia/Manila").toDate()
             : null,
+        total_price: body.total_price * 100,
         receiver_details: JSON.stringify(body.receiver_details),
       })
       .execute();
