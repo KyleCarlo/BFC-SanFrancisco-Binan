@@ -1,4 +1,4 @@
-import { ItemDetails, ItemDetailsList } from "@models/Cart";
+import { ItemDetailsList } from "@models/Cart";
 import { toast } from "sonner";
 import { getIDofVariations } from "@lib/customer-utils";
 import { Dispatch, SetStateAction } from "react";
@@ -55,7 +55,9 @@ export default async function verifyItemAvailability(
     setValidatedQuantity(validated_quantity);
     setValidatedTotalCost(validated_total_cost);
     setAvailableOrders(available);
-    if (!available.includes(true)) return;
+    if (!available.includes(true)) {
+      return setLoading(false);
+    }
 
     const highestPriceItem = itemDetailsList.reduce((max, itemDetails, index) =>
       !available[index]

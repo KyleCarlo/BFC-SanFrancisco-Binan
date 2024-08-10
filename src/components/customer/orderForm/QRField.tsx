@@ -3,24 +3,43 @@
 import { UseFormReturn } from "react-hook-form";
 import { Order } from "@models/Order";
 import { MOP } from "@models/MOP";
-import { Uploader } from "@components/uploader";
 import { Button } from "@components/ui/button";
+import UploadDialog from "./upload-field";
 import Image from "next/image";
 import Uppy from "@uppy/core";
 import html2canvas from "html2canvas";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 export default function QRField({
   form,
   mops,
   uppy,
+  receiptUploaded,
+  setReceiptUploaded,
 }: {
   form: UseFormReturn<Order>;
   mops: MOP[];
   uppy: Uppy<Record<string, unknown>, Record<string, unknown>>;
+  receiptUploaded: boolean;
+  setReceiptUploaded: Dispatch<SetStateAction<boolean>>;
 }) {
   if (form.watch("mop") === "Cash") {
     return;
   }
+  useEffect(() => {
+    uppy.on("files-added", () => {
+      setReceiptUploaded(true);
+    });
+    uppy.on("file-removed", () => {
+      setReceiptUploaded(false);
+    });
+
+    return () => {
+      uppy.off("files-added", () => {});
+      uppy.off("file-removed", () => {});
+    };
+  });
+
   const mop = mops.filter((mop) => mop.bank_name === form.watch("mop"))[0];
   return (
     <div className="text-center mb-2">
@@ -55,10 +74,15 @@ export default function QRField({
       >
         Download QR Code
       </Button>
-      <h1 className="pt-2 pb-1">Upload Receipt</h1>
-      <div className="flex justify-center">
-        <Uploader uppy={uppy} width={250} height={125} />
-      </div>
+      <UploadDialog
+        uppy={uppy}
+        triggerMessage={`Upload Proof of Payment ${
+          receiptUploaded ? "✅" : ""
+        }`}
+        description="Upload your proof of payment here."
+        title="Proof of Payment"
+        className="w-full mt-2"
+      />
     </div>
   );
 }

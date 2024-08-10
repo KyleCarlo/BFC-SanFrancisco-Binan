@@ -13,32 +13,55 @@ import { MOP } from "@models/MOP";
 import { RefObject, useEffect, useState } from "react";
 import { customerUppy } from "@lib/uppy-config";
 import QRField from "./QRField";
+import UploadDialog from "./upload-field";
 import getMOPs from "@hooks/getMOPs";
 import { ScrollArea } from "@components/ui/scroll-area";
-import addOrder from "@hooks/addOrder";
 import { useRouter } from "next/navigation";
 import socket from "@lib/socket";
+import { OrderDiscount } from "@models/Order";
+import addOrder from "@hooks/addOrder";
 
 export default function OrderForm({
   formRef,
   validated_quantity,
   validated_total_cost,
+  discountType,
+  discountAmount,
 }: {
   formRef: RefObject<HTMLFormElement>;
   validated_quantity: number;
   validated_total_cost: number;
+  discountType: OrderDiscount | undefined;
+  discountAmount: number;
 }) {
   const [mops, setMops] = useState<MOP[]>([]);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [uppy] = useState(customerUppy);
+  const [uppy_receipt] = useState(customerUppy());
+  const [discountUploaded, setDiscountUploaded] = useState(false);
+  const [receiptUploaded, setReceiptUploaded] = useState(false);
+  const [uppy_discount] = useState(customerUppy());
   const router = useRouter();
 
   useEffect(() => {
     getMOPs(setMops, setLoading);
-    uppy.clearUploadedFiles();
+    uppy_receipt.clearUploadedFiles();
   }, []);
+
+  useEffect(() => {
+    uppy_discount.on("files-added", () => {
+      setDiscountUploaded(true);
+    });
+    uppy_discount.on("file-removed", () => {
+      setDiscountUploaded(false);
+    });
+
+    return () => {
+      uppy_discount.off("files-added", () => {});
+      uppy_discount.off("file-removed", () => {});
+    };
+  });
 
   useEffect(() => {
     socket.connect();
@@ -50,11 +73,9 @@ export default function OrderForm({
 
   useEffect(() => {
     socket.on("connect", () => {
-      console.log("connected");
       setIsConnected(true);
     });
     socket.on("connect_error", (error) => {
-      console.log("connect_error", error.message);
       setIsConnected(false);
       setError(`${error.message}. Try to Refresh the Page.`);
     });
@@ -75,8 +96,8 @@ export default function OrderForm({
     resolver: zodResolver(OrderModel),
     defaultValues: {
       status: "Incoming",
-      total_num: validated_quantity,
       total_price: validated_total_cost,
+      total_num: validated_quantity,
       mop: "",
     },
   });
@@ -86,7 +107,22 @@ export default function OrderForm({
       <form
         ref={formRef}
         onSubmit={form.handleSubmit((values) => {
-          addOrder(values, uppy, router, isConnected, error);
+          values.total_price = validated_total_cost;
+          values.total_num = validated_quantity;
+          if (discountType) {
+            values.discount = discountType;
+            values.total_price -= discountAmount;
+          }
+          addOrder(
+            values,
+            uppy_receipt,
+            uppy_discount,
+            router,
+            isConnected,
+            error,
+            setDiscountUploaded,
+            setReceiptUploaded
+          );
         })}
         className="h-full"
       >
@@ -100,11 +136,28 @@ export default function OrderForm({
             <div className="pr-2">
               <ScheduleField form={form} />
             </div>
+            {discountType && (
+              <UploadDialog
+                uppy={uppy_discount}
+                triggerMessage={`Upload ${discountType} ID ${
+                  discountUploaded ? "✅" : ""
+                }`}
+                title={`${discountType} ID`}
+                description={`Upload your ${discountType} ID here.`}
+                className="col-span-2 mx-2"
+              />
+            )}
           </div>
           <hr />
           {loading && <div>Loading...</div>}
           {!loading && form.watch("mop") && (
-            <QRField form={form} mops={mops} uppy={uppy} />
+            <QRField
+              form={form}
+              mops={mops}
+              uppy={uppy_receipt}
+              receiptUploaded={receiptUploaded}
+              setReceiptUploaded={setReceiptUploaded}
+            />
           )}
           <hr />
           <h1 className="-mb-2 text-bold mt-1">Contact Info</h1>
