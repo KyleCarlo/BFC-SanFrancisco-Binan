@@ -16,7 +16,6 @@ export const BeverageVariationModel = z.object({
       required_error: "Price is required",
       invalid_type_error: "Price must be a number",
     })
-    .int()
     .positive()
     .min(1, { message: "Price cannot be 0" })
     .or(z.literal("")),
