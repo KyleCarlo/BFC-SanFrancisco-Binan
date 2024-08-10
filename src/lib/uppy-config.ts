@@ -27,12 +27,13 @@ export const staffUppy = (method: "GET" | "POST" | "PUT") =>
       },
     });
 
-export const customerUppy = new Uppy({
-  autoProceed: false,
-  restrictions: { maxNumberOfFiles: 1, allowedFileTypes: ["image/*"] },
-}).use(XHRUpload, {
-  endpoint: `/api/image`,
-  method: "POST",
-  fieldName: "image",
-  formData: true,
-});
+export const customerUppy = () =>
+  new Uppy({
+    autoProceed: false,
+    restrictions: { maxNumberOfFiles: 1, allowedFileTypes: ["image/*"] },
+  }).use(XHRUpload, {
+    endpoint: `/api/image`,
+    method: "POST",
+    fieldName: "image",
+    formData: true,
+  });
