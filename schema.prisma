@@ -148,6 +148,13 @@ enum CustomerRole {
   Customer
 }
 
+model Voucher {
+  id          String    @id @default(nanoid())
+  customer    Customer  @relation(fields: [customer_id], references: [id])
+  customer_id String
+  valid_until DateTime
+}
+
 model Customer {
   id         String       @id @default(nanoid())
   email      String       @unique @db.VarChar(255)
@@ -157,9 +164,10 @@ model Customer {
   last_name  String       @db.VarChar(255)
   birthday   DateTime     
   role       CustomerRole @default(Customer)
-  points     Int          @default(0) // loyalty points .2
+  points     Int          @default(0)
   Order      Order[]
   Order_Done Order_Done[]
+  Voucher    Voucher[]
 }
 
 model OTP {
