@@ -4,6 +4,7 @@ import dayjs from "@lib/dayjs";
 import { nanoid } from "nanoid";
 import * as argon2 from "argon2";
 import { Cart } from "@models/Cart";
+import { Voucher } from "@models/Voucher";
 
 export async function GET(req: NextRequest) {
   const id = req.nextUrl.searchParams.get("id") as string;
@@ -140,7 +141,7 @@ export async function PATCH(req: NextRequest) {
   if (!body || !body.id || !body.items) {
     return NextResponse.json(
       {
-        message: "Invalid Request. Please Include Customer ID and total price.",
+        message: "Invalid Request. Please Include Customer ID and Order Items.",
       },
       { status: 400 }
     );
@@ -196,17 +197,47 @@ export async function PATCH(req: NextRequest) {
 
       if (unit) earnedPoints += unit.price * item.quantity;
     });
-    earnedPoints = Math.floor(earnedPoints / 20);
+    earnedPoints = Math.floor(earnedPoints / 20) / 100;
 
+    if (earnedPoints + customer[0].points < 100) {
+      await db
+        .updateTable("Customer")
+        .where("id", "=", body.id)
+        .set("points", earnedPoints + customer[0].points)
+        .execute();
+
+      return NextResponse.json(
+        {
+          message: `Customer ${customer[0].id} Earned ${earnedPoints} Points.`,
+        },
+        { status: 200 }
+      );
+    }
+
+    const num_of_vouchers = Math.floor(
+      (earnedPoints + customer[0].points) / 100
+    );
+    const pointsLeft = (earnedPoints + customer[0].points) % 100;
+    const vouchers: Voucher[] = [];
+    for (let i = 0; i < num_of_vouchers; i++) {
+      vouchers.push({
+        id: nanoid(),
+        customer_id: body.id,
+        valid_until: dayjs().tz("Asia/Manila").add(2, "month").toDate(),
+      });
+    }
+    await db.insertInto("Voucher").values(vouchers).execute();
     await db
       .updateTable("Customer")
       .where("id", "=", body.id)
-      .set("points", earnedPoints + customer[0].points)
+      .set("points", pointsLeft)
       .execute();
 
     return NextResponse.json(
       {
-        message: `Customer ${customer[0].id} Earned ${earnedPoints} Points.`,
+        message: `Customer ${customer[0].id} Earned ${num_of_vouchers} Voucher${
+          num_of_vouchers > 1 ? "s" : ""
+        }.`,
       },
       { status: 200 }
     );
