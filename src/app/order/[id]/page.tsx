@@ -4,7 +4,7 @@ import { serverGetCartDetails } from "@hooks/getCartDetails";
 import CartList from "@components/customer/cart-list";
 import OrderStatus from "@components/customer/orderWait/status";
 import { ScrollArea } from "@components/ui/scroll-area";
-import QRDownload from "@/src/components/customer/orderWait/QRnDL";
+import QRDownload from "@components/customer/orderWait/QRnDL";
 import { OrderType } from "@/src/models/Order";
 
 export default async function WaitingPage({
@@ -45,7 +45,7 @@ export default async function WaitingPage({
           <div className="py-2">
             <p>Order ID: {params.id}</p>
             <div className="flex flex-col items-center">
-              <QRDownload id={params.id} />
+              <QRDownload value={params.id} filename={params.id} />
             </div>
             <h1>Keep the QR for Tracking and Receiving the Order.</h1>
           </div>
