@@ -4,11 +4,17 @@ import QrCode from "react-qr-code";
 import { Button } from "@components/ui/button";
 import html2canvas from "html2canvas";
 
-export default function QRDownload({ id }: { id: string }) {
+export default function QRDownload({
+  value,
+  filename,
+}: {
+  value: string;
+  filename: string;
+}) {
   return (
     <>
       <div id="qr-code" className="bg-white p-3 mb-3 rounded-xl">
-        <QrCode value={id} size={260} className="bg-white rounded-lg" />
+        <QrCode value={value} size={260} className="bg-white rounded-lg" />
       </div>
       <Button
         className="w-[280px] mb-4"
@@ -20,7 +26,7 @@ export default function QRDownload({ id }: { id: string }) {
             const link = document.createElement("a");
 
             link.href = data;
-            link.download = `${id}.jpg`;
+            link.download = `${filename}.jpg`;
 
             document.body.appendChild(link);
             link.click();
