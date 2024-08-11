@@ -1,10 +1,8 @@
-"use client";
-
 import { Voucher } from "@models/Voucher";
 import { Button } from "@components/ui/button";
 import Image from "next/image";
 import dayjs from "@lib/dayjs";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function VoucherList({
   customer_id,
@@ -13,7 +11,6 @@ export default function VoucherList({
   customer_id: string;
   voucher: Voucher;
 }) {
-  const router = useRouter();
   return (
     <div className="p-2 border-white border-2 m-1 rounded-md grid grid-cols-[40px_1fr_60px] items-center">
       <div>
@@ -31,14 +28,9 @@ export default function VoucherList({
         </p>
       </div>
       <div className="justify-center">
-        <Button
-          className="w-full"
-          onClick={() => {
-            router.push(`/account/${customer_id}?voucher=${voucher.id}`);
-          }}
-        >
-          Claim
-        </Button>
+        <Link href={`/account/${customer_id}?voucher=${voucher.id}`}>
+          <Button className="w-full">Claim</Button>
+        </Link>
       </div>
     </div>
   );
