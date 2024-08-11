@@ -2,18 +2,43 @@ import { serverGetCustomer } from "@hooks/getCustomer";
 import { Progress } from "@components/ui/progress";
 import Image from "next/image";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/ui/tabs";
-import QRDownload from "@components/customer/orderWait/QRnDL";
+import { ScrollArea } from "@components/ui/scroll-area";
 import dayjs from "@lib/dayjs";
+import { serverGetVouchers } from "@hooks/getVouchers";
+import VoucherList from "@components/customer/vouchers";
+import QRDownload from "@components/customer/orderWait/QRnDL";
 
 export default async function AccountPage({
   params,
+  searchParams,
 }: {
   params: { id: string };
+  searchParams: { voucher?: string };
 }) {
   const { id } = params;
-  const { customer, message } = await serverGetCustomer(id);
+  const { customer, message: message_1 } = await serverGetCustomer(id);
   if (!customer) {
-    return <div>{message}</div>;
+    return <div>{message_1}</div>;
+  }
+  const { vouchers, message: message_2 } = await serverGetVouchers(id);
+  if (!vouchers) {
+    return <div>{message_2}</div>;
+  }
+  if (searchParams.voucher) {
+    const selected_voucher = vouchers.find(
+      (voucher) => voucher.id === searchParams.voucher
+    );
+    if (selected_voucher) {
+      return (
+        <div className="flex flex-col justify-center items-center h-dvh">
+          <h1 className="mb-2">Present this QR Code to Claim</h1>
+          <QRDownload
+            value={JSON.stringify(selected_voucher)}
+            filename={searchParams.voucher}
+          />
+        </div>
+      );
+    }
   }
   return (
     <main className="h-dvh flex flex-col justify-center items-center gap-2">
@@ -49,10 +74,10 @@ export default async function AccountPage({
       <Tabs defaultValue="details" className="w-[280px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="details">Details</TabsTrigger>
-          <TabsTrigger value="claim">Claim</TabsTrigger>
+          <TabsTrigger value="voucher">Vouchers</TabsTrigger>
         </TabsList>
         <TabsContent value="details">
-          <div className="w-[280px] rounded-lg border-2 py-4 flex flex-col gap-4">
+          <div className="w-[280px] h-[243.2px] rounded-lg border-2 py-4 flex flex-col gap-4">
             <div className="text-center">
               <p className="text-xs text-gray-400">Balance</p>
               <p>{customer.points} ⭐</p>
@@ -83,10 +108,16 @@ export default async function AccountPage({
             </div>
           </div>
         </TabsContent>
-        <TabsContent value="claim">
-          <div className="w-[280px]">
-            <QRDownload id={id} />
-          </div>
+        <TabsContent value="voucher">
+          <ScrollArea className="w-[280px] h-[243.2px] rounded-lg border-2 pr-3 flex flex-col gap-4">
+            <div className="py-3">
+              {vouchers.map((voucher, index) => {
+                return (
+                  <VoucherList key={index} voucher={voucher} customer_id={id} />
+                );
+              })}
+            </div>
+          </ScrollArea>
         </TabsContent>
       </Tabs>
     </main>
