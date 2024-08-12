@@ -1,4 +1,5 @@
-import { Voucher } from "../models/Voucher";
+import { Voucher } from "@models/Voucher";
+import { cookies } from "next/headers";
 
 export async function serverGetVouchers(id: string) {
   try {
@@ -7,6 +8,7 @@ export async function serverGetVouchers(id: string) {
       {
         method: "GET",
         cache: "no-store",
+        headers: { cookie: cookies().toString() },
       }
     );
 
