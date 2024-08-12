@@ -1,15 +1,18 @@
 import { toast } from "sonner";
 import { Dispatch, SetStateAction } from "react";
+import socket from "@lib/socket";
+import { Voucher } from "@models/Voucher";
 
 export default async function customerAvail(
-  customerID: string,
+  voucher_details: string,
   setOpen: Dispatch<SetStateAction<boolean>>,
   reloadAfter: Boolean = false
 ) {
   toast.warning("Please Wait...");
   try {
-    const response = await fetch(`/api/customer/avail?id=${customerID}`, {
-      method: "PATCH",
+    const response = await fetch(`/api/customer/voucher`, {
+      method: "DELETE",
+      body: JSON.stringify({ voucher_details }),
     });
 
     const { message } = await response.json();
@@ -28,6 +31,10 @@ export default async function customerAvail(
 
     toast.success(toast_message);
     setOpen(false);
+    socket.emit("send_voucher_confirmation", {
+      id: (JSON.parse(voucher_details) as Voucher).id,
+      status: "success",
+    });
     if (reloadAfter)
       setTimeout(() => {
         location.reload();
