@@ -23,9 +23,6 @@ export default function QRField({
   receiptUploaded: boolean;
   setReceiptUploaded: Dispatch<SetStateAction<boolean>>;
 }) {
-  if (form.watch("mop") === "Cash") {
-    return;
-  }
   useEffect(() => {
     uppy.on("files-added", () => {
       setReceiptUploaded(true);
@@ -39,6 +36,9 @@ export default function QRField({
       uppy.off("file-removed", () => {});
     };
   });
+  if (form.watch("mop") === "Cash") {
+    return;
+  }
 
   const mop = mops.filter((mop) => mop.bank_name === form.watch("mop"))[0];
   return (
