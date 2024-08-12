@@ -47,7 +47,10 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/staff", request.url));
   }
 
-  if (path === "/api/customer" && request.method === "GET") {
+  if (
+    ["/api/customer", "/api/customer/voucher"].includes(path) &&
+    request.method === "GET"
+  ) {
     const id = request.nextUrl.searchParams.get("id");
     if (!id) {
       return NextResponse.json(
@@ -66,6 +69,21 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/staff", request.url));
   }
 
+  if (
+    (path === "/api/customer" && request.method === "PATCH") ||
+    (path === "/api/customer/voucher" && request.method === "DELETE")
+  ) {
+    console.log(request.method);
+    console.log(session);
+    if (!session) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    const { user } = (await decrypt(session.value)) as { user: UserSession };
+    console.log(user);
+    if (!["Admin", "Employee", "Dev"].includes(user.role)) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+  }
   return NextResponse.next();
 }
 
