@@ -84,6 +84,15 @@ io.on("connection", (socket) => {
     io.emit("notify_staff", { status: data.status, id: data.id });
     io.emit("decrement_queue", { status: prev_status, id: data.id });
   });
+
+  /**
+   * Staff sends a voucher confirmation to customer
+   */
+  socket.on("send_voucher_confirmation", (data) => {
+    console.log("send_voucher_confirmation");
+    console.log(socket.id, data);
+    io.to(data.id).emit("rcv_voucher_confirmation", data.status);
+  });
 });
 
 httpServer.listen(8080, () => {
