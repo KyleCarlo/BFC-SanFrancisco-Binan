@@ -7,6 +7,7 @@ import onDelete from "@hooks/deleteMenuItems";
 import { toast } from "sonner";
 import EditItemDialog from "./editItem-dialog";
 import { useItemInventoryContext } from "@context/itemInventory";
+import { parseBeverageBase } from "@lib/utils";
 
 const beverageColumns: ColumnDef<Beverage>[] = [
   {
@@ -68,6 +69,9 @@ const beverageColumns: ColumnDef<Beverage>[] = [
   {
     accessorKey: "base",
     header: "Base",
+    cell: ({ row }) => {
+      return parseBeverageBase(row.original.base);
+    },
   },
   {
     accessorKey: "feature",

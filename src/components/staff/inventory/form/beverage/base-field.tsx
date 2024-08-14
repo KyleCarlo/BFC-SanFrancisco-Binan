@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@components/ui/select";
-import { capitalize } from "@lib/utils";
+import { parseBeverageBase } from "@lib/utils";
 import { BeverageBaseModel } from "@models/Menu/Beverage";
 import { UseFormReturn } from "react-hook-form";
 import { Beverage } from "@models/Menu/Beverage";
@@ -38,7 +38,7 @@ export default function BeverageBaseField({
               {Object.keys(BeverageBaseModel.Values).map((base) => {
                 return (
                   <SelectItem key={base} value={base}>
-                    {capitalize(base)}
+                    {parseBeverageBase(base)}
                   </SelectItem>
                 );
               })}

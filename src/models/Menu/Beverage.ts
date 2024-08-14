@@ -1,7 +1,14 @@
 import { FeatureModel } from "./index";
 import { z } from "zod";
 
-export const BeverageBaseModel = z.enum(["drip", "espresso", "tea"]);
+export const BeverageBaseModel = z.enum([
+  "drip",
+  "espresso",
+  "milk",
+  "auro",
+  "matcha",
+  "pinoy",
+]);
 export const BeverageHotColdModel = z.enum(["hot", "cold"]);
 
 export type BeverageBase = z.infer<typeof BeverageBaseModel>;
