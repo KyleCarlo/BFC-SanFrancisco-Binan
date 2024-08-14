@@ -9,7 +9,8 @@ export function capitalize(word: string) {
   return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
-export function parseBeverageBase(base: string) {
+export function parseBeverageBase(base: string | undefined) {
+  if (!base) return;
   switch (base.toLowerCase()) {
     case "drip":
       return "Drip Based";
