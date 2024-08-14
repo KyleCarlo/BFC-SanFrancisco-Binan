@@ -17,6 +17,9 @@ enum BeverageBase {
   Drip
   Espresso
   Milk
+  Auro
+  Matcha
+  Pinoy
 }
 
 enum BeverageHotCold {
