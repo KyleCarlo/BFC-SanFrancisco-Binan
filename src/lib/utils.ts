@@ -23,7 +23,7 @@ export function parseBeverageBase(base: string | undefined) {
     case "matcha":
       return "Matcha Series";
     case "pinoy":
-      return "Pinoy Based";
+      return "Pinoy Faves";
     default:
       return base;
   }
