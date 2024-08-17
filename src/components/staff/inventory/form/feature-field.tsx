@@ -12,7 +12,6 @@ import {
   SelectValue,
 } from "@components/ui/select";
 import { FeatureModel } from "@models/Menu";
-import { capitalize } from "@lib/utils";
 
 export default function FeatureField(form: any) {
   return (
@@ -31,7 +30,7 @@ export default function FeatureField(form: any) {
               {Object.keys(FeatureModel.Values).map((base) => {
                 return (
                   <SelectItem key={base} value={base}>
-                    {capitalize(base)}
+                    {base}
                   </SelectItem>
                 );
               })}

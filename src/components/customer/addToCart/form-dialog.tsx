@@ -52,7 +52,7 @@ export default function CartDialog({
         </DrawerHeader>
         <ScrollArea>
           <hr />
-          <div className="max-h-[50dvh] px-4">
+          <div className="max-h-[50dvh]">
             {itemsInCart.map((cartItem) => {
               return (
                 <>

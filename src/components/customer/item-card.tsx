@@ -33,8 +33,8 @@ export default function ItemCard({ item }: { item: Beverage | Food }) {
         <h1 className="text-gold text-bold text-italic px-2 pt-1 pb-2 text-center">
           {item.name}
         </h1>
-        <p className="text-center text-xs px-2 pb-3">
-          ₱ {(item.variations[0].price as number).toFixed(2)}
+        <p className="text-center text-xs px-2 tracking-wider">
+          ₱ {(item.variations[0].price as number).toFixed(0)}
         </p>
       </div>
     </div>
