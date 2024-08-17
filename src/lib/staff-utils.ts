@@ -1,7 +1,7 @@
 import { ItemType, ItemTypeModel } from "@models/Menu";
 import { Food, FoodVariation } from "@models/Menu/Food";
-import { Beverage } from "@models/Menu/Beverage";
-import { BeverageVariation } from "@models/Menu/Beverage";
+import { Beverage, BeverageVariation } from "@models/Menu/Beverage";
+import { Feature } from "@models/Menu";
 import { DefaultValues } from "react-hook-form";
 import {
   BeverageFormSchemaModel,
@@ -87,7 +87,7 @@ export function parseDefaultMenuValues(defaultValues: Food | Beverage) {
     image: defaultValues.image,
     name: defaultValues.name,
     description: defaultValues.description,
-    feature: defaultValues.feature.toLowerCase() as Beverage["feature"],
+    feature: defaultValues.feature as Feature,
     base,
     category,
     variations: parsed_variations,
