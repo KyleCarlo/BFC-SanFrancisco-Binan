@@ -1,10 +1,25 @@
 import { UseFormReturn } from "react-hook-form";
-import { BeverageVariation, Beverage } from "@models/Menu/Beverage";
+import {
+  BeverageVariation,
+  Beverage,
+  BeverageBaseModel,
+  BeverageBase,
+} from "@models/Menu/Beverage";
 import { FoodVariation, Food } from "@models/Menu/Food";
 import { CartItem, Cart } from "@models/Cart";
 import { ItemType } from "@models/Menu";
 import { ItemDetailsList } from "@models/Cart";
 import { DefaultValues } from "react-hook-form";
+import { capitalize } from "./utils";
+
+export function getBeveragePerBase(beverage: Beverage[]) {
+  const bevPerBase: Record<string, Beverage[]> = {};
+  Object.keys(BeverageBaseModel.Values).forEach((base) => {
+    bevPerBase[base] =
+      beverage.filter((bev) => bev.base === capitalize(base)) || [];
+  });
+  return bevPerBase as Record<BeverageBase, Beverage[]>;
+}
 
 export function getComputedPrice(
   form: UseFormReturn<CartItem | any | undefined>,

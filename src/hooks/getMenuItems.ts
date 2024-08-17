@@ -60,14 +60,14 @@ export async function serverGetMenuItems() {
     }
 
     const popular_food = food.filter(
-      (item: Food) => item.feature === "popular"
+      (item: Food) => item.feature === "Popular"
     );
     const popular_beverage = beverage.filter(
-      (item: Beverage) => item.feature === "popular"
+      (item: Beverage) => item.feature === "Popular"
     );
-    const new_food = food.filter((item: Food) => item.feature === "new");
+    const new_food = food.filter((item: Food) => item.feature === "New");
     const new_beverage = beverage.filter(
-      (item: Beverage) => item.feature === "new"
+      (item: Beverage) => item.feature === "New"
     );
 
     return {
