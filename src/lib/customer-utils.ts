@@ -21,6 +21,15 @@ export function getBeveragePerBase(beverage: Beverage[]) {
   return bevPerBase as Record<BeverageBase, Beverage[]>;
 }
 
+export function getFoodPerCategory(food: Food[]) {
+  const foodPerCategory: Record<string, Food[]> = {};
+  food.forEach((item) => {
+    if (!foodPerCategory[item.category]) foodPerCategory[item.category] = [];
+    foodPerCategory[item.category].push(item);
+  });
+  return foodPerCategory;
+}
+
 export function getComputedPrice(
   form: UseFormReturn<CartItem | any | undefined>,
   variations: BeverageVariation[] | FoodVariation[]

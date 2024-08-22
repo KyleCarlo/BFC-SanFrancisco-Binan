@@ -8,8 +8,8 @@ import { useOrderFilterContext } from "@context/orderFilter";
 
 import ItemCard from "@components/customer/item-card";
 import { ItemTypeProvider } from "@context/itemType";
-import { getBeveragePerBase } from "@lib/customer-utils";
-import { parseBeverageBase } from "@lib/utils";
+import { getBeveragePerBase, getFoodPerCategory } from "@lib/customer-utils";
+import { parseBeverageBase, capitalize } from "@lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@components/ui/card";
 import { useEffect, useState } from "react";
 
@@ -41,9 +41,10 @@ export default function Items({
 
     setBeverageFiltered(beverageFiltered);
     setFoodFiltered(foodFiltered);
-  }, [orderFilter]);
+  }, [orderFilter, beverage, food]);
 
   const bevPerBase = getBeveragePerBase(beverageFiltered);
+  const foodPerCategory = getFoodPerCategory(foodFiltered);
 
   if (beverageFiltered.length === 0 && foodFiltered.length === 0) {
     return (
@@ -85,29 +86,32 @@ export default function Items({
           })}
         </CartDrawerProvider>
       </ItemTypeProvider>
-      {foodFiltered.length > 0 && (
-        <ItemTypeProvider defaultItemType="food">
-          <CartDrawerProvider>
-            <Card className="m-2 pb-4">
-              <CardHeader className="pt-3 pb-2">
-                <CardTitle className="text-xl text-bold text-italic tracking-wide pl-[2%]">
-                  House Specials
-                </CardTitle>
-                <hr />
-              </CardHeader>
-              <CardContent className="p-0 grid grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] min-[400px]:grid-cols-[repeat(auto-fit,_minmax(180px,_1fr))] justify-items-center items-start">
-                {foodFiltered.map((item: Food) => {
-                  return (
-                    <CartDialog item={item} key={item.id}>
-                      <ItemCard item={item} />
-                    </CartDialog>
-                  );
-                })}
-              </CardContent>
-            </Card>
-          </CartDrawerProvider>
-        </ItemTypeProvider>
-      )}
+      <ItemTypeProvider defaultItemType="food">
+        <CartDrawerProvider>
+          {Object.keys(foodPerCategory).map((category) => {
+            if (foodPerCategory[category].length === 0) return null;
+            return (
+              <Card className="m-2 pb-4" key={category}>
+                <CardHeader className="pt-3 pb-2">
+                  <CardTitle className="text-xl text-bold text-italic tracking-wide pl-[2%]">
+                    {capitalize(category)}
+                  </CardTitle>
+                  <hr />
+                </CardHeader>
+                <CardContent className="p-0 grid grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] min-[400px]:grid-cols-[repeat(auto-fit,_minmax(180px,_1fr))] justify-items-center items-start">
+                  {foodPerCategory[category].map((item: Food) => {
+                    return (
+                      <CartDialog item={item} key={item.id}>
+                        <ItemCard item={item} />
+                      </CartDialog>
+                    );
+                  })}
+                </CardContent>
+              </Card>
+            );
+          })}
+        </CartDrawerProvider>
+      </ItemTypeProvider>
     </>
   );
 }
