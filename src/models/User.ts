@@ -40,6 +40,8 @@ export const UserSessionModel = z.object({
   id: z.string(),
   email: z.string().email(),
   role: z.union([StaffRoleModel, z.literal("Customer")]),
+  first_name: z.string(),
+  last_name: z.string(),
 });
 
 export type StaffRole = z.infer<typeof StaffRoleModel>;
