@@ -1,5 +1,7 @@
 import { CartProvider } from "@context/cart";
+import { OrderFilterProvider } from "@context/orderFilter";
 import RouteHandler from "@components/routeHandler";
+import NavBar from "@components/customer/navigation";
 
 export default function OrderLayout({
   children,
@@ -7,12 +9,13 @@ export default function OrderLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
+    <main>
+      <OrderFilterProvider>
+        <NavBar />
         <RouteHandler>
           <CartProvider>{children}</CartProvider>
         </RouteHandler>
-      </body>
-    </html>
+      </OrderFilterProvider>
+    </main>
   );
 }
