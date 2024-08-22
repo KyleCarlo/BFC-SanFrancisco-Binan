@@ -26,8 +26,8 @@ export default function CartList({
             className="w-full h-full top-0 left-0 object-cover rounded-md"
           />
         </div>
-        <div className="text-left">
-          <h1 className="text-gold">{item.name}</h1>
+        <div className="text-left pl-2">
+          <h1 className="text-gold text-sm">{item.name}</h1>
           {item.itemType === "beverage" && (
             <>
               <p className="text-gray-400 text-xs">
