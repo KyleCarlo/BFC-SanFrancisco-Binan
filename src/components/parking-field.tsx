@@ -38,7 +38,11 @@ export default function ParkingField({
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline" className="w-full mt-1 mb-2">
-          Parking Location
+          {`Parking Location ${
+            form?.watch("receiver_details.parking_location") !== undefined
+              ? "✅"
+              : ""
+          }`}
         </Button>
       </DialogTrigger>
       <DialogContent className="w-4/5 max-w-md rounded-lg">
