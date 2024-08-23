@@ -6,7 +6,7 @@ import SearchBar from "./searchBar";
 
 export default async function NavBar() {
   return (
-    <div className="flex w-full p-2 justify-between sticky top-0 z-10 bg-[hsl(var(--background))] gap-2">
+    <div className="flex w-full p-2 justify-between sticky top-0 z-10 gap-2 bg-gradient-to-t from-transparent via-black to-black">
       <div className="flex items-center">
         <Image width={30} height={30} src={BFCLogo} alt="BFC Logo" />
         <Image
