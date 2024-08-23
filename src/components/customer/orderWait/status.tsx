@@ -44,7 +44,7 @@ export default function OrderStatus({
   };
 
   return (
-    <div className="flex flex-col gap-2 items-center justify-center h-full text-center w-full">
+    <div className="flex flex-col gap-2 items-center justify-center h-full text-center w-full z-30">
       {curr_status === "Incoming" && <p>Waiting to be Accepted...</p>}
       {curr_status === "Processing" && <p>We are Processing your Order...</p>}
       {curr_status === "Complete" && (
