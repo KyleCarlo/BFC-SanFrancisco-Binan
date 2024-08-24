@@ -1,10 +1,15 @@
+"use client";
+
 import Image from "next/image";
 import BFCLogo from "@public/bfc-logo.png";
 import BFCName from "@public/bfc-name.png";
 import UserTab from "./userTab";
 import SearchBar from "./searchBar";
+import { usePathname } from "next/navigation";
 
-export default async function NavBar() {
+export default function NavBar() {
+  const pathname = usePathname();
+
   return (
     <div className="flex w-full p-2 justify-between sticky top-0 z-10 gap-2 bg-gradient-to-t from-transparent via-black to-black">
       <div className="flex items-center">
@@ -17,7 +22,7 @@ export default async function NavBar() {
           className="max-[650px]:hidden"
         />
       </div>
-      <SearchBar />
+      {pathname === "/order" && <SearchBar />}
       <UserTab />
     </div>
   );

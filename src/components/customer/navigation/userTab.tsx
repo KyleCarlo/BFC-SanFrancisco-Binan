@@ -14,13 +14,14 @@ import Link from "next/link";
 import { getSession, logout } from "@/src/lib/auth";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Skeleton } from "@components/ui/skeleton";
 
 export default function UserTab() {
   const [user, setUser] = useState<UserSession | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     async function getUser() {
@@ -54,9 +55,15 @@ export default function UserTab() {
         <DropdownMenuContent className="relative right-2">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <Link href={`/account/${user.id}`}>
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-          </Link>
+          {!pathname.startsWith("/account") ? (
+            <Link href={`/account/${user.id}`}>
+              <DropdownMenuItem>Profile</DropdownMenuItem>
+            </Link>
+          ) : (
+            <DropdownMenuItem onClick={() => router.back()}>
+              Back
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem
             onClick={async () => {
               const { proceed, message } = (await logout()) as {
