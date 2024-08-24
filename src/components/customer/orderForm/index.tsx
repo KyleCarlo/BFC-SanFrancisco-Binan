@@ -10,7 +10,13 @@ import MOPField from "./mop-field";
 import { PersonalDetailsField } from "./pID-field";
 import { Cart } from "@models/Cart";
 import { MOP } from "@models/MOP";
-import { RefObject, useEffect, useState } from "react";
+import {
+  Dispatch,
+  RefObject,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { customerUppy } from "@lib/uppy-config";
 import QRField from "./QRField";
 import UploadDialog from "./upload-field";
@@ -27,12 +33,14 @@ export default function OrderForm({
   validated_total_cost,
   discountType,
   discountAmount,
+  setPauseButton,
 }: {
   formRef: RefObject<HTMLFormElement>;
   validated_quantity: number;
   validated_total_cost: number;
   discountType: OrderDiscount | undefined;
   discountAmount: number;
+  setPauseButton: Dispatch<SetStateAction<boolean>>;
 }) {
   const [mops, setMops] = useState<MOP[]>([]);
   const [isConnected, setIsConnected] = useState(false);
@@ -107,6 +115,10 @@ export default function OrderForm({
       <form
         ref={formRef}
         onSubmit={form.handleSubmit((values) => {
+          setPauseButton(true);
+          setTimeout(() => {
+            setPauseButton(false);
+          }, 5000);
           values.total_price = validated_total_cost;
           values.total_num = validated_quantity;
           if (discountType) {

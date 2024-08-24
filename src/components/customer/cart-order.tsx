@@ -39,6 +39,7 @@ export default function CartOrderSubmission({
   const [discountAmount, setDiscountAmount] = useState<number>(0);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [pauseButton, setPauseButton] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
@@ -124,6 +125,7 @@ export default function CartOrderSubmission({
             validated_total_cost={validated_total_cost}
             discountType={discountType}
             discountAmount={discountAmount}
+            setPauseButton={setPauseButton}
           />
         </div>
       </div>
@@ -207,6 +209,7 @@ export default function CartOrderSubmission({
       <div className="flex justify-center">
         <Button
           onClick={() => {
+            if (pauseButton) toast.warning("Please Wait...");
             if (
               !orderConfirmed &&
               !loading &&
@@ -227,9 +230,10 @@ export default function CartOrderSubmission({
               }
             } else if (orderConfirmed) {
               if (formRef.current) {
-                formRef.current.dispatchEvent(
-                  new Event("submit", { cancelable: true, bubbles: true })
-                );
+                if (!pauseButton)
+                  formRef.current.dispatchEvent(
+                    new Event("submit", { cancelable: true, bubbles: true })
+                  );
               }
             }
 
@@ -238,7 +242,11 @@ export default function CartOrderSubmission({
             }
           }}
         >
-          {!orderConfirmed ? "Confirm Order" : "Send Order"}
+          {!orderConfirmed
+            ? "Confirm Order"
+            : !pauseButton
+            ? "Send Order"
+            : "Please Wait..."}
         </Button>
       </div>
     </>
