@@ -39,7 +39,7 @@ export default function PopularItems({
 
     setBeverageFiltered(beverageFiltered);
     setFoodFiltered(foodFiltered);
-  }, [orderFilter]);
+  }, [orderFilter, beverage, food]);
 
   return (
     <>
