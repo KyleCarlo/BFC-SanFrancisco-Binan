@@ -33,7 +33,7 @@ export default async function AccountPage({
     }
   }
   return (
-    <main className="h-dvh flex flex-col justify-center items-center gap-2">
+    <main className="h-dvh w-full flex flex-col justify-center items-center gap-2 absolute top-0">
       <div className="p-5 rounded-xl w-[280px] bg-[#27272A]">
         <div className="mb-4">
           <h1 className="text-xl text-bold">
