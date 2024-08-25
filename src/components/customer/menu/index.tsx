@@ -48,7 +48,7 @@ export default function Items({
 
   if (beverageFiltered.length === 0 && foodFiltered.length === 0) {
     return (
-      <div className="flex items-center justify-center h-[60vh]">
+      <div className="flex items-center justify-center h-dvh absolute top-0 w-full px-16">
         <h1 className="text-xl text-bold text-italic text-center">
           We cannot find what you are looking for. 😢
         </h1>
