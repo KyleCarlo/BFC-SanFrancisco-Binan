@@ -111,7 +111,16 @@ const orderColumns: ColumnDef<Order>[] = [
     accessorKey: "mop",
     header: "MOP",
     cell: ({ row }) => {
-      return <span>{row.original.mop}</span>;
+      return (
+        <>
+          <p>{row.original.mop}</p>
+          {row.original.mop === "Cash" && (
+            <p className="text-gold">
+              Change for {row.original.payment_change}
+            </p>
+          )}
+        </>
+      );
     },
   },
   {

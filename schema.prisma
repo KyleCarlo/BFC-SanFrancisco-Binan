@@ -106,6 +106,7 @@ model Order {
   order_type       OrderType
   scheduled        DateTime?
   payment_pic      String?     @db.VarChar(400)
+  payment_change   String?     @db.VarChar(255)
   receiver_details Json
   mop              String      @db.VarChar(255)
   items            Json
@@ -125,6 +126,7 @@ model Order_Done {
   order_type       OrderType
   scheduled        DateTime?
   payment_pic      String?     @db.VarChar(400)
+  payment_change   String?     @db.VarChar(255)
   receiver_details Json
   mop              String      @db.VarChar(255)
   items            Json

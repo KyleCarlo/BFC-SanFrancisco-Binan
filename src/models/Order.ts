@@ -51,6 +51,10 @@ export const OrderModel = z.object({
   order_type: OrderTypeModel.optional(),
   scheduled: z.date().optional(),
   payment_pic: z.string().optional(),
+  payment_change: z
+    .union([z.string().length(0), z.string().regex(/^\d+(\.\d{2})?$/)])
+    .optional()
+    .transform((e) => (e === "" ? undefined : e)),
   receiver_details: OrderReceiverDetailsModel,
   mop: z.string(),
   items: CartModel,
