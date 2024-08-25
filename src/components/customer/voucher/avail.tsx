@@ -54,11 +54,26 @@ export default function AvailVoucher({
 
   return (
     <div className="flex flex-col justify-center items-center h-dvh">
-      <h1 className="mb-2">Present this QR Code to Claim</h1>
+      <div className="p-2 rounded-xl w-[280px] bg-[#27272A] mb-3 text-center">
+        <h1>Present this QR Code to Claim</h1>
+        <p className="text-xs text-gray-400">
+          Voucher ID: {selected_voucher.id}
+        </p>
+      </div>
+
       <QRDownload
         value={JSON.stringify(selected_voucher)}
         filename={selected_voucher.id}
       />
+      <Button
+        className="w-[280px]"
+        variant="outline"
+        onClick={() => {
+          router.push("/account");
+        }}
+      >
+        Back to List
+      </Button>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="w-4/5 rounded-lg ">
           <DialogHeader>
