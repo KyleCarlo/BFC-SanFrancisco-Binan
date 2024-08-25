@@ -29,9 +29,14 @@ export default async function AccountPage({
       (voucher) => voucher.id === searchParams.voucher
     );
     if (selected_voucher) {
-      return <AvailVoucher selected_voucher={selected_voucher} />;
+      return (
+        <div className="absolute top-0 w-full">
+          <AvailVoucher selected_voucher={selected_voucher} />
+        </div>
+      );
     }
   }
+
   return (
     <main className="h-dvh w-full flex flex-col justify-center items-center gap-2 absolute top-0">
       <div className="p-5 rounded-xl w-[280px] bg-[#27272A]">
