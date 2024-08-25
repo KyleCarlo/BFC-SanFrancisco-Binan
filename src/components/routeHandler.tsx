@@ -11,7 +11,7 @@ export default function RouteHandler({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (prevPath.slice(0, 7) === "/order/" && pathname === "/order") {
-      router.push("/");
+      router.push(prevPath);
     }
     setPrevPath(pathname);
   }, [pathname]);
