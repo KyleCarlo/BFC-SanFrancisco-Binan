@@ -60,8 +60,8 @@ export default function UserTab() {
               <DropdownMenuItem>Profile</DropdownMenuItem>
             </Link>
           ) : (
-            <DropdownMenuItem onClick={() => router.back()}>
-              Back
+            <DropdownMenuItem onClick={() => router.push("/order")}>
+              Back to Order
             </DropdownMenuItem>
           )}
           <DropdownMenuItem
