@@ -9,7 +9,11 @@ import {
 } from "@components/ui/form";
 import ParkingField from "@components/parking-field";
 
-export function PersonalDetailsField({ form }: { form: UseFormReturn<Order> }) {
+export default function PersonalDetailsField({
+  form,
+}: {
+  form: UseFormReturn<Order>;
+}) {
   return (
     <div className="p-2">
       <FormField
@@ -19,7 +23,7 @@ export function PersonalDetailsField({ form }: { form: UseFormReturn<Order> }) {
           return (
             <FormItem className="grid grid-cols-[0px_1fr] items-center">
               <FormLabel className="pl-2">Name</FormLabel>
-              <FormControl className="m-0">
+              <FormControl>
                 <Input
                   {...field}
                   className="pl-[90px] w-full relative bottom-1"
@@ -37,7 +41,7 @@ export function PersonalDetailsField({ form }: { form: UseFormReturn<Order> }) {
           return (
             <FormItem className="grid grid-cols-[0px_1fr] items-center">
               <FormLabel className="pl-2 text-nowrap">Contact No.</FormLabel>
-              <FormControl className="m-0">
+              <FormControl>
                 <Input
                   {...field}
                   type="tel"
@@ -56,7 +60,7 @@ export function PersonalDetailsField({ form }: { form: UseFormReturn<Order> }) {
           return (
             <FormItem className="grid grid-cols-[0px_1fr] items-center">
               <FormLabel className="pl-2 text-nowrap">Comments</FormLabel>
-              <FormControl className="m-0">
+              <FormControl>
                 <Input
                   {...field}
                   className="pl-[90px] w-full relative bottom-1"
@@ -77,7 +81,7 @@ export function PersonalDetailsField({ form }: { form: UseFormReturn<Order> }) {
               return (
                 <FormItem className="grid grid-cols-[0px_1fr] items-center">
                   <FormLabel className="pl-2 text-nowrap">Plate No.</FormLabel>
-                  <FormControl className="m-0">
+                  <FormControl>
                     <Input
                       {...field}
                       className="pl-[90px] w-full relative bottom-1"
@@ -97,7 +101,7 @@ export function PersonalDetailsField({ form }: { form: UseFormReturn<Order> }) {
                   <FormLabel className="pl-2 text-nowrap">
                     Description
                   </FormLabel>
-                  <FormControl className="m-0">
+                  <FormControl>
                     <Input
                       {...field}
                       className="pl-[90px] w-full relative bottom-1"
@@ -112,6 +116,12 @@ export function PersonalDetailsField({ form }: { form: UseFormReturn<Order> }) {
           <ParkingField form={form} />
         </>
       )}
+      <div>
+        <p className="text-xs opacity-70 text-justify">
+          We collect your personal info solely to track and fulfill your order.
+          Your data is kept secure and never shared with third parties.
+        </p>
+      </div>
     </div>
   );
 }
