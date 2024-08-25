@@ -69,11 +69,12 @@ export function OrderCountProvider({ children }: { children: ReactNode }) {
               [status]: [...prev[status], id],
             };
           });
-          console.log(`/${status.toLowerCase()}-notif.mp3`);
-          const staff_flow_notif = new Audio(
-            `/${status.toLowerCase()}-notif.mp3`
-          );
-          staff_flow_notif.play();
+          if (status !== "Received") {
+            const staff_flow_notif = new Audio(
+              `/${status.toLowerCase()}-notif.mp3`
+            );
+            staff_flow_notif.play();
+          }
         }
       }
     );
@@ -104,6 +105,19 @@ export function OrderCountProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     getOrderCount(setOrderCount);
   }, []);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (orderCount.Incoming > 0) {
+      const incoming_notif = new Audio("/incoming-notif.mp3");
+      interval = setInterval(() => {
+        incoming_notif.play();
+      }, 3000);
+    }
+    return () => {
+      clearInterval(interval);
+    };
+  }, [orderCount.Incoming]);
 
   return (
     <OrderCountContext.Provider value={{ orderCount, setOrderCount }}>
