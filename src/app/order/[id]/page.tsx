@@ -6,6 +6,7 @@ import OrderStatus from "@components/customer/orderWait/status";
 import { ScrollArea } from "@components/ui/scroll-area";
 import QRDownload from "@components/customer/orderWait/QRnDL";
 import { OrderType } from "@/src/models/Order";
+import ClosingDialog from "@components/customer/orderWait/closing-dialog";
 
 export default async function WaitingPage({
   params,
@@ -28,7 +29,7 @@ export default async function WaitingPage({
 
   return (
     <div className="flex justify-center">
-      <div className="h-dvh grid grid-rows-[0.2fr_1fr] overflow-hidden p-4 items-stretch justify-items-center text-center absolute top-0">
+      <div className="h-dvh grid grid-rows-[0.2fr_0.8fr_0.1fr] overflow-hidden p-4 items-stretch justify-items-center text-center absolute top-0">
         <OrderStatus
           id={order.id as string}
           status={order.status}
@@ -48,7 +49,7 @@ export default async function WaitingPage({
               <div className="flex flex-col items-center">
                 <QRDownload value={params.id} filename={params.id} />
               </div>
-              <h1>
+              <h1 className="text-gold tracking-wider">
                 Keep the QR for Tracking and <br /> Receiving the Order.
               </h1>
             </div>
@@ -64,6 +65,7 @@ export default async function WaitingPage({
             </ScrollArea>
           </TabsContent>
         </Tabs>
+        <ClosingDialog />
       </div>
     </div>
   );
