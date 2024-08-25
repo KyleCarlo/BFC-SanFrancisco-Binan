@@ -7,7 +7,8 @@ import { Form } from "@components/ui/form";
 import OrderTypeField from "./orderType-field";
 import ScheduleField from "./schedule-field";
 import MOPField from "./mop-field";
-import { PersonalDetailsField } from "./pID-field";
+import PaymentChangeField from "./change-field";
+import PersonalDetailsField from "./pID-field";
 import { Cart } from "@models/Cart";
 import { MOP } from "@models/MOP";
 import {
@@ -115,10 +116,6 @@ export default function OrderForm({
       <form
         ref={formRef}
         onSubmit={form.handleSubmit((values) => {
-          setPauseButton(true);
-          setTimeout(() => {
-            setPauseButton(false);
-          }, 5000);
           values.total_price = validated_total_cost;
           values.total_num = validated_quantity;
           if (discountType) {
@@ -133,7 +130,8 @@ export default function OrderForm({
             isConnected,
             error,
             setDiscountUploaded,
-            setReceiptUploaded
+            setReceiptUploaded,
+            setPauseButton
           );
         })}
         className="h-full"
@@ -160,16 +158,24 @@ export default function OrderForm({
               />
             )}
           </div>
-          <hr />
           {loading && <div>Loading...</div>}
-          {!loading && form.watch("mop") && (
-            <QRField
-              form={form}
-              mops={mops}
-              uppy={uppy_receipt}
-              receiptUploaded={receiptUploaded}
-              setReceiptUploaded={setReceiptUploaded}
-            />
+          {!loading && form.watch("mop") && form.watch("mop") !== "Cash" && (
+            <>
+              <hr />
+              <QRField
+                form={form}
+                mops={mops}
+                uppy={uppy_receipt}
+                receiptUploaded={receiptUploaded}
+                setReceiptUploaded={setReceiptUploaded}
+              />
+            </>
+          )}
+          {!loading && form.watch("mop") && form.watch("mop") === "Cash" && (
+            <>
+              <hr />
+              <PaymentChangeField form={form} />
+            </>
           )}
           <hr />
           <h1 className="-mb-2 text-bold mt-1">Contact Info</h1>

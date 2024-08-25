@@ -17,7 +17,8 @@ export default async function addOrder(
   isConnected: boolean,
   error: string | null,
   setDiscountUploaded: Dispatch<SetStateAction<boolean>>,
-  setReceiptUploaded: Dispatch<SetStateAction<boolean>>
+  setReceiptUploaded: Dispatch<SetStateAction<boolean>>,
+  setPauseButton: Dispatch<SetStateAction<boolean>>
 ) {
   const order_id = nanoid();
   const uploadedReceipt = uppy_receipt.getFiles()[0];
@@ -31,6 +32,12 @@ export default async function addOrder(
   }
   if (order.mop !== "Cash" && !uploadedReceipt) {
     return toast.error("Please Upload Proof of Payment.");
+  }
+  if (
+    order.mop === "Cash" &&
+    (order.payment_change === "" || order.payment_change === undefined)
+  ) {
+    return toast.error("Please Indicate the Payment Change.");
   }
   if (order.discount && !uploadedDiscount) {
     return toast.error(`Please Upload ${order.discount} ID.`);
@@ -63,7 +70,16 @@ export default async function addOrder(
     delete order.receiver_details.parking_location;
   }
 
+  if (order.mop !== "Cash") {
+    order.payment_change = undefined;
+  }
+
   order.id = order_id;
+
+  setPauseButton(true);
+  setTimeout(() => {
+    setPauseButton(false);
+  }, 5000);
 
   try {
     const { session } = await getSession();
