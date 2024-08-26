@@ -37,29 +37,31 @@ export default function ParkingField({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="w-full mt-1 mb-2">
-          {`Parking Location ${
-            form?.watch("receiver_details.parking_location") !== undefined
-              ? "✅"
-              : ""
-          }`}
-        </Button>
+        {form?.watch("receiver_details.parking_location") !== undefined ? (
+          <Button variant="outline" className="w-full mt-1 mb-2">
+            Parking Location ✅
+          </Button>
+        ) : (
+          <Button variant="outline" className="w-full mt-1 mb-2 h-14">
+            Click Here to Select Your <br /> Parking Location
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="w-4/5 max-w-md rounded-lg">
         <DialogHeader>
           <DialogTitle>{!form && "Customer"} Parking Location</DialogTitle>
           <DialogDescription className="relative">
             {form && (
-              <span>
-                Select the <SquareParking className="inline" /> below to your
-                corresponding parking location.
+              <span className="underline decoration-red-300 underline-offset-4">
+                Select the <SquareParking className="inline text-[--gold]" />{" "}
+                below to your corresponding parking location.
               </span>
             )}
           </DialogDescription>
         </DialogHeader>
-        <div className="grid grid-cols-[40px_1fr_20px_1fr_40px] grid-rows-[50px_1fr_1fr_20px_1fr_10px_25px] border-b">
+        <div className="grid grid-cols-[40px_1fr_20px_1fr_40px] grid-rows-[50px_1fr_1fr_20px_1fr_10px_25px] border-b border-white">
           {/* TITUS BUILDING */}
-          <div className="border col-start-2 col-span-3 row-start-1 row-span-2 flex justify-end items-end">
+          <div className="border border-white col-start-2 col-span-3 row-start-1 row-span-2 flex justify-end items-end">
             <div className="border-white border w-1/3 h-2/3 m-2 rounded-lg flex flex-col justify-center items-center">
               <Image height={15} width={15} alt="BFC" src="/bfc-logo.png" />
               <Image height={20} width={100} alt="" src="/bfc-name.png" />
@@ -67,7 +69,7 @@ export default function ParkingField({
           </div>
           {/* RIGHT SIDE PARKING */}
           <div
-            className={`border row-start-1 row-span-2 ${
+            className={`border border-white row-start-1 row-span-2 ${
               !disableButtons && "cursor-pointer"
             } flex items-center justify-center p-1 col-start-5 ${
               parkLoc === "r" || location === "r" ? "bg-[--gold]" : ""
@@ -85,7 +87,7 @@ export default function ParkingField({
           </div>
           {/* LOWER LEFT */}
           <div
-            className={`border row-start-3 ${
+            className={`border border-white row-start-3 ${
               !disableButtons && "cursor-pointer"
             } flex justify-center p-1 col-start-2 ${
               parkLoc === "ll" || location === "ll" ? "bg-[--gold]" : ""
@@ -102,10 +104,10 @@ export default function ParkingField({
             />
           </div>
           {/* LOWER MID */}
-          <div className="row-start-3 bg-[--gray] col-start-3" />
+          <div className="row-start-3 border-white bg-[--gray] col-start-3" />
           {/* LOWER RIGHT */}
           <div
-            className={`border row-start-3 col-start-4 ${
+            className={`border border-white row-start-3 col-start-4 ${
               !disableButtons && "cursor-pointer"
             } flex justify-center p-1 ${
               parkLoc === "lr" || location === "lr" ? "bg-[--gold]" : ""
@@ -122,23 +124,27 @@ export default function ParkingField({
             />
           </div>
           <div className="col-start-1 row-start-4 flex justify-center items-center">
-            <CornerLeftDown className="relative top-2 left-1" />
+            <CornerLeftDown className="relative top-2 left-1 text-green-400" />
           </div>
           <div className="col-start-2 row-start-4 flex justify-center items-center min-w-min">
-            <MoveLeft />
+            <MoveLeft className="text-green-400" />
           </div>
           <div className="col-start-3 row-start-4 flex justify-center items-center min-w-min">
-            <MoveLeft />
+            <MoveLeft className="text-green-400" />
           </div>
           <div className="col-start-4 row-start-4 flex justify-center items-center min-w-min">
-            <MoveLeft />
+            <MoveLeft className="text-green-400" />
           </div>
           <div className="col-start-5 row-start-4 flex justify-center items-center">
-            <CornerUpLeft className="relative top-1 right-2" />
+            <CornerUpLeft className="relative top-1 right-2 text-green-400" />
           </div>
+          {/* EXIT */}
+          <p className="row-start-5 col-start-1 text-xs flex justify-center items-center border rounded-md">
+            Exit
+          </p>
           {/* LOWER LEFT2 */}
           <div
-            className={`border row-start-5 ${
+            className={`border border-white row-start-5 ${
               !disableButtons && "cursor-pointer"
             } flex justify-center p-1 col-start-2 ${
               parkLoc === "ll2" ? "bg-[--gold]" : ""
@@ -153,10 +159,10 @@ export default function ParkingField({
             />
           </div>
           {/* LOWER MID2 */}
-          <div className="row-start-5 bg-[--gray] col-start-3" />
+          <div className="row-start-5 bg-[--gray] col-start-3 border-white" />
           {/* LOWER RIGHT2 */}
           <div
-            className={`border row-start-5 col-start-4 ${
+            className={`border border-white row-start-5 col-start-4 ${
               !disableButtons && "cursor-pointer"
             } flex justify-center p-1 ${
               parkLoc === "lr2" || location === "lr2" ? "bg-[--gold]" : ""
@@ -172,18 +178,22 @@ export default function ParkingField({
               }`}
             />
           </div>
+          {/* ENTRANCE */}
+          <p className="row-start-5 col-start-5 text-xs flex justify-center items-center border rounded-md">
+            Entr
+          </p>
           <div className="row-start-7 col-start-1 flex justify-center items-center">
-            <MoveDown className="relative bottom-3" />
+            <MoveDown className="relative bottom-3 text-green-400" />
           </div>
           {/* ROAD */}
-          <div className="col-start-2 row-start-7 col-span-3 border-t relative overflow-hidden">
+          <div className="col-start-2 row-start-7 col-span-3 border-t border-white relative overflow-hidden">
             <p className="absolute bottom-0 opacity-50 tracking-[10px] text-nowrap">
               - - - - - - - - - - - - -
             </p>
             <p className="text-center">San Francisco Rd.</p>
           </div>
           <div className="row-start-7 col-start-5 flex justify-center items-center">
-            <MoveUp className="relative bottom-3" />
+            <MoveUp className="relative bottom-3 text-green-400" />
           </div>
         </div>
         <DialogFooter className="sm:justify-start">
