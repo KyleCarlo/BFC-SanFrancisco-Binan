@@ -137,11 +137,41 @@ export async function POST(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   const body = await req.json();
+  const accordingTo = req.nextUrl.searchParams.get("accordingTo") as
+    | "items"
+    | "beveragePrice";
 
-  if (!body || !body.id || !body.items) {
+  if (!accordingTo || !body || !body.id) {
     return NextResponse.json(
       {
-        message: "Invalid Request. Please Include Customer ID and Order Items.",
+        message:
+          'Invalid Request. Please Include "According To" and customer ID.',
+      },
+      { status: 400 }
+    );
+  } else if (accordingTo === "items") {
+    if (!body.items) {
+      return NextResponse.json(
+        {
+          message: "Invalid Request. Please Include Order Items.",
+        },
+        { status: 400 }
+      );
+    }
+  } else if (accordingTo === "beveragePrice") {
+    if (!body.beveragePrice) {
+      return NextResponse.json(
+        {
+          message: "Invalid Request. Please Include Beverage Price.",
+        },
+        { status: 400 }
+      );
+    }
+  } else {
+    return NextResponse.json(
+      {
+        message:
+          'Invalid Request. "According To" Must be "items" or "beveragePrice".',
       },
       { status: 400 }
     );
@@ -161,43 +191,46 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
-    const beverageCart = (body.items as Cart).filter(
-      (item) => item.itemType === "beverage"
-    );
-
-    if (beverageCart.length === 0) {
-      return NextResponse.json(
-        { message: "No Beverage in Cart." },
-        { status: 400 }
-      );
-    }
-
-    const beverage = await db
-      .selectFrom("BeverageVariation")
-      .select(["id", "price"])
-      .where(
-        "id",
-        "in",
-        beverageCart.map((item) => item.variation_id)
-      )
-      .execute();
-
-    if (beverage.length === 0) {
-      return NextResponse.json(
-        { message: "No Beverage Exist." },
-        { status: 400 }
-      );
-    }
-
     let earnedPoints = 0;
-    beverageCart.forEach((item) => {
-      const unit = beverage.find((bev) => {
-        return bev.id === item.variation_id;
-      });
+    if (accordingTo === "items") {
+      const beverageCart = (body.items as Cart).filter(
+        (item) => item.itemType === "beverage"
+      );
 
-      if (unit) earnedPoints += unit.price * item.quantity;
-    });
-    earnedPoints = Math.floor(earnedPoints / 20) / 100;
+      if (beverageCart.length === 0) {
+        return NextResponse.json(
+          { message: "No Beverage in Cart." },
+          { status: 400 }
+        );
+      }
+
+      const beverage = await db
+        .selectFrom("BeverageVariation")
+        .select(["id", "price"])
+        .where(
+          "id",
+          "in",
+          beverageCart.map((item) => item.variation_id)
+        )
+        .execute();
+
+      if (beverage.length === 0) {
+        return NextResponse.json(
+          { message: "No Beverage Exist." },
+          { status: 400 }
+        );
+      }
+      beverageCart.forEach((item) => {
+        const unit = beverage.find((bev) => {
+          return bev.id === item.variation_id;
+        });
+
+        if (unit) earnedPoints += unit.price * item.quantity;
+      });
+      earnedPoints = Math.floor(earnedPoints / 20) / 100;
+    } else if (accordingTo === "beveragePrice") {
+      earnedPoints = Math.floor(body.beveragePrice / 20);
+    }
 
     if (earnedPoints + customer[0].points < 100) {
       await db
