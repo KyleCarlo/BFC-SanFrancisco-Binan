@@ -7,6 +7,7 @@ import dayjs from "@lib/dayjs";
 import { serverGetVouchers } from "@hooks/getVouchers";
 import VoucherList from "@components/customer/voucher/list";
 import AvailVoucher from "@components/customer/voucher/avail";
+import QrCode from "react-qr-code";
 
 export default async function AccountPage({
   params,
@@ -69,9 +70,10 @@ export default async function AccountPage({
         </div>
       </div>
       <Tabs defaultValue="details" className="w-[280px]">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="details">Details</TabsTrigger>
           <TabsTrigger value="voucher">Vouchers</TabsTrigger>
+          <TabsTrigger value="QR">QR</TabsTrigger>
         </TabsList>
         <TabsContent value="details">
           <div className="w-[280px] h-[243.2px] rounded-lg border-2 py-4 flex flex-col gap-4">
@@ -129,6 +131,17 @@ export default async function AccountPage({
               </div>
             )}
           </ScrollArea>
+        </TabsContent>
+        <TabsContent value="QR">
+          <div className="w-[280px] h-[243.2px] rounded-lg border-2 py-4 flex flex-col items-center justify-center">
+            <div id="qr-code" className="bg-white p-3 rounded-xl w-[224px]">
+              <QrCode
+                value={customer.id}
+                size={200}
+                className="bg-white rounded-lg"
+              />
+            </div>
+          </div>
         </TabsContent>
       </Tabs>
     </main>
