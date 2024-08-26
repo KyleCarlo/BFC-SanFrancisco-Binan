@@ -35,7 +35,7 @@ export default async function updateOrderEnd(
     }
 
     if (orderToUpdate.customer_id && new_status === "Received") {
-      const response = await fetch(`/api/customer`, {
+      const response = await fetch(`/api/customer?accordingTo=items`, {
         method: "PATCH",
         body: JSON.stringify({
           id: orderToUpdate.customer_id,
