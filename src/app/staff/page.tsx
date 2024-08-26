@@ -8,13 +8,14 @@ import staffColumns from "@components/staff/staffTable/columns";
 import { Button } from "@components/ui/button";
 import { getSession, logout } from "@lib/auth";
 import { UserSession } from "@models/User";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function StaffHomePage() {
   const [loading, setLoading] = useState(true);
   const [loadingUser, setLoadingUser] = useState(true);
   const [staffs, setStaffs] = useState<Staff[]>([]);
   const [user, setUser] = useState<UserSession | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     getStaffs(setStaffs, setLoading);
@@ -45,7 +46,7 @@ export default function StaffHomePage() {
         <Button
           onClick={async () => {
             await logout();
-            redirect("/staff/sign-in");
+            router.push("/staff/sign-in");
           }}
         >
           Logout
