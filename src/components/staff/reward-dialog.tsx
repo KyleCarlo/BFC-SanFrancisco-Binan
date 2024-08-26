@@ -18,7 +18,7 @@ import customerAvail from "@hooks/customerAvail";
 import { toast } from "sonner";
 import socket from "@lib/socket";
 
-export default function RewardDialog() {
+export default function RewardsDialog() {
   const [open, setOpen] = useState(false);
   const [scanResult, setScanResult] = useState<string>("");
   const inputIDRef = useRef<HTMLInputElement>(null);
@@ -50,7 +50,7 @@ export default function RewardDialog() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size="lg" className="text-gold">
-          Customer Rewards
+          Rewards Avail
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
