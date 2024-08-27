@@ -7,6 +7,7 @@ import OrderActions from "./table_components/actions";
 import { Badge } from "@components/ui/badge";
 import ItemsDialog from "./table_components/orderItems";
 import DiscountDialog from "./table_components/discount-dialog";
+import OrderTypeComponent from "./table_components/orderType";
 
 const orderColumns: ColumnDef<Order>[] = [
   {
@@ -26,8 +27,13 @@ const orderColumns: ColumnDef<Order>[] = [
     accessorKey: "created_at",
     header: "Order Time",
     cell: ({ row }) => {
-      const date = dayjs(row.original.created_at).format("MM-DD hh:mm A");
-      return <span>{date}</span>;
+      const date = dayjs(row.original.created_at).tz("Asia/Manila");
+      return (
+        <div className="flex flex-col gap-2">
+          <p>{date.format("MMM DD")}</p>
+          <p>{date.format("hh:mm A")}</p>
+        </div>
+      );
     },
   },
   {
@@ -69,6 +75,10 @@ const orderColumns: ColumnDef<Order>[] = [
   {
     accessorKey: "order_type",
     header: "Type",
+    cell: ({ row }) => {
+      const type = row.original.order_type;
+      return <OrderTypeComponent type={type as OrderType} />;
+    },
   },
   {
     accessorKey: "items",
@@ -83,8 +93,13 @@ const orderColumns: ColumnDef<Order>[] = [
     header: "PickUp Sched",
     cell: ({ row }) => {
       if (row.original.order_type === "PickUpLater") {
-        const date = dayjs(row.original.scheduled).format("MM-DD hh:mm A");
-        return <span className="text-gold">{date}</span>;
+        const date = dayjs(row.original.scheduled).tz("Asia/Manila");
+        return (
+          <div className="flex flex-col gap-2 border rounded-md p-2 border-blue-400">
+            <p>{date.format("MMM DD")}</p>
+            <p className="text-bold tracking-wider">{date.format("hh:mm A")}</p>
+          </div>
+        );
       } else {
         return <span>-</span>;
       }
@@ -111,10 +126,13 @@ const orderColumns: ColumnDef<Order>[] = [
     accessorKey: "mop",
     header: "MOP",
     cell: ({ row }) => {
+      const mop = row.original.mop;
       return (
         <>
-          <p>{row.original.mop}</p>
-          {row.original.mop === "Cash" && (
+          <p>
+            {mop} {mop === "Cash" ? "💵" : ""}
+          </p>
+          {mop === "Cash" && (
             <p className="text-gold">
               Change for {row.original.payment_change}
             </p>

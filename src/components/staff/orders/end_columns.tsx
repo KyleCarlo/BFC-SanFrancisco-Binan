@@ -5,6 +5,8 @@ import IDDialog from "./table_components/id";
 import ProofOfPayment from "./table_components/pop";
 import { Badge } from "@components/ui/badge";
 import ItemsDialog from "./table_components/orderItems";
+import OrderTypeComponent from "./table_components/orderType";
+import DiscountDialog from "./table_components/discount-dialog";
 
 const endColumns: ColumnDef<Order>[] = [
   {
@@ -24,8 +26,13 @@ const endColumns: ColumnDef<Order>[] = [
     accessorKey: "created_at",
     header: "Order Time",
     cell: ({ row }) => {
-      const date = dayjs(row.original.created_at).format("MM-DD hh:mm A");
-      return <span>{date}</span>;
+      const date = dayjs(row.original.created_at).tz("Asia/Manila");
+      return (
+        <div className="flex flex-col gap-2">
+          <p>{date.format("MMM DD")}</p>
+          <p>{date.format("hh:mm A")}</p>
+        </div>
+      );
     },
   },
   {
@@ -67,6 +74,10 @@ const endColumns: ColumnDef<Order>[] = [
   {
     accessorKey: "order_type",
     header: "Type",
+    cell: ({ row }) => {
+      const type = row.original.order_type;
+      return <OrderTypeComponent type={type as OrderType} />;
+    },
   },
   {
     accessorKey: "items",
@@ -81,8 +92,13 @@ const endColumns: ColumnDef<Order>[] = [
     header: "PickUp Sched",
     cell: ({ row }) => {
       if (row.original.order_type === "PickUpLater") {
-        const date = dayjs(row.original.scheduled).format("MM-DD hh:mm A");
-        return <span className="text-gold">{date}</span>;
+        const date = dayjs(row.original.scheduled).tz("Asia/Manila");
+        return (
+          <div className="flex flex-col gap-2 border rounded-md p-2 border-blue-400">
+            <p>{date.format("MMM DD")}</p>
+            <p className="text-bold tracking-wider">{date.format("hh:mm A")}</p>
+          </div>
+        );
       } else {
         return <span>-</span>;
       }
@@ -92,14 +108,36 @@ const endColumns: ColumnDef<Order>[] = [
     accessorKey: "total_price",
     header: "Total",
     cell: ({ row }) => {
-      return <span>₱{row.original.total_price.toFixed(2)}</span>;
+      return (
+        <div className="flex flex-col gap-2 justify-center items-center">
+          <span>₱{row.original.total_price.toFixed(2)}</span>
+          {row.original.discount && (
+            <DiscountDialog
+              image={row.original.discount_id as string}
+              discountType={row.original.discount}
+            />
+          )}
+        </div>
+      );
     },
   },
   {
     accessorKey: "mop",
     header: "MOP",
     cell: ({ row }) => {
-      return <span>{row.original.mop}</span>;
+      const mop = row.original.mop;
+      return (
+        <>
+          <p>
+            {mop} {mop === "Cash" ? "💵" : ""}
+          </p>
+          {mop === "Cash" && (
+            <p className="text-gold">
+              Change for {row.original.payment_change}
+            </p>
+          )}
+        </>
+      );
     },
   },
   {
@@ -126,10 +164,13 @@ const endColumns: ColumnDef<Order>[] = [
         row.original.status === "Rejected"
       ) {
         if (row.original.received_at) {
-          const date = dayjs(row.original.received_at)
-            .tz("Asia/Manila")
-            .format("MM-DD hh:mm A");
-          return <span>{date}</span>;
+          const date = dayjs(row.original.received_at).tz("Asia/Manila");
+          return (
+            <div className="flex flex-col gap-2">
+              <p>{date.format("MMM DD")}</p>
+              <p>{date.format("hh:mm A")}</p>
+            </div>
+          );
         }
       }
     },
