@@ -17,6 +17,7 @@ export default function InventoryPage() {
   const [itemType, setItemType] = useState<ItemType>("beverage");
   const [items, setItems] = useState<Array<Food | Beverage>>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [search, setSearch] = useState<string | null>(null);
 
   useEffect(() => {
     getMenuItems(itemType, setLoading, setItems);
@@ -31,16 +32,23 @@ export default function InventoryPage() {
         >
           <div className="flex items-center gap-4 p-4">
             <AddItemDialog />
-            <Input placeholder="Search for Item Name" />
+            <Input
+              placeholder="Search for Item Name"
+              onChange={(e) => {
+                const search = e.target.value;
+                if (search === "") setSearch(null);
+                else setSearch(search);
+              }}
+            />
             <SelectItemType />
           </div>
           <div className="w-full px-4">
             {loading && <p>Loading...</p>}
             {!loading && itemType === "food" && (
-              <FoodTable items={items as Food[]} />
+              <FoodTable items={items as Food[]} search={search} />
             )}
             {!loading && itemType === "beverage" && (
-              <BeverageTable items={items as Beverage[]} />
+              <BeverageTable items={items as Beverage[]} search={search} />
             )}
           </div>
         </ItemInventoryProvider>
