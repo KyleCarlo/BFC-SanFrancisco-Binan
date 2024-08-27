@@ -9,6 +9,7 @@ import { Button } from "@components/ui/button";
 import { getSession, logout } from "@lib/auth";
 import { UserSession } from "@models/User";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "@components/ui/skeleton";
 
 export default function StaffHomePage() {
   const [loading, setLoading] = useState(true);
@@ -40,9 +41,15 @@ export default function StaffHomePage() {
   return (
     <main className="space-y-2 p-4">
       <nav className="flex justify-between">
-        <p className="border-2 rounded-md flex items-center px-4">
-          Logged in as: {user?.first_name}
-        </p>
+        {loadingUser ? (
+          <div>
+            <Skeleton className="h-full w-[150px]" />
+          </div>
+        ) : (
+          <p className="border-2 rounded-md flex items-center px-4">
+            Logged in as: {user?.first_name}
+          </p>
+        )}
         <Button
           onClick={async () => {
             await logout();
