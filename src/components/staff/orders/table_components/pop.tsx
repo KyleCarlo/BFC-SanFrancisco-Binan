@@ -14,7 +14,7 @@ export default function ProofOfPayment({ image }: { image: string }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Show</Button>
+        <Button>Show</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
