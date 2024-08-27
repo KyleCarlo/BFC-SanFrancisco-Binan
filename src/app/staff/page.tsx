@@ -41,14 +41,18 @@ export default function StaffHomePage() {
   return (
     <main className="space-y-2 p-4">
       <nav className="flex justify-between">
-        {loadingUser ? (
+        {!loadingUser && user ? (
+          <p
+            className={`border-2 rounded-md flex items-center px-4 ${
+              ["Admin", "Dev"].includes(user.role) && "border-[--gold]"
+            }`}
+          >
+            Logged in as: {user.first_name}
+          </p>
+        ) : (
           <div>
             <Skeleton className="h-full w-[150px]" />
           </div>
-        ) : (
-          <p className="border-2 rounded-md flex items-center px-4">
-            Logged in as: {user?.first_name}
-          </p>
         )}
         <Button
           onClick={async () => {
