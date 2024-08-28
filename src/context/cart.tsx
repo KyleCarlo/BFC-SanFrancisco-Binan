@@ -3,6 +3,7 @@
 import { Cart } from "@models/Cart";
 import { createContext, useContext, Dispatch, SetStateAction } from "react";
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 export const CartContext = createContext<{
   cart: Cart;
@@ -52,6 +53,8 @@ export function CartProvider({
         )
           return cartItem;
       });
+      if (parsedCart.length !== filteredCart.length)
+        toast.warning("Some Items are Deleted in the Cart.");
       setCart(filteredCart);
     }
   }, []);
