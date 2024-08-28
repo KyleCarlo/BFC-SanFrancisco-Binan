@@ -1,7 +1,7 @@
 import { ItemType } from "@models/Menu";
-import { FoodVariation } from "@models/Menu/Food";
-import { BeverageVariation } from "@models/Menu/Beverage";
-import { SetStateAction } from "react";
+import { Food, FoodVariation } from "@models/Menu/Food";
+import { Beverage, BeverageVariation } from "@models/Menu/Beverage";
+import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 
 export async function toggleAvailability(
@@ -10,9 +10,8 @@ export async function toggleAvailability(
   variation_id: Number,
   itemType: ItemType,
   svariations: FoodVariation | BeverageVariation,
-  setSVariation: React.Dispatch<
-    SetStateAction<FoodVariation | BeverageVariation>
-  >
+  setSVariation: Dispatch<SetStateAction<FoodVariation | BeverageVariation>>,
+  setItemInventory: Dispatch<SetStateAction<Array<Food | Beverage>>>
 ) {
   try {
     const response = await fetch(`/api/menu`, {
@@ -32,6 +31,21 @@ export async function toggleAvailability(
     }
 
     setSVariation({ ...svariations, available });
+    setItemInventory(
+      (prev) =>
+        prev.map((item) =>
+          item.id === id
+            ? {
+                ...item,
+                variations: item.variations.map((variation) =>
+                  variation.id === variation_id
+                    ? { ...variation, available: available }
+                    : variation
+                ),
+              }
+            : item
+        ) as Array<Food | Beverage>
+    );
     toast.success(message);
   } catch {
     toast.error("Unknown error occurred.");
