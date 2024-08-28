@@ -8,6 +8,7 @@ import { ItemType } from "@models/Menu";
 
 import { useState } from "react";
 import { toggleAvailability } from "@hooks/setItemAvailability";
+import { useItemInventoryContext } from "@context/itemInventory";
 
 export default function Availibility({
   variation,
@@ -17,6 +18,7 @@ export default function Availibility({
   itemType: ItemType;
 }) {
   const [svariations, setSVariation] = useState(variation);
+  const { setItemInventory } = useItemInventoryContext();
 
   return (
     <Switch
@@ -29,7 +31,8 @@ export default function Availibility({
           svariations.id,
           itemType,
           svariations,
-          setSVariation
+          setSVariation,
+          setItemInventory
         );
       }}
     />
