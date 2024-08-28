@@ -12,9 +12,7 @@ export default function OrderLayout({
     <main>
       <OrderFilterProvider>
         <NavBar />
-        <RouteHandler>
-          <CartProvider>{children}</CartProvider>
-        </RouteHandler>
+        <RouteHandler>{children}</RouteHandler>
       </OrderFilterProvider>
     </main>
   );

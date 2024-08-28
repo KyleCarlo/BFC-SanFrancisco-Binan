@@ -26,7 +26,7 @@ export default function CartView({
     <Sheet>
       <SheetTrigger asChild>
         <div
-          className={`h-11 fixed bg-gradient-to-t from-[--gold] w-full transition-all flex justify-center ${
+          className={`z-10 h-11 fixed bg-gradient-to-t from-[--gold] w-full transition-all flex justify-center ${
             quantity > 0 ? "bottom-0" : "-bottom-14"
           }`}
         >

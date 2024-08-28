@@ -59,24 +59,58 @@ export async function serverGetMenuItems() {
       return { message: message_2 };
     }
 
-    const popular_food = food.filter(
-      (item: Food) => item.feature === "Popular"
-    );
-    const popular_beverage = beverage.filter(
-      (item: Beverage) => item.feature === "Popular"
-    );
-    const new_food = food.filter((item: Food) => item.feature === "New");
-    const new_beverage = beverage.filter(
-      (item: Beverage) => item.feature === "New"
-    );
+    const food_ids: number[] = [];
+    const beverage_ids: number[] = [];
+    const popular_food: Food[] = [];
+    const popular_beverage: Beverage[] = [];
+    const new_food: Food[] = [];
+    const new_beverage: Beverage[] = [];
+    const unavailable_food: number[] = [];
+    const unavailable_beverage: number[] = [];
+
+    food.forEach((item: Food) => {
+      food_ids.push(item.id);
+      switch (item.feature) {
+        case "Popular":
+          popular_food.push(item);
+          break;
+        case "New":
+          new_food.push(item);
+          break;
+      }
+
+      item.variations.forEach((variation) => {
+        if (!variation.available) unavailable_food.push(variation.id);
+      });
+    });
+
+    beverage.forEach((item: Beverage) => {
+      beverage_ids.push(item.id);
+      switch (item.feature) {
+        case "Popular":
+          popular_beverage.push(item);
+          break;
+        case "New":
+          new_beverage.push(item);
+          break;
+      }
+
+      item.variations.forEach((variation) => {
+        if (!variation.available) unavailable_beverage.push(variation.id);
+      });
+    });
 
     return {
+      beverage_ids,
+      food_ids,
       beverage,
       food,
       popular_food,
       popular_beverage,
       new_food,
       new_beverage,
+      unavailable_food,
+      unavailable_beverage,
     };
   } catch {
     return { message: "Unknown error occurred." };

@@ -19,13 +19,40 @@ export function useCartContext() {
   return cart;
 }
 
-export function CartProvider({ children }: { children: React.ReactNode }) {
+export function CartProvider({
+  children,
+  beverage_ids,
+  food_ids,
+  unavailable_beverage,
+  unavailable_food,
+}: {
+  children: React.ReactNode;
+  beverage_ids: number[];
+  food_ids: number[];
+  unavailable_beverage: number[];
+  unavailable_food: number[];
+}) {
   const [cart, setCart] = useState<Cart>([]);
 
   useEffect(() => {
     const cart = localStorage.getItem("cart");
     if (cart) {
-      setCart(JSON.parse(cart));
+      const parsedCart = JSON.parse(cart) as Cart;
+      const filteredCart = parsedCart.filter((cartItem) => {
+        if (
+          cartItem.itemType === "food" &&
+          food_ids.includes(cartItem.id) &&
+          !unavailable_food.includes(cartItem.variation_id)
+        )
+          return cartItem;
+        else if (
+          cartItem.itemType === "beverage" &&
+          beverage_ids.includes(cartItem.id) &&
+          !unavailable_beverage.includes(cartItem.variation_id)
+        )
+          return cartItem;
+      });
+      setCart(filteredCart);
     }
   }, []);
 
