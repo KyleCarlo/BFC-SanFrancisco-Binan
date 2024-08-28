@@ -160,9 +160,12 @@ const beverageColumns: ColumnDef<Beverage>[] = [
 
       return (
         <div>
-          {variations.map((variation, index) => {
+          {variations.map((variation) => {
             return (
-              <div key={index} className="flex h-8 items-center justify-center">
+              <div
+                key={variation.id}
+                className="flex h-8 items-center justify-center"
+              >
                 <Availibility variation={variation} itemType="beverage" />
               </div>
             );
