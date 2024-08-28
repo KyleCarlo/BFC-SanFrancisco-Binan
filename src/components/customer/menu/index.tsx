@@ -59,58 +59,58 @@ export default function Items({
   return (
     <>
       <ItemTypeProvider defaultItemType="beverage">
-        <CartDrawerProvider>
-          {Object.keys(bevPerBase).map((base) => {
-            const parsedBase = parseBeverageBase(base);
-            if (bevPerBase[base as BeverageBase].length === 0) return null;
+        {Object.keys(bevPerBase).map((base) => {
+          const parsedBase = parseBeverageBase(base);
+          if (bevPerBase[base as BeverageBase].length === 0) return null;
 
-            return (
-              <Card className="m-2 pb-4" key={base}>
-                <CardHeader className="pt-3 pb-2">
-                  <CardTitle className="text-xl text-bold text-italic tracking-wide pl-[2%]">
-                    {parsedBase}
-                  </CardTitle>
-                  <hr />
-                </CardHeader>
-                <CardContent className="p-0 grid grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] min-[400px]:grid-cols-[repeat(auto-fit,_minmax(180px,_1fr))] justify-items-center items-start">
-                  {bevPerBase[base as BeverageBase].map((item: Beverage) => {
-                    return (
-                      <CartDialog item={item} key={item.id}>
+          return (
+            <Card className="m-2 pb-4" key={base}>
+              <CardHeader className="pt-3 pb-2">
+                <CardTitle className="text-xl text-bold text-italic tracking-wide pl-[2%]">
+                  {parsedBase}
+                </CardTitle>
+                <hr />
+              </CardHeader>
+              <CardContent className="p-0 grid grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] min-[400px]:grid-cols-[repeat(auto-fit,_minmax(180px,_1fr))] justify-items-center items-start">
+                {bevPerBase[base as BeverageBase].map((item: Beverage) => {
+                  return (
+                    <CartDrawerProvider key={item.id}>
+                      <CartDialog item={item}>
                         <ItemCard item={item} />
                       </CartDialog>
-                    );
-                  })}
-                </CardContent>
-              </Card>
-            );
-          })}
-        </CartDrawerProvider>
+                    </CartDrawerProvider>
+                  );
+                })}
+              </CardContent>
+            </Card>
+          );
+        })}
       </ItemTypeProvider>
       <ItemTypeProvider defaultItemType="food">
-        <CartDrawerProvider>
-          {Object.keys(foodPerCategory).map((category) => {
-            if (foodPerCategory[category].length === 0) return null;
-            return (
-              <Card className="m-2 pb-4" key={category}>
-                <CardHeader className="pt-3 pb-2">
-                  <CardTitle className="text-xl text-bold text-italic tracking-wide pl-[2%]">
-                    {capitalize(category)}
-                  </CardTitle>
-                  <hr />
-                </CardHeader>
-                <CardContent className="p-0 grid grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] min-[400px]:grid-cols-[repeat(auto-fit,_minmax(180px,_1fr))] justify-items-center items-start">
-                  {foodPerCategory[category].map((item: Food) => {
-                    return (
-                      <CartDialog item={item} key={item.id}>
+        {Object.keys(foodPerCategory).map((category) => {
+          if (foodPerCategory[category].length === 0) return null;
+          return (
+            <Card className="m-2 pb-4" key={category}>
+              <CardHeader className="pt-3 pb-2">
+                <CardTitle className="text-xl text-bold text-italic tracking-wide pl-[2%]">
+                  {capitalize(category)}
+                </CardTitle>
+                <hr />
+              </CardHeader>
+              <CardContent className="p-0 grid grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] min-[400px]:grid-cols-[repeat(auto-fit,_minmax(180px,_1fr))] justify-items-center items-start">
+                {foodPerCategory[category].map((item: Food) => {
+                  return (
+                    <CartDrawerProvider key={item.id}>
+                      <CartDialog item={item}>
                         <ItemCard item={item} />
                       </CartDialog>
-                    );
-                  })}
-                </CardContent>
-              </Card>
-            );
-          })}
-        </CartDrawerProvider>
+                    </CartDrawerProvider>
+                  );
+                })}
+              </CardContent>
+            </Card>
+          );
+        })}
       </ItemTypeProvider>
     </>
   );
