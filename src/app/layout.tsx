@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import gordita from "@/src/fonts/gordita";
 import "./globals.css";
 import { Toaster } from "@components/ui/sonner";
-import { ScrollArea, ScrollBar } from "@components/ui/scroll-area";
+import { ScrollArea } from "@components/ui/scroll-area";
 
 export const metadata: Metadata = {
   title: "But First Coffee SFB",
