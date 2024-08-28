@@ -1,10 +1,9 @@
 "use client";
 
 import { createContext, useContext, Dispatch, SetStateAction } from "react";
-import { useState, useEffect, ReactNode } from "react";
+import { ReactNode } from "react";
 import { Food } from "@models/Menu/Food";
 import { Beverage } from "@models/Menu/Beverage";
-import { ItemType } from "@models/Menu";
 
 export const ItemInventoryContext = createContext<{
   itemInventory: Array<Food | Beverage>;
