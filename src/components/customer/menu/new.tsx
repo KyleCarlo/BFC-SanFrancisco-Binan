@@ -41,6 +41,7 @@ export default function NewItems({
     setBeverageFiltered(beverageFiltered);
     setFoodFiltered(foodFiltered);
   }, [orderFilter]);
+
   return (
     <>
       {(beverageFiltered.length > 0 || foodFiltered.length > 0) && (
