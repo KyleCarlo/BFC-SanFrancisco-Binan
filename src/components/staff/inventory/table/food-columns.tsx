@@ -108,7 +108,7 @@ const foodColumns: ColumnDef<Food>[] = [
                 key={index}
                 className="whitespace-nowrap flex h-8 items-center justify-center"
               >
-                ₱{variation.price}
+                ₱{(variation.price as number).toFixed(0)}
               </div>
             );
           })}

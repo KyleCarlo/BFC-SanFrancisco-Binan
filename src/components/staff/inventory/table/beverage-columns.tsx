@@ -112,7 +112,7 @@ const beverageColumns: ColumnDef<Beverage>[] = [
                 key={index}
                 className="whitespace-nowrap flex h-8 items-center justify-center"
               >
-                ₱{variation.price}
+                ₱{(variation.price as number).toFixed(0)}
               </div>
             );
           })}
