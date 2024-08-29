@@ -1,7 +1,7 @@
 "use client";
 
 import { CartItem, CartItemModel } from "@models/Cart";
-import { BeverageVariation } from "@models/Menu/Beverage";
+import { BeverageBase, BeverageVariation } from "@models/Menu/Beverage";
 import { FoodVariation } from "@models/Menu/Food";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,6 +21,8 @@ import {
   handleDeleteCartItem,
   parseDefaultCartItem,
 } from "@lib/customer-utils";
+import RoastField from "./roast-field";
+import { toast } from "sonner";
 
 export default function AddToCartForm({
   children,
@@ -29,6 +31,7 @@ export default function AddToCartForm({
   setOpen,
   defaultValues,
   formType,
+  beverageBase,
 }: {
   children: React.ReactNode;
   variations: BeverageVariation[] | FoodVariation[];
@@ -36,6 +39,7 @@ export default function AddToCartForm({
   setOpen: Dispatch<SetStateAction<boolean>>;
   defaultValues?: CartItem;
   formType: "create" | "update";
+  beverageBase?: BeverageBase;
 }) {
   const { itemType } = useItemTypeContext();
   const { cart, setCart } = useCartContext();
@@ -59,6 +63,12 @@ export default function AddToCartForm({
       <form
         onSubmit={form.handleSubmit((values) => {
           if (values.quantity > 0) {
+            if (
+              beverageBase?.toLowerCase() === "espresso" &&
+              values.roast === undefined
+            )
+              return toast.warning("Please Select the Type of Coffee Roast.");
+
             handleAddToCart(
               defaultValues as CartItem,
               values,
@@ -82,6 +92,10 @@ export default function AddToCartForm({
               {itemType === "beverage" && (
                 <SugarLevelField form={form} variations={variations} />
               )}
+              {itemType === "beverage" &&
+                beverageBase?.toLowerCase() === "espresso" && (
+                  <RoastField form={form} />
+                )}
             </div>
             <hr className="my-5" />
             <QuantityField form={form} />

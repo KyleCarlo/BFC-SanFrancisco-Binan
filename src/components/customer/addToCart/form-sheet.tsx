@@ -42,6 +42,7 @@ export default function AddToCartSheet({
           setOpen={setOpen}
           defaultValues={defaultCartItem}
           formType={formType}
+          beverageBase={(item as Beverage).base}
         >
           <SheetHeader>
             <div className="w-1/3 relative pt-[33%] left-1/3">

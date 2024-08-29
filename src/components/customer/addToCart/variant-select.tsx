@@ -6,6 +6,8 @@ import { Food } from "@models/Menu/Food";
 import { useItemTypeContext } from "@context/itemType";
 import AddToCartSheet from "./form-sheet";
 import { inferTemperatureEmoji } from "@lib/customer-utils";
+import { capitalize } from "@lib/utils";
+import CoffeeBean from "@components/bean";
 
 export default function VariantSelect({
   item,
@@ -47,6 +49,17 @@ export default function VariantSelect({
                   {cartItem.sugar_level} Sugar Level
                 </p>
               ))}
+            {itemType === "beverage" && cartItem.roast && (
+              <p className="text-gray-400 text-xs flex gap-1">
+                {capitalize(cartItem.roast)} Roast
+                <span>
+                  <CoffeeBean
+                    color={cartItem.roast === "dark" ? "#5B4642" : "#986339"}
+                    size={15}
+                  />
+                </span>
+              </p>
+            )}
             <p className="text-xs text-gray-400">
               Unit Price: {variation?.price}
             </p>

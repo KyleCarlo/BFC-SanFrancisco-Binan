@@ -2,7 +2,9 @@
 
 import Image from "next/image";
 import { inferTemperatureEmoji } from "@lib/customer-utils";
+import { capitalize } from "@lib/utils";
 import { ItemDetails } from "@models/Cart";
+import CoffeeBean from "../bean";
 
 export default function CartList({
   item,
@@ -41,6 +43,17 @@ export default function CartList({
                 {item.concentrate ? "" : `${item.sugar_level} Sugar Level`}
               </p>
             </>
+          )}
+          {item.roast && (
+            <p className="text-gray-400 text-xs flex gap-1 items-center">
+              {capitalize(item.roast)} Roast
+              <span>
+                <CoffeeBean
+                  color={item.roast === "dark" ? "#5B4642" : "#986339"}
+                  size={15}
+                />
+              </span>
+            </p>
           )}
           <p className="text-gray-400 text-xs">
             {item.serving} - ₱{item.price}

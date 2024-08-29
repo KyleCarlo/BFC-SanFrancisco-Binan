@@ -63,7 +63,8 @@ export function getCartItemIndex(cart: Cart, cartItem: CartItem) {
       item.itemType === cartItem.itemType &&
       item.id === cartItem.id &&
       item.variation_id === cartItem.variation_id &&
-      item.sugar_level === cartItem.sugar_level
+      item.sugar_level === cartItem.sugar_level &&
+      item.roast === cartItem.roast
     ) {
       _index = index;
       return;
@@ -97,7 +98,8 @@ export function updateCart(
       item.itemType === values.itemType &&
       item.id === values.id &&
       item.variation_id === values.variation_id &&
-      item.sugar_level === values.sugar_level
+      item.sugar_level === values.sugar_level &&
+      item.roast === values.roast
     ) {
       if (formType === "create" || index != prev_value_index)
         item.quantity += values.quantity;
