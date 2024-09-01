@@ -12,14 +12,7 @@ import { Button } from "@components/ui/button";
 import { ArrowUpRight } from "lucide-react";
 import Waves from "@components/waves";
 import DisableZoom from "@components/disablezoom";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@components/ui/carousel";
-import { bestSellers } from "@lib/utils";
+import BestSellers from "@components/bestSeller-carousel";
 
 export default function HomePage() {
   return (
@@ -71,7 +64,7 @@ export default function HomePage() {
             className="z-10 max-[1256px]:w-3/5 max-[560px]:w-full max-[560px]:max-w-[400px]"
           />
           <div className="flex flex-col w-full gap-7 max-[800px]:gap-3 items-center">
-            <h1 className="text-center text-bold text-[4.5rem] relative max-[1538px]:right-36 max-[1256px]:right-1/4 max-[560px]:[right-0] max-[560px]:right-0 leading-snug text-[--gold] text-nowrap max-[1465px]:text-[4rem] max-[1394px]:text-[3rem] max-[990px]:text-[2.5rem] max-[900px]:text-[2rem] max-[720px]:text-[1.5rem]">
+            <h1 className="text-center text-bold text-[4.5rem] relative max-[1538px]:right-36 max-[1256px]:right-1/4 max-[560px]:[right-0] max-[560px]:right-0 leading-snug text-nowrap max-[1465px]:text-[4rem] max-[1394px]:text-[3rem] max-[990px]:text-[2.5rem] max-[900px]:text-[2rem] max-[720px]:text-[1.5rem]">
               High Quality,
               <br />
               Affordable Coffee
@@ -119,7 +112,7 @@ export default function HomePage() {
             <h1 className="text-black text-bold text-nowrap">PARK N{"'"} GO</h1>
           </div>
         </div>
-        <div className="-mx-5 px-5 relative top-[-3px] pb-10 min-[600px]:py-10 text-black flex items-center justify-evenly bg-gradient-to-b from-[--gold] via-[--gold] to-transparent">
+        <div className="-mx-5 px-5 relative top-[-3px] pb-20 text-black flex items-center justify-evenly bg-gradient-to-b from-[--gold] via-[--gold] to-transparent">
           <div className="flex flex-col items-end gap-2">
             <h1 className="text-[4rem] max-md:text-[3rem] max-[600px]:text-[2rem] max-[400px]:text-[1.5rem]">
               Rewards
@@ -142,36 +135,13 @@ export default function HomePage() {
             className="h-[400px] w-auto max-[600px]:h-[250px] max-[400px]:h-[180px]"
           />
         </div>
-        <div>
-          <h1 className="text-[4rem] max-md:text-[3rem] max-[600px]:text-[2rem] max-[400px]:text-[1.5rem]">
+        <div className="flex flex-col max-[715px]:items-center">
+          <h1 className="mb-2 text-center text-bold text-[4rem] leading-snug text-nowrap max-[1394px]:text-[3rem] max-[990px]:text-[2.5rem] max-[900px]:text-[2rem] max-[720px]:text-[1.5rem]">
             Our Best Sellers
           </h1>
-          <Carousel className="w-full">
-            <CarouselContent className="-ml-1">
-              {bestSellers.map((item) => (
-                <CarouselItem
-                  key={item.id}
-                  className="md:basis-1/2 lg:basis-1/3 flex justify-center"
-                >
-                  <div className="w-[300px] m-2 rounded-md">
-                    <div className="w-full relative pt-[100%]">
-                      <Image
-                        fill={true}
-                        src={`/best_sellers/${item.image}`}
-                        alt={`Image of ${item.name}`}
-                        className="w-full h-full top-0 left-0 object-cover rounded-md"
-                      />
-                    </div>
-                    <h1 className="text-gold text-bold text-italic px-2 pt-1 pb-2 text-center text-2xl max-md:text-lg max-[600px]:text-sm max-[400px]:text-xs">
-                      {item.name}
-                    </h1>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
+          <div>
+            <BestSellers />
+          </div>
         </div>
       </main>
     </DisableZoom>

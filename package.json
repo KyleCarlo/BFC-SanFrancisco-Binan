@@ -38,6 +38,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.11",
+    "embla-carousel-autoplay": "^8.2.0",
     "embla-carousel-react": "^8.1.6",
     "framer-motion": "^11.3.30",
     "html2canvas": "^1.4.1",

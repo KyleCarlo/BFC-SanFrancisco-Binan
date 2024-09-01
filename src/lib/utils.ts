@@ -51,4 +51,14 @@ export const bestSellers: Array<{
     name: "Creamy Tuna Pesto",
     image: "Creamy Tuna Pesto.jpg",
   },
+  {
+    id: 2,
+    name: "Creamy Tuna Pesto",
+    image: "Creamy Tuna Pesto.jpg",
+  },
+  {
+    id: 2,
+    name: "Creamy Tuna Pesto",
+    image: "Creamy Tuna Pesto.jpg",
+  },
 ];
