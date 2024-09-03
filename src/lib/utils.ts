@@ -1,7 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Food } from "@models/Menu/Food";
-import { Beverage } from "@models/Menu/Beverage";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -48,17 +46,28 @@ export const bestSellers: Array<{
   },
   {
     id: 2,
+    name: "Vietnamese",
+    image: "Vietnamese-Style.jpg",
+  },
+  {
+    id: 3,
     name: "Creamy Tuna Pesto",
     image: "Creamy Tuna Pesto.jpg",
   },
   {
-    id: 2,
-    name: "Creamy Tuna Pesto",
-    image: "Creamy Tuna Pesto.jpg",
+    id: 4,
+    name: "Caramel Macchiato",
+    image: "Caramel Macchiato.jpg",
+  },
+  { id: 5, name: "Lasagna", image: "Lasagna.png" },
+  {
+    id: 6,
+    name: "Matcha Latte",
+    image: "Matcha Latte.jpg",
   },
   {
-    id: 2,
-    name: "Creamy Tuna Pesto",
-    image: "Creamy Tuna Pesto.jpg",
+    id: 7,
+    name: "Biscoff Cake",
+    image: "Biscoff cake.jpg",
   },
 ];
