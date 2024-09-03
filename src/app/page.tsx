@@ -51,7 +51,7 @@ export default function HomePage() {
             </Button>
           </Link>
         </nav>
-        <div className="flex items-center relative h-dvh max-[1256px]:h-[80dvh] max-[560px]:h-[70dvh] max-[560px]:flex-col max-[560px]:justify-center">
+        <div className="flex items-center relative min-h-[550px] h-dvh max-[1256px]:h-[80dvh] max-[560px]:h-[70dvh] max-[560px]:flex-col max-[560px]:justify-center">
           <Waves
             imageIndex={0}
             className="absolute w-full scale-x-110 bottom-0 max-[560px]:scale-x-125"
@@ -122,7 +122,7 @@ export default function HomePage() {
             </p>
             <p className="text-2xl text-end max-md:text-lg max-[600px]:text-sm max-[400px]:text-xs">
               Once you get 100 points you can get a voucher and{" "}
-              <span className="underline min-[600px]:text-nowrap">
+              <span className="text-bold tracking-wide underline min-[600px]:text-nowrap">
                 avail 1 free Beverage to us.
               </span>
             </p>
