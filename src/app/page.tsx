@@ -4,15 +4,12 @@ import BFCName from "@public/bfc-name.png";
 import HeaderImage from "@public/header-image.png";
 import LoyalCupImage from "@public/loyal-cup.png";
 import Link from "next/link";
-import { Utensils } from "lucide-react";
-import { CircleParking } from "lucide-react";
-import { ShoppingBag } from "lucide-react";
-import { Clock8 } from "lucide-react";
 import { Button } from "@components/ui/button";
 import { ArrowUpRight } from "lucide-react";
 import Waves from "@components/waves";
 import DisableZoom from "@components/disablezoom";
 import BestSellers from "@components/bestSeller-carousel";
+import Services from "@components/services";
 
 export default function HomePage() {
   return (
@@ -87,30 +84,10 @@ export default function HomePage() {
           </div>
         </div>
         <div className="bg-[--gold] -mx-5 px-5 grid grid-cols-4 max-[360px]:grid-cols-2 relative top-[-2px] justify-items-center">
-          <div className="flex flex-col items-center gap-2 max-[560px]:scale-75">
-            <div className="border-2 border-black rounded-full p-4 bg-black">
-              <Utensils className="size-8" />
-            </div>
-            <h1 className="text-black text-bold text-nowrap">DINE IN</h1>
-          </div>
-          <div className="flex flex-col items-center gap-2 max-[560px]:scale-75">
-            <div className="border-2 border-black rounded-full p-4 bg-black">
-              <ShoppingBag className="size-8" />
-            </div>
-            <h1 className="text-black text-bold text-nowrap">PICK UP</h1>
-          </div>
-          <div className="flex flex-col items-center gap-2 max-[560px]:scale-75">
-            <div className="border-2 border-black rounded-full p-4 bg-black">
-              <Clock8 className="size-8" />
-            </div>
-            <h1 className="text-black text-bold text-nowrap">SCHEDULE</h1>
-          </div>
-          <div className="flex flex-col items-center gap-2 max-[560px]:scale-75">
-            <div className="border-2 border-black rounded-full p-4 bg-black">
-              <CircleParking className="size-8" />
-            </div>
-            <h1 className="text-black text-bold text-nowrap">PARK N{"'"} GO</h1>
-          </div>
+          <Services serviceType="DineIn" />
+          <Services serviceType="PickUpNow" />
+          <Services serviceType="PickUpLater" />
+          <Services serviceType="ParkNGo" />
         </div>
         <div className="-mx-5 px-5 relative top-[-3px] pb-20 text-black flex items-center justify-evenly bg-gradient-to-b from-[--gold] via-[--gold] to-transparent">
           <div className="flex flex-col items-end gap-2">
