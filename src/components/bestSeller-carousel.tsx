@@ -17,7 +17,7 @@ export default function BestSellers() {
 
   return (
     <Carousel
-      className="relative max-[400px]:w-[200px] max-[460px]:w-[360px] max-[715px]:w-[400px] min-[715px]:mx-10"
+      className="relative max-[350px]:w-[200px] max-[400px]:w-[300px] max-[460px]:w-[360px] max-[715px]:w-[400px] min-[715px]:mx-10"
       opts={{
         align: "start",
         loop: true,
@@ -28,7 +28,7 @@ export default function BestSellers() {
         {bestSellers.map((item) => (
           <CarouselItem
             key={item.id}
-            className="min-[400px]:basis-1/2 md:basis-1/3 lg:basis-1/4 flex justify-center"
+            className="min-[350px]:basis-1/2 md:basis-1/3 lg:basis-1/4 flex justify-center"
           >
             <div className="w-full min-[400px]:max-w-[200px] min-[715px]:max-w-72">
               <div className="min-[400px]:w-full relative pt-[100%]">
@@ -46,8 +46,8 @@ export default function BestSellers() {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious className="top-1/2 max-[540px]:left-[-20px]" />
-      <CarouselNext className="top-1/2 max-[540px]:right-[-20px]" />
+      <CarouselPrevious className="top-[calc(50%-15px)] max-[540px]:left-[-20px]" />
+      <CarouselNext className="top-[calc(50%-15px)] max-[540px]:right-[-20px]" />
     </Carousel>
   );
 }
