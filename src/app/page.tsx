@@ -83,11 +83,11 @@ export default function HomePage() {
             </Link>
           </div>
         </div>
-        <div className="bg-[--gold] -mx-5 px-5 grid grid-cols-4 max-[360px]:grid-cols-2 relative top-[-2px] justify-items-center">
-          <Services serviceType="DineIn" />
+        <div className="bg-[--gold] -mx-5 px-5 relative top-[-2px] grid grid-rows-4 place-items-center gap-0 min-[900px]:gap-5 min-[990px]:gap-10">
+          <Services serviceType="DineIn" direction="right" />
           <Services serviceType="PickUpNow" />
-          <Services serviceType="PickUpLater" />
-          <Services serviceType="ParkNGo" />
+          <Services serviceType="ParkNGo" direction="right" />
+          <Services serviceType="Delivery" />
         </div>
         <div className="-mx-5 px-5 relative top-[-3px] pb-20 text-black flex items-center justify-evenly bg-gradient-to-b from-[--gold] via-[--gold] to-transparent">
           <div className="flex flex-col items-end gap-2">
@@ -103,6 +103,9 @@ export default function HomePage() {
                 avail 1 free Beverage to us.
               </span>
             </p>
+            <p className="text-end text-xs min-[440px]:text-sm min-[601px]:text-lg text-italic">
+              *not applicable for Dine In*
+            </p>
           </div>
           <Image
             height={731}
@@ -112,13 +115,11 @@ export default function HomePage() {
             className="h-[400px] w-auto max-[600px]:h-[250px] max-[400px]:h-[180px]"
           />
         </div>
-        <div className="flex flex-col max-[715px]:items-center">
+        <div className="flex flex-col items-center">
           <h1 className="mb-2 text-center text-bold text-[4rem] leading-snug text-nowrap max-[1394px]:text-[3rem] max-[990px]:text-[2.5rem] max-[900px]:text-[2rem] max-[720px]:text-[1.5rem]">
             Our Best Sellers
           </h1>
-          <div>
-            <BestSellers />
-          </div>
+          <BestSellers />
         </div>
       </main>
     </DisableZoom>
