@@ -123,7 +123,7 @@ export default function HomePage() {
         </div>
         <div className="flex justify-center mt-10 max-[640px]:mt-5">
           <div className="bg-[--gold] rounded-2xl w-3/4 overflow-hidden min-w-[280px]">
-            <h1 className="pt-2 text-black mb-2 text-center text-bold text-[4rem] leading-snug text-nowrap max-[1394px]:text-[3rem] max-[990px]:text-[2.5rem] max-[900px]:text-[2rem] max-[720px]:text-[1.5rem]">
+            <h1 className="pt-2 max-[720px]:my-[3px] text-black mb-2 text-center text-bold text-[4rem] leading-snug text-nowrap max-[1394px]:text-[3rem] max-[990px]:text-[2.5rem] max-[900px]:text-[2rem] max-[720px]:text-[1.5rem]">
               Visit Us
             </h1>
             <div className="w-full bg-black rounded-2xl overflow-hidden flex max-[700px]:flex-wrap max-[700px]:border-4 max-[700px]:border-[--gold]">
