@@ -127,7 +127,7 @@ export default function HomePage() {
             <h1 className="pt-2 max-[720px]:my-[3px] text-black mb-2 text-center text-bold text-[4rem] leading-snug text-nowrap max-[1394px]:text-[3rem] max-[990px]:text-[2.5rem] max-[900px]:text-[2rem] max-[720px]:text-[1.5rem]">
               Visit Us
             </h1>
-            <div className="w-full bg-black rounded-2xl overflow-hidden flex max-[500px]:flex-wrap max-[700px]:border-4 max-[700px]:border-[--gold]">
+            <div className="w-full bg-black rounded-2xl overflow-hidden flex max-[500px]:flex-wrap max-[500px]:border-4 max-[500px]:border-[--gold]">
               <video
                 autoPlay
                 muted
