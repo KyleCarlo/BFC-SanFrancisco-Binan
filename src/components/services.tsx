@@ -3,6 +3,7 @@ import { Utensils, Clock8, CircleParking, ShoppingBag } from "lucide-react";
 import GrabFood from "@public/grabfood.png";
 import FoodPanda from "@public/foodpanda.png";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Services({
   serviceType,
@@ -62,7 +63,16 @@ export default function Services({
     Delivery: "DELIVERY",
   };
   const Description = {
-    DineIn: `Enjoy our menu in a cozy setting with 30-50 seats, perfect for small events. For reservations during peak hours, visit our site or message us.`,
+    DineIn: (
+      <span>
+        Enjoy our menu in a cozy setting with 30-50 seats, perfect for small
+        events. For reservations during peak hours,{" "}
+        <Link href="#contact" className="underline">
+          contact us
+        </Link>
+        .
+      </span>
+    ),
     PickUpNow:
       "Pre-order online and pick up at our shop. Show your order confirmation at the pick-up window for a quick experience.",
     PickUpLater:
