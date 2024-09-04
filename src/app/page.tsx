@@ -131,7 +131,9 @@ export default function HomePage() {
                 autoPlay
                 muted
                 loop
-                className="h-[calc(100dvh-300px)] max-[700px]:w-full"
+                className="h-[calc(100dvh-300px)] w-auto max-[700px]:w-full"
+                width={300}
+                height={385.57389706198472504927981035386}
               >
                 <source src="/video_intro.mp4" />
                 Cannot play Video
