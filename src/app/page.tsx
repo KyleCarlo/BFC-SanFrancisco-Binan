@@ -121,6 +121,33 @@ export default function HomePage() {
           </h1>
           <BestSellers />
         </div>
+        <div className="flex justify-center mt-10 max-[640px]:mt-5">
+          <div className="bg-[--gold] rounded-2xl w-3/4 overflow-hidden min-w-[280px]">
+            <h1 className="pt-2 text-black mb-2 text-center text-bold text-[4rem] leading-snug text-nowrap max-[1394px]:text-[3rem] max-[990px]:text-[2.5rem] max-[900px]:text-[2rem] max-[720px]:text-[1.5rem]">
+              Visit Us
+            </h1>
+            <div className="w-full bg-black rounded-2xl overflow-hidden flex max-[700px]:flex-wrap max-[700px]:border-4 max-[700px]:border-[--gold]">
+              <video
+                autoPlay
+                muted
+                loop
+                className="h-[calc(100dvh-300px)] max-[700px]:w-full"
+              >
+                <source src="/video_intro.mp4" />
+                Cannot play Video
+              </video>
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3865.602695272403!2d121.05873279481389!3d14.33449567834182!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d70076fdcc43%3A0xa7825b4aa4d60ccc!2sBut%20First%2C%20Coffee%20(BFC)%20-%20San%20Francisco%20Binan!5e0!3m2!1sen!2sph!4v1725445759365!5m2!1sen!2sph"
+                width="400"
+                height="520"
+                loading="lazy"
+                className="flex-grow h-[calc(100dvh-300px)] max-[441px]:w-full"
+              >
+                Cannot display Location
+              </iframe>
+            </div>
+          </div>
+        </div>
       </main>
     </DisableZoom>
   );
