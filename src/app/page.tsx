@@ -104,7 +104,8 @@ export default function HomePage() {
               </span>
             </p>
             <p className="text-end text-xs min-[440px]:text-sm min-[601px]:text-lg text-italic">
-              *not applicable for Dine In*
+              *Only available in Park & Go and Pickup orders through our
+              website*
             </p>
           </div>
           <Image
@@ -143,7 +144,7 @@ export default function HomePage() {
                 width="400"
                 height="520"
                 loading="lazy"
-                className="flex-grow h-[calc(100dvh-300px)] max-[441px]:w-full"
+                className="flex-grow h-[calc(100dvh-250px)] max-[441px]:w-full"
               >
                 Cannot display Location
               </iframe>
