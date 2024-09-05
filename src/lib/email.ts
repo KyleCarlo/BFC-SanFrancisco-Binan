@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { EmailForm } from "@models/EmailForm";
 
 export const transporter = nodemailer.createTransport({
   host: "smtp.zoho.com",
@@ -84,6 +85,25 @@ export function OTPmessage(first_name: string, otp: string) {
         <p>RJ Titus bldg, Lot 2098-A Halang Rd, Brgy, Biñan, 4024 Laguna</p>
       </div>
     </div>
+  </body>
+  `;
+}
+
+export function Inquiry(values: EmailForm) {
+  return `
+  <body
+    style="
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 10px;
+    "
+  >
+    <h1>Name: ${values.name}</h1>
+    <p>Email: ${values.email}</p>
+    <p>Contact No: ${values.phone_number}</p>
+    <hr/>
+    <p>Message:</p>
+    <p>${values.message}</p>
   </body>
   `;
 }
