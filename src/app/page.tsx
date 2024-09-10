@@ -43,7 +43,7 @@ export default function HomePage() {
                 height={40}
                 src={Facebook}
                 alt="BFC Logo"
-                className="hover:scale-125 transition-all"
+                className="hover:scale-125 transition-all max-[500px]:w-[30px]"
               />
             </Link>
             <Link href="https://www.instagram.com/bfcsanfranciscobinan/">
@@ -52,7 +52,7 @@ export default function HomePage() {
                 height={40}
                 src={Instagram}
                 alt="BFC Logo"
-                className="hover:scale-125 transition-all"
+                className="hover:scale-125 transition-all max-[500px]:w-[30px]"
               />
             </Link>
             <Link href="/sign-in">

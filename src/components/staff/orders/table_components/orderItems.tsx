@@ -16,7 +16,13 @@ import {
   SheetTrigger,
 } from "@components/ui/sheet";
 
-export default function ItemsDialog({ items }: { items: Cart }) {
+export default function ItemsDialog({
+  items,
+  comment,
+}: {
+  items: Cart;
+  comment?: string;
+}) {
   const [open, setOpen] = useState(false);
   const [itemDetailsList, setItemDetailsList] = useState<ItemDetailsList>([]);
   const [loading, setLoading] = useState(true);
@@ -47,13 +53,25 @@ export default function ItemsDialog({ items }: { items: Cart }) {
         <ScrollArea className="h-full">
           <div className="flex flex-col items-center">
             {!loading ? (
-              itemDetailsList.map((item) => {
-                return (
-                  <div key={item.id} className="w-full">
-                    <CartList item={item} />
+              <>
+                {itemDetailsList.map((item) => {
+                  return (
+                    <div key={item.id} className="w-full">
+                      <CartList item={item} />
+                    </div>
+                  );
+                })}
+                {comment && (
+                  <div className="w-full">
+                    <div className="p-4">
+                      <h1 className="text-[--gray] text-italic tracking-wider">
+                        Customer Comment:
+                      </h1>
+                      <p>{comment}</p>
+                    </div>
                   </div>
-                );
-              })
+                )}
+              </>
             ) : (
               <div>Loading...</div>
             )}

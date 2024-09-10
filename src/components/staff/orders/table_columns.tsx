@@ -85,7 +85,8 @@ const orderColumns: ColumnDef<Order>[] = [
     header: "Items",
     cell: ({ row }) => {
       const items = row.original.items;
-      return <ItemsDialog items={items} />;
+      const comment = row.original.receiver_details.comments;
+      return <ItemsDialog items={items} comment={comment} />;
     },
   },
   {
