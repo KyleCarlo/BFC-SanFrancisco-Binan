@@ -19,6 +19,41 @@ export async function POST(
     );
   }
 
+  if (body.password.length < 12) {
+    return NextResponse.json(
+      { message: "Password must be at least 12 characters long." },
+      { status: 400 }
+    );
+  }
+
+  if (body.password === body.password.toLowerCase()) {
+    return NextResponse.json(
+      { message: "Password must contain at least one uppercase letter." },
+      { status: 400 }
+    );
+  }
+
+  if (body.password === body.password.toUpperCase()) {
+    return NextResponse.json(
+      { message: "Password must contain at least one lowercase letter." },
+      { status: 400 }
+    );
+  }
+
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(body.password)) {
+    return NextResponse.json(
+      { message: "Password must contain at least one special character." },
+      { status: 400 }
+    );
+  }
+
+  if (!/\d/.test(body.password)) {
+    return NextResponse.json(
+      { message: "Password must contain at least one number." },
+      { status: 400 }
+    );
+  }
+
   if (params.userType !== "customer" && params.userType !== "staff") {
     return NextResponse.json(
       { message: "Invalid User Type." },
