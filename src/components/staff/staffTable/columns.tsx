@@ -3,10 +3,6 @@ import { Staff } from "@/src/models/User";
 
 const staffColumns: ColumnDef<Staff>[] = [
   {
-    accessorKey: "email",
-    header: "Email",
-  },
-  {
     accessorKey: "first_name",
     header: "First Name",
   },
