@@ -34,21 +34,24 @@ export async function POST(
       .execute();
 
     if (user.length === 0) {
-      return NextResponse.json({ message: "Invalid Email." }, { status: 400 });
+      return NextResponse.json(
+        { message: "Invalid Email and Password." },
+        { status: 400 }
+      );
     }
 
     if (user[0].role === "Customer") {
       const isValid = await argon2.verify(user[0].password, body.password);
       if (!isValid) {
         return NextResponse.json(
-          { message: "Invalid Password." },
+          { message: "Invalid Email and Password." },
           { status: 400 }
         );
       }
     } else {
       if (user[0].password !== body.password) {
         return NextResponse.json(
-          { message: "Invalid Password." },
+          { message: "Invalid Email and Password." },
           { status: 400 }
         );
       }
