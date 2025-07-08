@@ -94,6 +94,36 @@ export default function SignUpPage() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit((values) => {
+              if (values.password.length < 12) {
+                return toast.error(
+                  "Password must be at least 12 characters long."
+                );
+              }
+
+              if (values.password === values.password.toLowerCase()) {
+                return toast.error(
+                  "Password must contain at least one uppercase letter."
+                );
+              }
+
+              if (values.password === values.password.toUpperCase()) {
+                return toast.error(
+                  "Password must contain at least one lowercase letter."
+                );
+              }
+
+              if (!/[!@#$%^&*(),.?":{}|<>]/.test(values.password)) {
+                return toast.error(
+                  "Password must contain at least one special character."
+                );
+              }
+
+              if (!/\d/.test(values.password)) {
+                return toast.error(
+                  "Password must contain at least one number."
+                );
+              }
+
               if (!form.watch("birthday"))
                 return toast.error("Please Enter your Birthdate.");
               if (!showConfirmation) {
