@@ -102,7 +102,6 @@ export default function SignUpPage() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit((values) => {
-              alert("Form submitted: " + JSON.stringify(values, null, 2));
               if (values.password.length < 12) {
                 return toast.error(
                   "Password must be at least 12 characters long."
