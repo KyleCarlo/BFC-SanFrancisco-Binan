@@ -166,16 +166,6 @@ export async function POST(req: NextRequest) {
       })
       .execute();
 
-    // await db
-    //   .updateTable("CustomerPass")
-    //   .set({
-    //     password_list: JSON.stringify([hashedPassword]),
-    //     security_question_num: parseInt(security_question_num, 10),
-    //     security_question_answer,
-    //     last_reset: dayjs().tz("Asia/Manila").toDate(),
-    //   })
-    //   .where("customer_id", "=", customer.id)
-    //   .execute();
     await db
       .insertInto("CustomerPass")
       .values({
