@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { securityQuestions } from "../lib/utils";
 
 export const StaffRoleModel = z.enum(["Admin", "Employee", "Dev"]);
 
@@ -34,6 +35,16 @@ export const SignUpModel = z.object({
   first_name: z.string().min(1, "Required").max(50, "Maximum of 50 characters"),
   last_name: z.string().min(1, "Required").max(50, "Maximum of 50 characters"),
   birthday: z.date().optional(),
+  security_question_num: z.enum(
+    securityQuestions.map((_, index) => index.toString()) as [
+      string,
+      ...string[]
+    ]
+  ),
+  security_question_answer: z
+    .string()
+    .min(1, "Required")
+    .max(255, "Maximum of 255 characters"),
 });
 
 export const UserSessionModel = z.object({
