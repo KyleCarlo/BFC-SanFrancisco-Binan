@@ -29,6 +29,13 @@ export function parseBeverageBase(base: string | undefined) {
   }
 }
 
+export const securityQuestions = [
+  "What is your mother's maiden name?",
+  "What was your favorite teacher's name?",
+  "What was the name of the café where you had your first date?",
+  "What is the name of your best friend?",
+];
+
 export const bestSellers: Array<{
   id: number;
   name: string;

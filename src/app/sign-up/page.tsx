@@ -25,6 +25,14 @@ import {
 import { toast } from "sonner";
 import Link from "next/link";
 import BirthdateField from "@components/customer/signUp/brithdate-field";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@components/ui/select";
+import { securityQuestions } from "@lib/utils";
 
 export default function SignUpPage() {
   const form = useForm<SignUp>({
@@ -94,6 +102,7 @@ export default function SignUpPage() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit((values) => {
+              alert("Form submitted: " + JSON.stringify(values, null, 2));
               if (values.password.length < 12) {
                 return toast.error(
                   "Password must be at least 12 characters long."
@@ -126,6 +135,10 @@ export default function SignUpPage() {
 
               if (!form.watch("birthday"))
                 return toast.error("Please Enter your Birthdate.");
+
+              if (!form.watch("security_question_num"))
+                return toast.error("Please select a security question.");
+
               if (!showConfirmation) {
                 getOTP(values.email, values.first_name, setShowConfirmation);
               } else {
@@ -260,6 +273,51 @@ export default function SignUpPage() {
                               />
                             )}
                           </>
+                        </FormControl>
+                      </div>
+                      <div className="relative flex justify-end pr-2">
+                        <FormMessage className="absolute top-[-10px]" />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="security_question_num"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select onValueChange={field.onChange}>
+                        <FormControl>
+                          <SelectTrigger className="w-[250px]">
+                            <SelectValue
+                              placeholder="Security Question"
+                              defaultValue={field.value}
+                            />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {securityQuestions.map((question, index) => (
+                            <SelectItem key={index} value={index.toString()}>
+                              {question}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="security_question_answer"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="relative">
+                        <FormControl>
+                          <Input
+                            placeholder="Security Question Answer"
+                            {...field}
+                            className="w-full h-10"
+                          />
                         </FormControl>
                       </div>
                       <div className="relative flex justify-end pr-2">
