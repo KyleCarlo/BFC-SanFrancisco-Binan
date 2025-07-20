@@ -22,7 +22,16 @@ export async function POST(
   try {
     const user = await db
       .selectFrom(capitalize(params.userType) as "Customer" | "Staff")
-      .select(["id", "email", "role", "first_name", "last_name", "password"])
+      .select([
+        "id",
+        "email",
+        "role",
+        "first_name",
+        "last_name",
+        "password",
+        "attempts",
+        "disabled_timestamp",
+      ])
       .where("email", "=", body.email)
       .execute();
 
@@ -35,11 +44,49 @@ export async function POST(
 
     if (user[0].role === "Customer") {
       const isValid = await argon2.verify(user[0].password, body.password);
+
       if (!isValid) {
+        db.updateTable("Customer")
+          .set({
+            attempts: user[0].attempts < 5 ? user[0].attempts + 1 : 5,
+            disabled_timestamp:
+              user[0].attempts + 1 >= 5
+                ? dayjs().tz("Asia/Manila").toDate()
+                : null,
+          })
+          .where("id", "=", user[0].id)
+          .execute();
+
         return NextResponse.json(
           { message: "Invalid Email and Password." },
           { status: 400 }
         );
+      }
+
+      if (user[0].attempts >= 5) {
+        const disabledTimestamp = dayjs(user[0].disabled_timestamp);
+        const now = dayjs().tz("Asia/Manila");
+
+        if (now.isBefore(disabledTimestamp.add(5, "minutes"))) {
+          const remaining = disabledTimestamp
+            .add(5, "minutes")
+            .diff(now, "seconds");
+
+          return NextResponse.json(
+            {
+              message:
+                "Account is temporarily disabled. Try again after " +
+                remaining +
+                " seconds.",
+            },
+            { status: 403 }
+          );
+        } else {
+          db.updateTable("Customer")
+            .set({ attempts: 0, disabled_timestamp: null })
+            .where("id", "=", user[0].id)
+            .execute();
+        }
       }
     } else {
       if (user[0].password !== body.password) {
