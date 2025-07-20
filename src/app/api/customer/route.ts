@@ -65,49 +65,59 @@ export async function POST(req: NextRequest) {
   }
 
   const { customer, otp } = body;
-
   if (
     !customer ||
     !customer.email ||
     !customer.password ||
     !customer.first_name ||
-    !customer.last_name
+    !customer.last_name ||
+    !customer.security_question_num ||
+    !customer.security_question_answer
   ) {
     return NextResponse.json(
-      { message: "Email, Password, First Name, and Last Name are Required." },
+      {
+        message:
+          "Email, Password, First Name, Last Name, and Security Question are Required.",
+      },
       { status: 400 }
     );
   }
 
-  if (body.password.length < 12) {
+  customer.id = nanoid();
+  const security_question_num = customer.security_question_num;
+  const security_question_answer = customer.security_question_answer;
+  delete customer.security_question_num;
+  delete customer.security_question_answer;
+
+  if (customer.password.length < 12) {
     return NextResponse.json(
       { message: "Password must be at least 12 characters long." },
       { status: 400 }
     );
   }
 
-  if (body.password === body.password.toLowerCase()) {
+  if (customer.password === customer.password.toLowerCase()) {
     return NextResponse.json(
       { message: "Password must contain at least one uppercase letter." },
       { status: 400 }
     );
   }
 
-  if (body.password === body.password.toUpperCase()) {
+  if (customer.password === customer.password.toUpperCase()) {
     return NextResponse.json(
       { message: "Password must contain at least one lowercase letter." },
       { status: 400 }
     );
   }
 
-  if (!/[!@#$%^&*(),.?":{}|<>]/.test(body.password)) {
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(customer.password)) {
     return NextResponse.json(
       { message: "Password must contain at least one special character." },
       { status: 400 }
     );
   }
 
-  if (!/\d/.test(body.password)) {
+  if (!/\d/.test(customer.password)) {
     return NextResponse.json(
       { message: "Password must contain at least one number." },
       { status: 400 }
@@ -152,8 +162,29 @@ export async function POST(req: NextRequest) {
         ...customer,
         password: hashedPassword,
         birthday: dayjs(customer.birthday).tz("Asia/Manila").toDate(),
-        id: nanoid(),
         created_at: dayjs().tz("Asia/Manila").toDate(),
+      })
+      .execute();
+
+    // await db
+    //   .updateTable("CustomerPass")
+    //   .set({
+    //     password_list: JSON.stringify([hashedPassword]),
+    //     security_question_num: parseInt(security_question_num, 10),
+    //     security_question_answer,
+    //     last_reset: dayjs().tz("Asia/Manila").toDate(),
+    //   })
+    //   .where("customer_id", "=", customer.id)
+    //   .execute();
+    await db
+      .insertInto("CustomerPass")
+      .values({
+        id: nanoid(),
+        customer_id: customer.id,
+        password_list: JSON.stringify([hashedPassword]),
+        security_question_num: parseInt(security_question_num, 10),
+        security_question_answer,
+        last_reset: dayjs().tz("Asia/Manila").toDate(),
       })
       .execute();
 
