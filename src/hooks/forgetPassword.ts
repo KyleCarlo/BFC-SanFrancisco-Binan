@@ -17,7 +17,6 @@ export async function checkUserIfExists(
   }
 
   const { user, securityQuestion } = await response.json();
-
   if (!user) {
     return toast.error("User not found.");
   }
@@ -33,7 +32,20 @@ export async function checkUserIfExists(
 export async function checkUserSecurityAnswer(
   email: string,
   answer: string,
-  newPassword: string
+  setIsSuccess: Dispatch<SetStateAction<boolean>>
 ) {
-  return true;
+  const response = await fetch("/api/customer/forget-pass", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, answer }),
+  });
+
+  if (!response.ok) {
+    const { message } = await response.json();
+    return toast.error(message);
+  }
+
+  setIsSuccess(true);
 }
