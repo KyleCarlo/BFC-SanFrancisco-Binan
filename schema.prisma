@@ -170,9 +170,22 @@ model Customer {
   birthday   DateTime     
   role       CustomerRole @default(Customer)
   points     Int          @default(0)
+  attempts   Int          @default(0)
+  disabled_timestamp DateTime?
   Order      Order[]
   Order_Done Order_Done[]
   Voucher    Voucher[]
+  CustomerPass CustomerPass[]
+}
+
+model CustomerPass {
+  id          String    @id @default(nanoid())
+  customer    Customer  @relation(fields: [customer_id], references: [id])
+  customer_id String
+  password_list String  @db.VarChar(500)
+  security_question_num Int 
+  security_question_answer String
+  last_reset    DateTime  @default(now())
 }
 
 model OTP {
