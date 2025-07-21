@@ -85,7 +85,9 @@ export async function POST(req: NextRequest) {
 
   customer.id = nanoid();
   const security_question_num = customer.security_question_num;
-  const security_question_answer = customer.security_question_answer;
+  const security_question_answer = await argon2.hash(
+    customer.security_question_answer
+  );
   delete customer.security_question_num;
   delete customer.security_question_answer;
 
