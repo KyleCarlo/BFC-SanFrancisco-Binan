@@ -1,5 +1,7 @@
 import db from "@/src/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import * as argon2 from "argon2";
+import dayjs from "dayjs";
 
 export async function GET(req: NextRequest) {
   const email = req.nextUrl.searchParams.get("email") as string;
@@ -17,9 +19,22 @@ export async function GET(req: NextRequest) {
       .where("email", "=", email)
       .execute();
 
-    if (!user) {
+    if (!user[0]) {
       return NextResponse.json({ message: "User not found." }, { status: 404 });
     }
+
+    // CHECK HERE IF LAST RESET IS AFTER A DAY
+    // if (user[0].last_reset) {
+    //   const lastResetTimestamp = dayjs(user[0].last_reset);
+    //   const now = dayjs();
+
+    //   if (disabledTimestamp.add(1, "day").isAfter(now)) {
+    //     return NextResponse.json(
+    //       { message: "Password must be at least one day old before reset." },
+    //       { status: 403 }
+    //     );
+    //   }
+    // }
 
     const securityQuestion = await db
       .selectFrom("CustomerPass")
@@ -44,9 +59,9 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const { email, answer, newPassword } = await req.json();
+  const { email, answer } = await req.json();
 
-  if (!email || !answer || !newPassword) {
+  if (!email || !answer) {
     return NextResponse.json(
       { message: "All fields are required." },
       { status: 400 }
@@ -64,12 +79,28 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "User not found." }, { status: 404 });
     }
 
-    // Here you would validate the answer and update the password
-    // This is a placeholder for the actual logic
-    // await updatePassword(user.id, newPassword);
+    const pass = await db
+      .selectFrom("CustomerPass")
+      .select("security_question_answer")
+      .where("customer_id", "=", user.id)
+      .executeTakeFirst();
+
+    if (!pass)
+      return NextResponse.json(
+        { message: "Invalid security answer." }, //generic error message
+        { status: 401 }
+      );
+
+    const isValid = await argon2.verify(pass.security_question_answer, answer);
+    if (!isValid) {
+      return NextResponse.json(
+        { message: "Invalid security answer." },
+        { status: 401 }
+      );
+    }
 
     return NextResponse.json(
-      { message: "Password reset successfully." },
+      { message: "Proceed to password reset." },
       { status: 200 }
     );
   } catch (error) {
