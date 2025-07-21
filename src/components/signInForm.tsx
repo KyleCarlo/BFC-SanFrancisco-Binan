@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import { Eye } from "lucide-react";
 import { EyeOff } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function SignInForm({ role }: { role: "staff" | "customer" }) {
   const form = useForm<Login>({
@@ -109,6 +110,14 @@ export default function SignInForm({ role }: { role: "staff" | "customer" }) {
             </FormItem>
           )}
         />
+        {role == "customer" && (
+          <Link
+            href="/forgot-password"
+            className="text-gray-400 text-sm italic"
+          >
+            Forgot Password?
+          </Link>
+        )}
         <Button variant="secondary" type="submit" className="w-full">
           Sign In
         </Button>
