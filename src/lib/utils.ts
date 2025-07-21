@@ -36,6 +36,30 @@ export const securityQuestions = [
   "What is the name of your best friend?",
 ];
 
+export function validatePasswordInput(password: string) {
+  if (password.length < 12) {
+    return "Password must be at least 12 characters long.";
+  }
+
+  if (password === password.toLowerCase()) {
+    return "Password must contain at least one uppercase letter.";
+  }
+
+  if (password === password.toUpperCase()) {
+    return "Password must contain at least one lowercase letter.";
+  }
+
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    return "Password must contain at least one special character.";
+  }
+
+  if (!/\d/.test(password)) {
+    return "Password must contain at least one number.";
+  }
+
+  return null;
+}
+
 export const bestSellers: Array<{
   id: number;
   name: string;

@@ -33,6 +33,7 @@ import {
   SelectValue,
 } from "@components/ui/select";
 import { securityQuestions } from "@lib/utils";
+import { validatePasswordInput } from "@lib/utils";
 
 export default function SignUpPage() {
   const form = useForm<SignUp>({
@@ -102,35 +103,9 @@ export default function SignUpPage() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit((values) => {
-              if (values.password.length < 12) {
-                return toast.error(
-                  "Password must be at least 12 characters long."
-                );
-              }
+              const message = validatePasswordInput(values.password);
 
-              if (values.password === values.password.toLowerCase()) {
-                return toast.error(
-                  "Password must contain at least one uppercase letter."
-                );
-              }
-
-              if (values.password === values.password.toUpperCase()) {
-                return toast.error(
-                  "Password must contain at least one lowercase letter."
-                );
-              }
-
-              if (!/[!@#$%^&*(),.?":{}|<>]/.test(values.password)) {
-                return toast.error(
-                  "Password must contain at least one special character."
-                );
-              }
-
-              if (!/\d/.test(values.password)) {
-                return toast.error(
-                  "Password must contain at least one number."
-                );
-              }
+              if (message != null) return toast.error(message);
 
               if (!form.watch("birthday"))
                 return toast.error("Please Enter your Birthdate.");
