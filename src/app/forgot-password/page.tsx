@@ -17,6 +17,8 @@ import { z } from "zod";
 import { User } from "lucide-react";
 import { checkUserIfExists } from "@/src/hooks/forgetPassword";
 import { useState } from "react";
+import { validatePasswordInput } from "@/src/lib/utils";
+import { toast } from "sonner";
 
 export default function ForgotPasswordPage() {
   const form = useForm({
@@ -91,7 +93,8 @@ export default function ForgotPasswordPage() {
             <Form {...form2}>
               <form
                 onSubmit={form2.handleSubmit((values) => {
-                  console.log(values);
+                  const message = validatePasswordInput(values.newPassword);
+                  if (message != null) return toast.error(message);
                 })}
                 className="space-y-3 w-full max-w-[280px] px-2"
               >
